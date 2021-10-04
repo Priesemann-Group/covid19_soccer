@@ -8,7 +8,7 @@ Supplementary code for our **Using gender disparities to measure the EURO~2020 m
 ## Usage
 Clone with 
 ```bash
-git clone --recurse-submodules git@github.com:Priesemann-Group/covid19_uefaeuro2020.git
+git clone --recurse-submodules git@github.com:Priesemann-Group/covid19_soccer.git
 ```
 
 The easiest way to start with our projects codebase is by looking into our model generator script. This can be found in `covid19_soccer\models.py`.

@@ -1,0 +1,54 @@
+Address,Date time,Minimum Temperature,Maximum Temperature,Temperature,Dew Point,Relative Humidity,Heat Index,Wind Speed,Wind Gust,Wind Direction,Wind Chill,Precipitation,Precipitation Cover,Snow Depth,Visibility,Cloud Cover,Sea Level Pressure,Weather Type,Latitude,Longitude,Resolved Address,Name,Info,Conditions
+Tallinn,05/16/2021,41.0,53.3,48.4,44.5,86.65,,9.9,17.9,262.88,37.9,0.0,0.0,,6.0,21.1,1008.0,"Mist, Fog, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,05/17/2021,48.3,69.7,57.8,51.4,80.15,,14.9,24.6,144.54,43.9,0.56,54.17,,6.3,31.0,1005.9,"Lightning Without Thunder, Mist, Rain, Rain Showers, Fog, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,"Rain, Partially cloudy"
+Tallinn,05/18/2021,45.1,51.8,48.9,47.8,96.15,,8.4,22.4,299.63,41.4,0.36,41.67,,3.9,59.4,1005.4,"Drizzle, Mist, Heavy Drizzle, Light Drizzle, Rain, Fog, Rain Showers, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,"Rain, Partially cloudy"
+Tallinn,05/19/2021,48.2,51.8,50.6,49.1,94.92,,17.8,29.2,283.63,42.9,0.64,41.67,,4.8,98.2,1000.6,"Drizzle, Mist, Light Drizzle, Rain, Heavy Drizzle/Rain, Light Drizzle/Rain, Rain Showers, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,"Rain, Overcast"
+Tallinn,05/20/2021,46.4,55.7,50.2,45.0,82.95,,14.9,27.6,281.08,40.1,0.35,25.0,,6.5,53.7,1004.4,"Mist, Light Drizzle, Rain, Rain Showers, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,"Rain, Partially cloudy"
+Tallinn,05/21/2021,46.4,57.1,50.4,44.8,82.04,,26.0,29.2,257.71,39.6,0.82,58.33,,6.4,67.3,999.4,"Drizzle, Light Drizzle, Rain, Rain Showers, Heavy Rain, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,"Rain, Partially cloudy"
+Tallinn,05/22/2021,41.0,59.0,50.8,43.5,77.7,,12.6,25.3,232.33,36.3,0.14,20.83,,6.0,40.8,1001.9,"Lightning Without Thunder, Mist, Precipitation In Vicinity, Rain, Rain Showers, Fog, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,"Rain, Partially cloudy"
+Tallinn,05/23/2021,39.3,55.4,47.0,43.9,89.74,,14.8,20.1,195.54,36.9,0.01,4.17,,4.4,43.6,1004.7,"Mist, Fog, Rain Showers, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,"Rain, Partially cloudy"
+Tallinn,05/24/2021,46.5,58.9,52.2,45.9,79.63,,17.0,26.8,264.75,40.2,0.12,20.83,,6.4,46.0,1013.1,"Mist, Rain, Rain Showers, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,"Rain, Partially cloudy"
+Tallinn,05/25/2021,43.7,62.5,53.6,46.5,79.21,,12.6,21.6,136.42,42.4,0.0,0.0,,5.3,30.6,1019.7,"Mist, Light Drizzle, Fog, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Partially cloudy
+Tallinn,05/26/2021,48.2,53.7,51.1,48.0,89.16,,21.7,36.3,121.75,41.9,1.73,87.5,,5.6,67.2,1009.4,"Light Drizzle, Rain, Rain Showers, Heavy Rain, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,"Rain, Partially cloudy"
+Tallinn,05/27/2021,46.4,55.4,51.0,47.5,87.97,,12.1,26.1,158.92,41.7,0.46,45.83,,6.5,50.0,1010.5,"Light Drizzle, Rain, Rain Showers, Fog, Heavy Rain, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,"Rain, Partially cloudy"
+Tallinn,05/28/2021,44.7,55.0,49.8,45.1,84.41,,12.6,17.9,277.63,39.1,0.0,0.0,,6.1,49.2,1014.5,"Mist, Fog",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Partially cloudy
+Tallinn,05/29/2021,44.6,55.4,50.3,37.9,65.08,,15.1,23.1,142.96,39.4,0.0,0.0,,6.5,11.3,1019.2,Mist,59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,05/30/2021,39.4,59.0,52.3,35.9,57.1,,11.1,26.1,112.38,38.7,0.0,0.0,,6.5,3.8,1024.9,Mist,59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,05/31/2021,40.2,60.8,52.2,39.1,62.81,,11.3,22.4,239.96,49.1,0.0,0.0,,6.5,5.4,1020.8,"Rain, Rain Showers, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,06/01/2021,46.9,62.9,55.5,44.6,68.86,,14.7,22.9,68.13,44.0,0.13,29.17,,6.4,25.4,1021.3,"Rain, Rain Showers, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,"Rain, Partially cloudy"
+Tallinn,06/02/2021,44.7,68.0,58.6,42.9,58.22,,11.0,17.9,121.04,44.0,0.0,0.0,,6.5,0.2,1028.9,,59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,06/03/2021,50.0,67.9,61.0,45.8,59.04,,15.7,20.1,70.42,,0.0,0.0,,6.5,0.2,1030.0,,59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,06/04/2021,52.3,70.1,63.6,47.1,56.45,,8.8,,138.58,,0.06,8.33,,6.5,3.3,1026.6,"Rain Showers, Heavy Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Rain
+Tallinn,06/05/2021,54.4,71.1,64.2,48.7,58.74,,10.2,22.4,308.38,,0.0,0.0,,6.5,1.6,1021.5,"Mist, Rain, Rain Showers",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,06/06/2021,55.3,73.7,65.2,50.7,61.17,,11.6,20.1,293.08,,0.0,0.0,,6.5,0.2,1018.1,Mist,59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,06/07/2021,58.9,75.1,66.6,52.7,62.07,,11.3,22.4,299.71,,0.0,0.0,,6.4,13.0,1017.3,"Mist, Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,06/08/2021,55.4,73.6,65.8,53.8,67.07,,12.9,31.3,86.29,,0.69,12.5,,6.4,9.0,1016.8,"Mist, Rain, Thunderstorm Without Precipitation, Rain Showers, Fog, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Rain
+Tallinn,06/09/2021,53.6,73.0,65.3,46.7,54.26,,11.2,17.9,59.04,,0.0,0.0,,6.4,0.2,1016.4,"Mist, Fog",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,06/10/2021,53.6,73.4,65.9,51.2,61.02,,10.2,17.9,86.67,,0.02,4.17,,6.5,5.5,1015.7,"Rain, Fog, Rain Showers",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Rain
+Tallinn,06/11/2021,55.8,76.9,68.4,51.1,57.68,,11.2,,93.04,,0.31,4.17,,6.4,1.4,1014.2,"Mist, Rain, Fog, Rain Showers",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Rain
+Tallinn,06/12/2021,55.4,73.3,63.2,54.8,75.64,,15.9,27.3,187.79,,0.46,41.67,,6.4,27.4,1004.5,"Drizzle, Mist, Rain, Fog, Rain Showers, Heavy Rain, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,"Rain, Partially cloudy"
+Tallinn,06/13/2021,56.9,66.1,59.9,52.8,79.41,,15.3,33.3,280.29,,0.53,50.0,,6.4,54.6,1005.3,"Mist, Light Drizzle, Rain, Rain Showers, Fog, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,"Rain, Partially cloudy"
+Tallinn,06/14/2021,53.2,71.5,62.6,45.8,55.35,,14.0,22.4,250.25,,0.0,0.0,,6.5,3.4,1015.5,,59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,06/15/2021,55.4,65.8,60.4,49.0,67.2,,20.5,29.1,248.58,,0.09,20.83,,6.5,31.9,1009.8,"Drizzle, Heavy Drizzle, Rain, Rain Showers, Fog, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,"Rain, Partially cloudy"
+Tallinn,06/16/2021,51.8,69.8,61.4,47.9,64.47,,16.9,20.1,268.29,,0.0,0.0,,6.5,1.4,1016.8,"Mist, Fog",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,06/17/2021,50.1,73.7,62.4,49.7,65.37,,9.1,20.1,223.88,,0.0,0.0,,6.5,0.1,1021.9,Smoke Or Haze,59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,06/18/2021,55.5,82.4,71.1,53.6,56.75,81.7,15.7,23.0,186.79,,0.0,0.0,,6.5,0.0,1019.7,,59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,06/19/2021,60.4,86.0,75.5,56.9,54.79,85.2,13.2,22.0,187.5,,0.0,0.0,,6.4,0.0,1017.7,Mist,59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,06/20/2021,66.6,87.8,78.4,59.8,54.62,87.3,13.4,22.4,183.38,,0.0,0.0,,6.3,0.1,1014.8,Mist,59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,06/21/2021,69.9,89.6,80.8,63.8,58.35,91.0,17.2,23.4,168.17,,0.0,0.0,,6.3,1.4,1012.8,Mist,59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,06/22/2021,71.6,89.6,80.6,65.3,61.18,92.3,13.0,22.4,148.46,,0.47,12.5,,6.2,8.8,1011.4,"Mist, Rain, Rain Showers, Smoke Or Haze",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Rain
+Tallinn,06/23/2021,66.7,87.6,73.8,66.8,79.67,91.8,21.7,39.9,180.88,,1.39,20.83,,6.0,24.7,1013.9,"Lightning Without Thunder, Mist, Rain, Thunderstorm, Fog, Rain Showers, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Rain
+Tallinn,06/24/2021,64.4,73.4,67.3,63.6,88.3,,10.2,,276.67,,0.05,12.5,,5.6,77.1,1016.3,"Mist, Light Drizzle, Rain, Fog, Rain Showers, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,"Rain, Overcast"
+Tallinn,06/25/2021,62.6,75.2,68.4,64.3,87.05,,7.7,,164.88,,0.4,12.5,,6.1,70.8,1012.8,"Mist, Rain, Fog, Rain Showers, Light Rain",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,"Rain, Partially cloudy"
+Tallinn,06/26/2021,64.4,74.8,69.2,63.5,82.98,,17.7,24.6,233.38,,0.08,8.33,,5.3,64.5,1011.9,"Mist, Fog",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,"Rain, Partially cloudy"
+Tallinn,06/27/2021,60.8,74.7,67.2,60.4,79.65,,13.0,22.4,257.38,,0.0,0.0,,6.4,43.3,1012.0,"Mist, Rain, Fog",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Partially cloudy
+Tallinn,06/28/2021,64.4,71.6,68.1,58.4,71.55,,13.5,22.4,304.92,,0.0,0.0,,6.5,4.0,1011.7,"Mist, Fog",59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,06/29/2021,62.5,75.1,69.7,55.8,63.5,,13.9,22.4,273.3,,0.0,0.0,,6.2,0.0,1009.7,,59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,06/30/2021,62.5,75.2,70.2,60.9,73.77,,10.3,,271.59,,0.0,0.0,,6.2,46.0,1008.5,,59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Partially cloudy
+Tallinn,07/01/2021,66.1,77.0,71.8,60.7,68.59,,17.1,,56.38,,0.0,0.0,,6.2,25.0,1012.3,,59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,07/02/2021,66.1,76.9,70.8,60.0,70.48,,16.0,,58.47,,0.0,0.0,,6.2,25.0,1013.9,,59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,07/03/2021,60.7,77.0,70.6,53.9,59.2,,16.0,,65.0,,0.0,0.0,,6.2,25.0,1014.7,,59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,07/04/2021,57.1,78.8,70.9,55.2,59.61,,15.1,,86.95,,0.0,0.0,,6.2,25.0,1015.0,,59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,07/05/2021,61.4,80.8,73.5,56.9,58.2,80.7,13.8,179.0,96.38,,0.0,0.0,,6.4,0.5,1014.6,Rain,59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Clear
+Tallinn,07/06/2021,66.1,82.3,72.5,61.4,69.57,82.8,12.7,17.9,134.77,,0.0,0.0,,5.9,42.1,1013.2,Rain,59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Partially cloudy
+Tallinn,07/07/2021,64.3,84.0,74.1,65.8,77.46,84.9,12.1,,174.59,,0.0,0.0,,6.2,47.2,1016.3,,59.4364,24.7526,"Tallinn, Eesti","Tallinn, Eesti",,Partially cloudy

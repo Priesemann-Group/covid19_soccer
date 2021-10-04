@@ -1,0 +1,25 @@
+# EM 2021 game locations
+# source: https://de.wikipedia.org/wiki/Fu%C3%9Fball-Europameisterschaft_2021#Spielorte
+# depending on the source the capacity values are rounded or not, which leads to anomalies like Budapest
+# source_UEFA: https://www.uefa.com/uefaeuro-2020/event-guide/
+# no data on Sevilla on UEFA website
+# UEFA website says, Budapest is used at full capacity, i.e. the 68000 from the first source might be a rounding mistake if the full capacity from source one is correct
+# NOTE: For London the used capacity is supposed to rise in the later stages (see https://www.uefa.com/uefaeuro-2020/event-guide/london/stadium/)
+name,country,capacity,used_capacity,used_capacity_UEFA
+London,GB,90652,22500,21500
+London,GB-ENG,90652,22500,21500
+London,GB-SCT,90652,22500,21500
+London,GB-WLS,90652,22500,21500
+Rome,IT,72689,18000,16000
+Baku,AZ,69870,34500,31000
+Munich,DE,75000,14000,14500
+Saint Petersburg,RU,69501,34117,30500
+Budapest,HU,67155,68000,61000
+Seville,ES,57619,17100,
+Bucharest,RO,55600,13750,13000
+Amsterdam,NL,54990,13500,16000
+Glasgow,SCT,52500,12750,12000
+Glasgow,GB-SCT,52500,12750,12000
+Glasgow,GB-ENG,52500,12750,12000
+Glasgow,GB-WLS,52500,12750,12000
+Copenhagen,DK,38190,15200,25000

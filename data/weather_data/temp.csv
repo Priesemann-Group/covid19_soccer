@@ -1,0 +1,4 @@
+Address,Date time,Minimum Temperature,Maximum Temperature,Temperature,Dew Point,Relative Humidity,Heat Index,Wind Speed,Wind Gust,Wind Direction,Wind Chill,Precipitation,Precipitation Cover,Snow Depth,Visibility,Cloud Cover,Sea Level Pressure,Weather Type,Latitude,Longitude,Resolved Address,Name,Info,Conditions
+"London","07/05/2021",57.5,69.2,62.0,53.8,76.19,,13.6,30.0,205.38,,0.12,4.17,,8.9,1.1,1005.0,"Light Drizzle, Rain, Rain Showers, Heavy Rain, Light Rain",51.5064,-0.12721,"London, England, United Kingdom","London, England, United Kingdom","","Rain"
+"London","07/06/2021",56.4,65.4,60.2,54.2,81.25,,21.8,28.9,208.35,,0.0,0.0,,5.7,71.9,999.5,"",51.5064,-0.12721,"London, England, United Kingdom","London, England, United Kingdom","","Partially cloudy"
+"London","07/07/2021",56.4,67.9,62.4,54.4,75.76,,14.8,23.0,211.65,,0.0,0.0,,6.2,68.4,1011.2,"",51.5064,-0.12721,"London, England, United Kingdom","London, England, United Kingdom","","Partially cloudy"

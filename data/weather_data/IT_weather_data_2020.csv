@@ -1,0 +1,79 @@
+Address,Date time,Minimum Temperature,Maximum Temperature,Temperature,Dew Point,Relative Humidity,Heat Index,Wind Speed,Wind Gust,Wind Direction,Wind Chill,Precipitation,Precipitation Cover,Snow Depth,Visibility,Cloud Cover,Sea Level Pressure,Weather Type,Latitude,Longitude,Resolved Address,Name,Info,Conditions
+Rome,05/16/2020,61.3,83.2,70.9,52.6,54.32,81.9,16.5,,45.33,,0.04,4.17,,6.2,16.3,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,05/17/2020,66.0,78.0,73.1,58.0,59.74,,14.1,,182.29,,0.15,12.5,,6.1,4.8,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,05/18/2020,61.6,80.1,70.9,58.2,66.63,80.8,10.7,,132.04,,0.06,8.33,,6.2,17.8,,Light Rain,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,05/19/2020,61.2,74.6,67.8,58.7,73.94,,13.5,,205.88,,0.04,8.33,,6.2,39.6,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,"Rain, Partially cloudy"
+Rome,05/20/2020,59.3,75.7,65.6,56.8,74.55,,15.1,,116.38,,0.49,16.67,,6.2,36.2,,"Thunderstorm, Thunderstorm Without Precipitation, Light Rain",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,"Rain, Partially cloudy"
+Rome,05/21/2020,61.5,80.0,70.2,48.3,47.8,,16.4,,85.29,,0.12,12.5,,6.2,8.1,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,05/22/2020,57.9,81.2,68.6,45.3,45.33,79.7,13.2,,150.63,,0.06,8.33,,6.2,0.0,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,05/23/2020,55.7,80.1,69.1,53.2,61.76,79.7,11.7,,193.67,,0.0,0.0,,6.2,0.0,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,05/24/2020,61.9,78.5,69.6,54.9,60.48,,12.4,,208.21,,0.02,4.17,,6.2,3.6,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,05/25/2020,60.0,78.4,69.8,54.3,60.95,,13.2,,188.58,,0.01,4.17,,6.2,10.3,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,05/26/2020,56.8,76.6,67.7,45.3,47.89,,16.3,,151.96,,0.04,8.33,,6.2,11.5,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,05/27/2020,54.8,75.4,66.4,40.7,39.83,,13.2,,117.92,,0.35,12.5,,6.2,14.3,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,05/28/2020,54.7,74.9,65.5,44.5,48.21,,10.5,,160.79,,0.07,8.33,,6.2,11.5,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,05/29/2020,56.3,69.8,61.0,52.7,75.44,,12.0,,149.75,,0.82,12.5,,5.9,35.5,,"Lightning Without Thunder, Light Drizzle, Thunderstorm, Rain, Thunderstorm Without Precipitation, Light Rain, Funnel Cloud/Tornado",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,"Rain, Partially cloudy"
+Rome,05/30/2020,51.5,66.5,59.3,51.2,76.02,,9.6,,159.29,,0.6,12.5,,6.1,28.7,,"Precipitation In Vicinity, Light Rain",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,"Rain, Partially cloudy"
+Rome,05/31/2020,52.0,72.8,63.1,51.0,67.02,,13.4,,156.58,,0.18,12.5,,6.2,11.3,,Fog,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,06/01/2020,56.1,75.5,66.7,51.3,59.86,,10.5,,159.96,,0.04,4.17,,6.2,13.8,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,06/02/2020,59.0,75.3,67.2,53.7,63.22,,11.5,,176.42,,0.01,4.17,,6.2,19.1,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,06/03/2020,57.7,77.4,67.9,54.9,65.98,,11.1,,202.71,,0.17,8.33,,6.2,8.7,,"Drizzle, Light Rain",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,06/04/2020,63.1,75.9,68.7,57.1,68.04,,21.9,,163.5,,0.05,9.09,,6.2,34.5,,"Mist, Thunderstorm, Light Rain",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,"Rain, Partially cloudy"
+Rome,06/05/2020,62.0,71.3,67.6,60.0,77.61,,18.3,,202.08,,0.72,16.67,,5.8,52.3,,"Lightning Without Thunder, Mist, Thunderstorm, Rain, Thunderstorm Without Precipitation, Light Rain",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,"Rain, Partially cloudy"
+Rome,06/06/2020,57.9,78.6,67.9,56.4,69.37,,13.7,,186.92,,0.05,8.33,,6.2,1.7,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,06/07/2020,61.7,77.3,69.1,58.1,69.71,,15.2,,169.96,,0.0,0.0,,6.2,19.2,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,06/08/2020,65.3,74.3,70.1,59.9,70.88,,15.8,,183.0,,0.27,12.5,,6.2,39.7,,"Thunderstorm, Rain Showers",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,"Rain, Partially cloudy"
+Rome,06/09/2020,62.6,72.9,67.2,56.1,68.61,,11.4,,201.25,,0.08,4.17,,6.2,30.1,,Mist,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,"Rain, Partially cloudy"
+Rome,06/10/2020,62.3,69.5,65.6,55.2,69.45,,16.4,,219.92,,0.09,12.5,,6.2,53.2,,"Lightning Without Thunder, Thunderstorm, Thunderstorm Without Precipitation, Light Rain",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,"Rain, Partially cloudy"
+Rome,06/11/2020,58.6,66.4,62.3,56.6,81.97,,8.8,,181.29,,1.01,16.67,,5.9,46.8,,"Mist, Precipitation In Vicinity, Rain, Thunderstorm, Thunderstorm Without Precipitation, Rain Showers, Light Rain",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,"Rain, Partially cloudy"
+Rome,06/12/2020,54.3,75.5,65.5,53.8,67.94,,11.2,,168.58,,0.02,8.33,,6.2,6.2,,Fog,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,06/13/2020,58.2,78.8,67.6,58.5,74.89,,15.4,,163.63,,0.04,8.33,,6.1,8.4,,Light Rain,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,06/14/2020,62.8,72.9,68.0,60.9,78.73,,15.3,,219.08,,0.04,4.17,,6.2,45.0,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,"Rain, Partially cloudy"
+Rome,06/15/2020,56.2,77.9,68.5,58.8,73.2,,12.9,,185.13,,0.32,12.5,,6.1,18.8,,"Thunderstorm, Thunderstorm Without Precipitation, Fog",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,06/16/2020,60.1,76.8,69.0,59.0,72.27,,12.4,,192.25,,0.96,12.5,,6.2,17.5,,"Thunderstorm, Thunderstorm Without Precipitation, Light Rain",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,06/17/2020,63.5,74.5,69.1,60.7,75.64,,13.9,,213.58,,0.14,12.5,,6.2,28.1,,"Mist, Fog, Light Rain",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,"Rain, Partially cloudy"
+Rome,06/18/2020,62.3,76.3,69.0,59.3,72.87,,13.0,,182.0,,0.22,8.33,,6.2,23.0,,"Fog, Light Rain",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,06/19/2020,60.5,76.8,68.7,56.4,67.05,,9.2,,213.5,,0.01,4.17,,6.2,12.2,,Fog,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,06/20/2020,59.0,81.4,70.7,57.1,65.33,81.0,15.5,,210.0,,0.02,4.17,,6.2,4.3,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,06/21/2020,62.1,79.7,70.7,56.1,61.11,,14.2,,151.63,,0.04,8.33,,6.2,14.7,,"Lightning Without Thunder, Thunderstorm Without Precipitation, Light Rain",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,06/22/2020,63.3,85.4,74.4,54.6,52.92,83.8,10.8,,144.13,,0.28,8.33,,6.2,7.5,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,06/23/2020,66.9,90.2,78.8,52.1,41.55,87.4,14.9,,79.83,,0.03,4.17,,6.2,3.6,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,06/24/2020,65.7,85.4,76.4,52.7,45.07,83.6,11.7,,127.92,,0.02,4.17,,6.2,4.1,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,06/25/2020,63.9,84.6,75.5,57.5,55.62,84.0,10.4,,163.21,,0.02,4.17,,6.2,6.5,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,06/26/2020,63.5,85.3,75.7,57.6,56.56,84.1,11.0,,194.79,,0.01,4.17,,6.0,2.8,,Fog,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,06/27/2020,62.4,88.0,76.6,54.6,49.31,86.1,10.8,,166.29,,0.01,4.17,,6.2,2.4,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,06/28/2020,65.3,89.0,78.1,56.5,48.74,88.3,12.1,,165.0,,0.01,4.17,,6.2,1.6,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,06/29/2020,67.7,85.6,76.9,61.9,61.95,85.5,11.4,,242.71,,0.0,0.0,,6.2,0.5,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,06/30/2020,70.1,84.4,77.3,64.4,65.21,86.7,12.2,,183.46,,0.0,0.0,,6.2,3.7,,Mist,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,07/01/2020,69.2,87.9,78.7,65.0,64.77,88.9,10.3,,182.38,,0.0,0.0,,6.2,0.7,,Mist,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,07/02/2020,70.3,89.2,79.5,65.6,65.45,90.0,10.2,,199.46,,0.0,0.0,,6.2,1.2,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,07/03/2020,70.5,86.4,78.9,68.5,72.53,89.9,11.5,,209.79,,0.0,0.0,,6.1,17.0,,"Mist, Thunderstorm Without Precipitation, Fog",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,07/04/2020,69.0,83.5,74.4,65.7,75.32,84.5,16.3,,189.75,,0.96,8.33,,6.1,33.1,,"Lightning Without Thunder, Thunderstorm, Thunderstorm Without Precipitation, Light Rain",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,"Rain, Partially cloudy"
+Rome,07/05/2020,66.3,87.0,76.9,57.3,53.24,85.4,12.2,,172.88,,0.01,4.17,,6.2,1.5,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,07/06/2020,67.2,88.1,78.3,56.9,48.74,87.6,12.4,,161.54,,0.01,4.17,,6.2,2.9,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,07/07/2020,68.4,89.1,79.0,62.0,58.03,91.1,11.6,,192.96,,0.01,4.17,,6.2,5.8,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,07/08/2020,67.4,85.8,77.0,62.1,61.18,87.4,10.2,,162.96,,0.01,4.17,,6.2,5.9,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,07/09/2020,67.8,89.5,79.1,62.2,59.16,89.7,12.5,,195.83,,0.0,0.0,,6.0,8.0,,Fog,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,07/10/2020,69.3,89.8,79.8,60.0,52.75,88.9,11.8,,229.46,,0.0,0.0,,6.2,0.0,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,07/11/2020,65.5,86.4,77.8,63.1,62.1,87.8,11.2,,204.0,,0.0,0.0,,6.2,0.0,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,07/12/2020,69.6,86.9,78.4,66.8,69.59,89.7,10.1,,179.0,,0.0,0.0,,6.2,6.4,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,07/13/2020,70.8,85.1,77.2,58.3,53.68,84.5,12.3,,180.04,,0.0,0.0,,6.2,14.7,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,07/14/2020,62.9,83.5,74.1,51.5,45.96,82.3,10.9,,156.88,,0.01,4.17,,6.2,9.1,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,07/15/2020,66.0,81.8,74.4,60.2,62.22,82.4,12.6,,189.54,,0.04,4.17,,6.2,15.6,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,07/16/2020,63.1,82.7,73.9,60.9,65.95,82.7,11.5,,197.25,,0.01,4.17,,6.2,18.0,,"Precipitation In Vicinity, Light Rain",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,07/17/2020,65.1,83.6,74.5,61.2,65.29,84.1,13.2,,118.13,,0.08,12.5,,6.2,9.7,,"Precipitation In Vicinity, Light Rain",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,07/18/2020,66.3,82.7,74.6,55.7,54.27,83.2,12.5,,126.79,,0.01,4.17,,6.2,17.2,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,07/19/2020,64.6,84.1,74.5,49.2,42.31,82.1,16.2,,143.92,,0.0,4.17,,6.2,2.8,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,07/20/2020,62.2,86.8,76.1,57.0,54.04,84.9,13.2,,192.79,,0.01,4.17,,6.2,0.9,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,07/21/2020,67.0,90.5,79.2,61.2,57.69,89.3,14.5,,211.42,,0.0,0.0,,6.1,3.9,,"Mist, Fog",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,07/22/2020,68.9,91.8,80.5,59.1,50.08,91.2,13.4,,210.71,,0.0,0.0,,6.2,0.0,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,07/23/2020,67.5,91.1,79.1,59.6,54.15,89.3,12.2,,212.21,,0.0,0.0,,6.2,0.1,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,07/24/2020,68.5,86.7,77.9,65.7,67.39,90.3,14.5,,192.67,,0.0,0.0,,5.8,6.9,,Fog,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,07/25/2020,71.4,87.5,79.3,60.7,56.44,85.8,14.1,,246.5,,0.0,0.0,,6.2,12.1,,Fog,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,07/26/2020,67.2,86.7,78.3,57.0,48.62,87.9,10.6,,177.38,,0.0,0.0,,6.2,3.7,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,07/27/2020,66.5,93.3,79.5,57.9,50.02,91.4,13.0,,225.91,,0.0,0.0,,6.2,0.0,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,07/28/2020,68.4,91.2,80.1,62.7,58.2,92.2,11.4,,203.17,,0.0,0.0,,6.1,0.0,,"Mist, Fog",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,07/29/2020,71.8,93.2,82.1,65.2,58.53,96.7,11.0,,184.83,,0.01,4.17,,5.9,0.8,,"Mist, Fog",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Rain
+Rome,07/30/2020,69.8,96.6,83.6,64.2,55.64,96.7,12.5,,229.0,,0.0,0.0,,6.1,0.0,,Fog,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,07/31/2020,72.3,97.1,84.2,65.7,57.53,98.3,11.9,,248.88,,0.0,0.0,,6.2,0.2,,,41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear
+Rome,08/01/2020,73.0,94.0,83.7,66.4,60.56,96.0,13.6,,215.17,,0.0,0.0,,5.2,8.2,,"Mist, Fog",41.9032,12.4957,"Roma, Lazio, Italia","Roma, Lazio, Italia",,Clear

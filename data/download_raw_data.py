@@ -1,0 +1,15 @@
+import requests
+
+urls = {
+    "DE.csv": "https://www.arcgis.com/sharing/rest/content/items/f10774f1c63e40168479a1feb6c7ca74/data",
+    "FR.csv": "https://www.data.gouv.fr/fr/datasets/r/57d44bd6-c9fd-424f-9a72-7834454f9e3c",
+    "GB-ENG.json": "https://api.coronavirus.data.gov.uk/v1/data?filters=areaType=nation;areaName=england&structure={%22date%22:%22date%22,%22name%22:%22areaName%22,%22code%22:%22areaCode%22,%22maleCases%22:%22maleCases%22,%22femaleCases%22:%22femaleCases%22}&format=%22csv%22",
+    ### SCT url is day specific, not autoupdating
+    "GB-SCT.csv": "https://www.opendata.nhs.scot/dataset/b318bddf-a4dc-4262-971f-0ba329e09b87/resource/9393bd66-5012-4f01-9bc5-e7a10accacf4/download/trend_agesex_20210817.csv",
+}
+
+
+for key in urls.keys():
+    r = requests.get(urls[key])
+    with open("./case_data_gender_raw/" + key, "wb") as f:
+        f.write(r.content)

@@ -1,0 +1,54 @@
+# EM 2021 game data
+# source: https://www.fussball-wm.pro/em-2021/spielplan
+id, date, phase, team1, team2, goals1, goals2, location
+000, 2021-06-11, GS, TR, IT, 0, 3, Rome
+001, 2021-06-12, GS, GB-WLS,CH, 1, 1, Baku
+002, 2021-06-12, GS, DK, FI, 0, 1, Copenhagen
+003, 2021-06-12, GS, BE, RU, 3, 0, Saint Petersburg
+004, 2021-06-13, GS, GB-ENG, HR, 1, 0, London
+005, 2021-06-13, GS, AT, MK, 3, 1, Bucharest
+006, 2021-06-13, GS, NL, UA, 3, 2, Amsterdam
+007, 2021-06-14, GS, GB-SCT,CZ, 0, 2, Glasgow
+008, 2021-06-14, GS, PL, SK, 1, 2, Saint Petersburg
+009, 2021-06-14, GS, ES, SE, 0, 0, Seville
+010, 2021-06-15, GS, HU, PT, 0, 3, Budapest
+011, 2021-06-15, GS, FR, DE, 1, 0, Munich
+012, 2021-06-16, GS, FI, RU, 0, 1, Saint Petersburg
+013, 2021-06-16, GS, TR, GB-WLS, 0, 2, Baku
+014, 2021-06-16, GS, IT, CH, 3, 0, Rome
+015, 2021-06-17, GS, UA, MK, 2, 1, Bucharest
+016, 2021-06-17, GS, DK, BE, 1, 2, Copenhagen
+017, 2021-06-17, GS, NL, AT, 2, 0, Amsterdam
+018, 2021-06-18, GS, SE, SK, 1, 0, Saint Petersburg
+019, 2021-06-18, GS, HR, CZ, 1, 1, Glasgow
+020, 2021-06-18, GS, GB-ENG, GB-SCT, 0, 0, London
+021, 2021-06-19, GS, HU, FR, 1, 1, Budapest
+022, 2021-06-19, GS, PT, DE, 2, 4, Munich
+023, 2021-06-19, GS, ES, PL, 1, 1, Seville
+024, 2021-06-20, GS, IT, GB-WLS, 1, 0, Rome
+025, 2021-06-20, GS, CH, TR, 3, 1, Baku
+026, 2021-06-21, GS, MK, NL, 0, 3, Amsterdam
+027, 2021-06-21, GS, UA, AT, 0, 1, Bucharest
+028, 2021-06-21, GS, RU, DK, 1, 4, Copenhagen
+029, 2021-06-21, GS, FI, BE, 0, 2, Saint Petersburg
+030, 2021-06-22, GS, CZ, GB-ENG, 0, 1, London
+031, 2021-06-22, GS, HR, GB-SCT, 3, 1, Glasgow
+032, 2021-06-23, GS, SK, ES, 0, 5, Seville
+033, 2021-06-23, GS, SE, PL, 3, 2, Saint Petersburg
+034, 2021-06-23, GS, DE, HU, 2, 2, Munich
+035, 2021-06-23, GS, PT, FR, 2, 2, Budapest
+036, 2021-06-26, AF, GB-WLS, DK, 0, 4, Amsterdam
+037, 2021-06-26, AF, IT, AT, 2, 1, London
+038, 2021-06-27, AF, NL, CZ, 0, 2, Budapest
+039, 2021-06-27, AF, BE, PT, 1, 0, Seville
+040, 2021-06-28, AF, HR, ES, 3, 5, Copenhagen
+041, 2021-06-28, AF, FR, CH, 7, 8, Bucharest
+042, 2021-06-29, AF, GB-ENG, DE, 2, 0, London
+043, 2021-06-29, AF, SE, UA, 1, 2, Glasgow
+044, 2021-07-02, VF, CH, ES, 2, 4, Saint Petersburg
+045, 2021-07-02, VF, BE, IT, 1, 2, Munich
+046, 2021-07-03, VF, CZ, DK, 1, 2, Baku
+047, 2021-07-03, VF, UA, GB-ENG, 0, 4, Rome
+048, 2021-07-06, HF, IT, ES, 5, 3, London
+049, 2021-07-07, HF, GB-ENG, DK, 2, 1, London
+050, 2021-07-11, FI, IT, GB-ENG, 4, 3, London

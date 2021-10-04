@@ -1,0 +1,79 @@
+Address,Date time,Minimum Temperature,Maximum Temperature,Temperature,Dew Point,Relative Humidity,Heat Index,Wind Speed,Wind Gust,Wind Direction,Wind Chill,Precipitation,Precipitation Cover,Snow Depth,Visibility,Cloud Cover,Sea Level Pressure,Weather Type,Latitude,Longitude,Resolved Address,Name,Info,Conditions
+Oslo,05/16/2020,32.1,43.5,38.1,20.8,49.99,,20.8,21.9,271.54,23.3,0.0,0.0,,12.9,0.5,1005.3,Precipitation In Vicinity,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Clear
+Oslo,05/17/2020,35.6,50.1,42.4,23.7,48.35,,13.9,19.0,293.92,28.4,0.03,8.33,,12.6,0.7,1006.7,"Precipitation In Vicinity, Rain Showers",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,05/18/2020,35.8,52.3,44.2,25.8,49.06,,13.8,19.2,266.38,27.7,0.0,0.0,,12.1,0.3,1012.7,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Clear
+Oslo,05/19/2020,34.9,54.9,44.9,24.6,47.88,,15.2,15.8,136.75,26.6,0.0,0.0,,10.9,0.7,1014.2,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Clear
+Oslo,05/20/2020,34.4,56.3,46.3,24.6,43.95,,13.7,15.5,132.79,25.8,0.0,0.0,,12.0,0.0,1022.8,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Clear
+Oslo,05/21/2020,39.7,57.9,48.9,33.5,55.87,,13.4,14.4,192.79,35.7,0.0,0.0,,12.0,0.9,1024.1,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Clear
+Oslo,05/22/2020,44.2,58.2,50.2,38.6,65.28,,23.6,27.1,169.67,36.2,0.98,29.17,,8.5,2.0,1019.5,"Precipitation In Vicinity, Light Drizzle/Rain, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,05/23/2020,42.7,49.0,45.6,44.3,95.25,,23.2,29.5,189.04,35.0,0.75,70.83,,6.0,3.8,1011.3,"Mist, Precipitation In Vicinity, Light Drizzle, Rain, Thunderstorm, Rain Showers, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,05/24/2020,43.0,51.3,47.2,44.6,91.18,,15.2,15.8,164.46,36.4,0.39,54.17,,7.3,4.2,1009.8,"Precipitation In Vicinity, Light Drizzle, Rain Showers, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,05/25/2020,43.8,64.1,53.9,43.8,71.2,,13.1,14.5,107.58,37.8,0.01,8.33,,11.8,1.7,1026.3,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,05/26/2020,46.4,59.9,52.1,44.3,75.79,,16.6,17.0,195.33,41.8,0.0,4.17,,10.5,0.5,1031.9,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Clear
+Oslo,05/27/2020,43.5,59.5,51.4,33.4,52.94,,15.5,17.2,319.13,37.0,0.0,0.0,,9.6,0.4,1029.0,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Clear
+Oslo,05/28/2020,41.7,61.5,51.3,32.0,48.96,,14.0,16.7,238.5,34.9,0.0,4.17,,12.6,0.1,1030.9,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Clear
+Oslo,05/29/2020,42.8,66.9,56.1,35.6,48.08,,9.7,10.7,174.58,37.3,0.0,0.0,,11.5,0.0,1030.4,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Clear
+Oslo,05/30/2020,50.6,68.6,59.9,39.9,48.3,,15.5,17.7,55.75,,0.01,8.33,,11.7,0.1,1030.6,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,05/31/2020,49.0,71.5,61.4,39.6,47.09,,12.0,12.9,76.21,46.2,0.01,4.17,,11.8,0.0,1031.6,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/01/2020,55.2,74.9,65.7,38.7,38.2,,10.4,11.5,225.29,,0.01,4.17,,11.8,0.0,1028.0,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/02/2020,55.1,73.3,64.6,39.7,41.34,,14.0,14.4,187.08,,0.03,8.33,,11.7,0.0,1017.3,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/03/2020,47.4,68.4,58.1,42.1,57.57,,13.6,15.0,148.92,43.3,0.01,4.17,,11.3,0.5,1008.3,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/04/2020,48.9,68.3,54.5,42.9,67.25,,17.8,19.7,112.13,43.5,0.25,54.17,,12.4,5.8,1000.9,"Precipitation In Vicinity, Rain Showers",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/05/2020,44.1,54.2,50.4,45.0,82.52,,23.2,25.2,116.63,40.1,0.58,54.17,,10.5,3.6,992.9,"Precipitation In Vicinity, Rain, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/06/2020,43.5,49.4,46.7,46.1,97.75,,11.7,13.8,208.29,39.8,1.29,91.67,,8.0,4.4,990.6,"Light Drizzle, Rain, Light Drizzle/Rain, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/07/2020,44.7,50.7,47.0,44.6,91.59,,16.9,20.4,204.63,37.6,0.53,66.67,,10.4,4.6,1000.7,"Precipitation In Vicinity, Rain Showers, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/08/2020,45.1,55.3,49.6,45.5,86.29,,15.5,16.6,91.58,38.3,0.38,70.83,,10.5,4.2,1011.0,"Mist, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/09/2020,45.7,62.1,54.5,45.5,73.52,,9.7,15.2,132.38,42.7,0.0,4.17,,9.5,2.9,1017.9,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Clear
+Oslo,06/10/2020,45.5,66.7,55.5,47.2,75.42,,11.8,13.5,125.88,42.2,0.11,29.17,,11.5,1.7,1020.9,"Precipitation In Vicinity, Rain Showers",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/11/2020,53.4,72.4,63.6,45.9,54.82,,13.5,14.9,55.67,,0.01,16.67,,12.6,0.3,1023.0,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/12/2020,55.3,74.1,65.7,42.2,43.94,,18.4,19.6,77.96,,0.07,41.67,,11.6,0.1,1022.2,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/13/2020,54.0,73.5,64.4,42.6,45.85,,17.9,19.8,95.54,,0.04,33.33,,12.6,0.6,1022.9,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/14/2020,51.5,73.7,64.3,40.0,42.62,,14.2,15.4,143.58,,0.0,4.17,,13.3,0.0,1022.6,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Clear
+Oslo,06/15/2020,56.8,78.1,68.7,42.0,38.87,,8.5,10.1,254.5,,0.04,45.83,,11.2,0.0,1017.7,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/16/2020,61.7,79.5,68.1,49.8,53.73,,16.3,34.2,102.54,,0.21,66.67,,10.9,0.8,1014.8,"Lightning Without Thunder, Precipitation In Vicinity, Thunderstorm",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/17/2020,56.9,75.9,66.9,54.0,65.31,,12.7,19.1,105.38,,0.19,45.83,,11.3,0.8,1014.2,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/18/2020,54.8,78.2,67.6,54.6,65.86,,9.0,10.8,191.58,,0.08,54.17,,12.2,0.1,1014.4,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/19/2020,61.0,80.6,71.5,53.6,55.37,80.0,10.7,15.5,106.83,,0.04,33.33,,11.6,0.1,1014.5,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/20/2020,61.4,75.6,67.0,55.9,68.6,,14.4,19.0,106.46,,0.52,66.67,,10.5,1.2,1016.6,"Lightning Without Thunder, Precipitation In Vicinity, Rain Showers",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/21/2020,58.3,62.8,60.2,57.5,91.02,,17.2,20.9,114.08,,0.87,95.83,,9.1,3.2,1018.0,"Precipitation In Vicinity, Rain Showers, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/22/2020,52.4,58.5,55.6,54.3,95.58,,11.6,14.4,116.88,,1.28,83.33,,10.2,4.5,1017.4,"Mist, Precipitation In Vicinity, Rain, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/23/2020,50.5,72.9,62.7,53.4,73.94,,11.3,13.4,197.38,,0.05,50.0,,8.5,0.6,1022.2,Fog,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/24/2020,55.4,76.7,66.9,57.2,72.22,,12.5,14.1,183.67,,0.09,54.17,,8.0,0.8,1025.9,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/25/2020,57.3,75.8,66.0,57.3,76.42,,12.9,14.3,186.38,,0.06,37.5,,8.4,1.1,1025.9,"Fog, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/26/2020,55.9,77.5,67.5,53.0,63.81,,13.1,21.9,194.75,,0.02,8.33,,11.9,0.0,1019.9,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/27/2020,61.7,80.2,70.2,56.4,62.78,80.6,12.4,15.1,164.25,,0.27,25.0,,10.5,0.5,1011.6,Precipitation In Vicinity,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/28/2020,54.8,65.7,61.2,58.8,92.1,,13.5,16.5,152.83,,1.25,66.67,,9.1,3.6,1006.9,"Lightning Without Thunder, Precipitation In Vicinity, Rain, Rain Showers, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/29/2020,50.9,60.8,55.4,50.7,84.86,,13.7,24.2,196.92,,0.31,41.67,,10.3,2.6,1005.8,"Precipitation In Vicinity, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,06/30/2020,50.2,61.0,54.0,50.8,89.93,,10.6,13.6,186.13,,0.97,79.17,,9.7,4.0,994.1,"Mist, Precipitation In Vicinity, Light Drizzle/Rain, Rain Showers, Heavy Rain, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/01/2020,44.4,58.6,51.0,44.0,78.13,,14.9,17.3,124.17,37.6,0.35,45.83,,11.3,2.6,996.1,"Precipitation In Vicinity, Thunderstorm, Rain Showers",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/02/2020,43.7,58.4,51.9,43.5,74.81,,15.0,17.8,157.04,37.9,0.24,20.83,,12.2,2.3,1000.0,"Precipitation In Vicinity, Thunderstorm, Rain Showers, Fog",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/03/2020,42.1,55.3,48.2,39.6,73.27,,15.3,16.2,259.92,34.7,0.29,25.0,,11.8,2.4,1005.9,"Precipitation In Vicinity, Rain Showers, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/04/2020,44.8,60.5,51.6,42.6,73.96,,10.4,12.2,129.46,41.2,0.23,37.5,,11.1,2.4,1002.6,"Mist, Fog, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/05/2020,47.0,56.8,51.7,49.5,92.44,,20.1,24.1,161.17,43.0,1.57,58.33,,9.0,3.7,991.9,"Mist, Precipitation In Vicinity, Rain Showers, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/06/2020,45.9,56.3,50.5,44.7,80.75,,16.0,21.6,267.04,39.4,0.2,50.0,,12.7,2.1,990.9,"Precipitation In Vicinity, Rain Showers, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/07/2020,42.3,55.6,47.3,39.7,75.99,,16.5,28.4,268.71,34.4,0.41,41.67,,11.8,2.6,1003.5,"Precipitation In Vicinity, Thunderstorm, Rain Showers, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/08/2020,40.8,57.9,49.7,41.2,74.8,,13.2,16.8,290.67,33.5,0.31,29.17,,12.3,2.1,1006.7,"Precipitation In Vicinity, Rain, Rain Showers, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/09/2020,44.1,62.6,52.8,42.0,69.65,,12.2,14.5,168.79,37.9,0.11,12.5,,12.4,1.4,1010.3,Precipitation In Vicinity,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/10/2020,45.8,59.9,52.7,45.9,78.71,,11.5,13.3,147.83,42.0,0.23,20.83,,11.1,1.7,1008.4,"Precipitation In Vicinity, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/11/2020,46.5,65.9,55.0,40.1,60.34,,12.8,14.2,279.54,42.6,0.07,4.17,,10.3,1.4,1010.6,"Precipitation In Vicinity, Rain Showers",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/12/2020,45.9,62.1,54.4,39.5,57.85,,17.7,19.2,280.17,40.5,0.03,29.17,,9.0,0.0,1016.8,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/13/2020,46.6,61.5,54.7,43.1,65.64,,14.3,16.4,193.13,41.3,0.0,0.0,,8.7,0.5,1017.3,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Clear
+Oslo,07/14/2020,50.2,54.5,52.2,51.6,97.83,,11.0,14.3,151.04,,0.74,83.33,,8.1,4.4,1011.1,"Mist, Precipitation In Vicinity, Light Drizzle/Rain, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/15/2020,52.7,66.7,58.1,52.8,84.15,,11.0,15.0,131.21,,0.13,20.83,,11.2,4.1,1010.3,"Precipitation In Vicinity, Heavy Drizzle/Rain, Rain Showers",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/16/2020,50.4,64.2,57.7,52.5,83.53,,12.1,12.5,188.33,,0.0,0.0,,10.9,3.1,1014.5,Fog,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Clear
+Oslo,07/17/2020,50.6,64.1,56.2,53.2,90.37,,18.6,22.8,185.17,,0.05,20.83,,8.7,3.7,1016.2,"Light Drizzle, Precipitation In Vicinity, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/18/2020,54.7,56.7,56.0,55.2,97.33,,20.9,23.3,194.0,,0.65,70.83,,7.6,4.9,1016.4,"Precipitation In Vicinity, Light Drizzle, Light Drizzle/Rain, Rain Showers, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/19/2020,55.2,57.2,56.3,55.7,97.67,,17.2,21.2,189.25,,1.03,75.0,,6.6,4.3,1013.7,"Drizzle, Heavy Drizzle, Precipitation In Vicinity, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/20/2020,50.2,64.1,56.6,49.1,78.32,,10.7,17.4,265.96,,0.08,16.67,,9.7,3.4,1010.9,"Precipitation In Vicinity, Fog, Rain Showers",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/21/2020,47.9,62.3,52.8,43.4,71.61,,13.7,18.6,295.0,42.4,0.29,37.5,,11.6,2.1,1013.8,"Precipitation In Vicinity, Rain Showers",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/22/2020,46.1,61.2,52.6,40.6,64.97,,12.3,13.8,279.04,40.6,0.08,29.17,,12.3,0.9,1016.0,Precipitation In Vicinity,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/23/2020,43.9,62.2,53.4,38.8,60.12,,11.2,15.7,224.21,38.8,0.01,8.33,,12.0,0.0,1012.5,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/24/2020,44.6,65.5,54.4,42.1,64.72,,14.7,17.2,146.54,37.8,0.0,0.0,,11.6,0.9,1005.4,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Clear
+Oslo,07/25/2020,47.6,68.1,56.1,44.6,66.76,,14.8,16.0,122.0,42.3,0.0,4.17,,11.5,2.1,1006.3,Light Rain,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Clear
+Oslo,07/26/2020,52.7,58.1,55.2,54.7,98.21,,19.0,28.4,143.33,,1.8,83.33,,6.6,4.9,1005.4,"Drizzle, Heavy Drizzle, Mist, Precipitation In Vicinity, Rain, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/27/2020,53.3,59.5,56.0,53.1,90.5,,18.4,28.5,185.91,,0.41,30.43,,10.1,4.0,1010.9,"Precipitation In Vicinity, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/28/2020,50.3,55.6,53.0,51.9,96.04,,19.6,32.9,135.13,,1.19,58.33,,8.6,4.1,1003.5,"Precipitation In Vicinity, Rain, Rain Showers, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/29/2020,49.0,59.0,52.5,50.9,94.63,,13.1,17.6,163.04,44.2,0.89,62.5,,8.8,4.0,1000.5,"Mist, Precipitation In Vicinity, Rain Showers, Light Rain",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/30/2020,49.8,69.6,59.9,49.5,70.77,,14.4,17.9,299.58,45.5,0.03,4.17,,11.7,1.4,1007.6,"Precipitation In Vicinity, Fog, Rain Showers",59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Rain
+Oslo,07/31/2020,53.7,73.2,63.3,52.0,68.0,,14.7,17.8,152.08,,0.0,0.0,,12.0,0.4,1016.9,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Clear
+Oslo,08/01/2020,57.6,71.0,63.8,53.5,70.08,,14.3,16.7,199.5,,0.0,0.0,,11.8,1.3,1017.2,,59.9123,10.75,"Oslo, Norge","Oslo, Norge",,Clear

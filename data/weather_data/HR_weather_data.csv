@@ -1,0 +1,54 @@
+Address,Date time,Minimum Temperature,Maximum Temperature,Temperature,Dew Point,Relative Humidity,Heat Index,Wind Speed,Wind Gust,Wind Direction,Wind Chill,Precipitation,Precipitation Cover,Snow Depth,Visibility,Cloud Cover,Sea Level Pressure,Weather Type,Latitude,Longitude,Resolved Address,Name,Info,Conditions
+Zagreb,05/16/2021,52.5,64.6,59.8,52.5,77.6,,5.2,20.5,242.38,,0.29,12.5,0.0,22.4,87.9,1007.9,"Drizzle, Light Drizzle, Thunderstorm, Heavy Drizzle/Rain, Mist, Precipitation In Vicinity, Rain, Rain Showers, Heavy Rain, Light Rain, Sky Coverage Decreasing, Sky Coverage Increasing",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,"Rain, Overcast"
+Zagreb,05/17/2021,49.1,60.4,56.3,50.2,80.55,,8.9,19.4,256.33,,0.91,16.67,0.0,14.1,77.3,1006.4,"Drizzle, Light Drizzle, Rain, Light Drizzle/Rain, Rain Showers, Heavy Rain, Light Rain, Sky Coverage Decreasing, Sky Coverage Increasing",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,"Rain, Overcast"
+Zagreb,05/18/2021,43.8,72.4,58.7,44.9,64.67,,6.7,16.2,197.88,41.6,0.05,8.33,0.0,25.0,33.9,1012.0,"Mist, Thunderstorm, Fog, Rain Showers, Light Rain, Sky Coverage Increasing",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,"Rain, Partially cloudy"
+Zagreb,05/19/2021,50.1,55.4,52.5,48.7,86.95,,8.8,13.6,150.04,,1.1,12.5,0.4,9.2,93.1,1012.7,"Mist, Rain, Light Drizzle/Rain, Rain Showers, Fog, Heavy Rain, Light Rain",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,"Rain, Overcast"
+Zagreb,05/20/2021,47.0,66.3,56.8,44.4,66.66,,8.9,20.0,236.14,44.4,0.28,18.18,0.0,22.2,64.2,1016.8,"Hail Showers, Precipitation In Vicinity, Rain, Fog, Rain Showers, Light Rain, Sky Coverage Increasing",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,"Rain, Partially cloudy"
+Zagreb,05/21/2021,42.2,73.4,59.7,41.7,56.1,,9.2,28.2,215.17,41.0,0.0,4.35,0.0,22.2,52.3,1017.3,Fog,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Partially cloudy
+Zagreb,05/22/2021,54.7,72.4,63.1,43.1,48.79,,9.1,27.5,225.92,,0.0,0.0,,26.3,83.2,1012.8,"Light Drizzle, Light Rain",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Overcast
+Zagreb,05/23/2021,53.2,75.2,59.7,50.2,72.74,,11.4,27.8,213.46,,0.17,8.33,0.0,20.0,81.1,1015.9,"Drizzle, Precipitation In Vicinity, Rain, Rain Showers, Light Rain, Sky Coverage Increasing",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,"Rain, Overcast"
+Zagreb,05/24/2021,44.5,59.0,53.8,48.9,84.12,,6.7,12.1,127.57,46.9,0.38,17.39,0.0,12.2,83.9,1020.3,"Mist, Light Drizzle, Rain, Fog, Rain Showers, Light Rain, Sky Coverage Decreasing, Sky Coverage Increasing",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,"Rain, Overcast"
+Zagreb,05/25/2021,50.8,65.4,56.5,49.4,77.89,,13.2,21.8,133.78,,0.05,8.7,0.0,11.4,85.6,1017.7,"Drizzle, Mist, Light Drizzle, Rain, Light Drizzle/Rain, Rain Showers, Light Rain, Sky Coverage Increasing",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,"Rain, Overcast"
+Zagreb,05/26/2021,44.6,69.1,57.5,44.9,66.02,,6.7,12.6,181.04,42.9,0.03,4.17,0.0,24.3,24.9,1020.1,"Mist, Fog, Sky Coverage Decreasing",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Rain
+Zagreb,05/27/2021,47.0,73.5,60.5,48.5,67.7,,15.4,41.9,165.79,48.9,0.32,4.17,,21.8,54.4,1015.4,"Mist, Light Drizzle, Thunderstorm, Rain, Thunderstorm Without Precipitation, Fog, Rain Showers, Heavy Rain, Light Rain, Smoke Or Haze",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,"Rain, Partially cloudy"
+Zagreb,05/28/2021,48.1,68.1,59.0,49.1,72.57,,4.6,13.0,196.21,,0.7,8.33,0.4,21.7,59.2,1019.8,"Mist, Rain, Rain Showers, Fog, Sky Coverage Increasing",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,"Rain, Partially cloudy"
+Zagreb,05/29/2021,50.6,67.0,57.9,49.5,74.87,,8.9,15.8,192.21,,0.03,4.17,,22.7,83.2,1020.0,"Mist, Rain, Rain Showers, Heavy Rain, Light Rain",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,"Rain, Overcast"
+Zagreb,05/30/2021,45.9,64.5,56.2,46.0,70.69,,6.7,16.4,193.17,47.4,0.07,12.5,0.0,17.2,44.6,1021.3,"Drizzle, Heavy Drizzle/Rain, Thunderstorm, Light Drizzle/Rain, Fog, Mist, Precipitation In Vicinity, Rain, Rain Showers, Light Rain, Sky Coverage Decreasing, Sky Coverage Increasing",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,"Rain, Partially cloudy"
+Zagreb,05/31/2021,42.1,67.3,58.4,43.4,59.67,,8.8,14.0,203.04,,0.02,8.33,0.0,22.3,56.5,1020.0,"Mist, Fog",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,"Rain, Partially cloudy"
+Zagreb,06/01/2021,48.4,71.6,62.0,41.3,50.01,,6.7,6.9,167.08,,0.0,0.0,0.0,15.3,4.2,1018.5,,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/02/2021,46.8,77.1,63.6,45.7,54.81,,8.8,,130.29,,0.0,0.0,,16.5,2.7,1020.0,,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/03/2021,53.4,79.6,68.3,49.5,52.81,,6.6,6.6,88.96,,0.0,0.0,0.0,13.6,3.2,1022.9,,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/04/2021,53.7,82.0,70.4,51.3,53.31,81.1,8.9,6.9,91.54,,0.0,0.0,0.0,15.0,6.1,1023.3,Mist,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/05/2021,58.9,85.1,73.0,55.7,55.98,84.7,8.9,7.0,156.83,,0.0,0.0,0.0,11.9,6.0,1019.0,Lightning Without Thunder,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/06/2021,60.9,74.4,68.8,60.1,74.37,,8.8,11.5,207.79,,1.06,8.33,0.0,11.6,14.3,1017.4,"Precipitation In Vicinity, Thunderstorm, Rain, Thunderstorm Without Precipitation, Fog, Light Rain, Sky Coverage Increasing",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Rain
+Zagreb,06/07/2021,62.5,80.3,70.6,60.2,72.18,80.2,4.5,10.4,158.75,,0.89,12.5,0.39,9.4,26.7,1017.7,"Rain, Rain Showers, Fog, Heavy Rain, Light Rain, Sky Coverage Increasing",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,"Rain, Partially cloudy"
+Zagreb,06/08/2021,58.9,83.8,72.1,55.3,59.55,81.9,6.7,7.0,194.17,,0.0,0.0,0.0,13.3,6.0,1017.3,"Mist, Fog",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/09/2021,57.2,84.3,71.2,55.4,60.29,82.7,8.9,8.4,218.5,,0.0,4.17,0.0,13.7,3.7,1017.0,"Mist, Thunderstorm, Rain, Thunderstorm Without Precipitation",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/10/2021,57.3,79.3,71.9,53.0,54.1,,11.0,9.7,237.38,,0.14,4.17,0.0,16.8,6.1,1017.5,Mist,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Rain
+Zagreb,06/11/2021,58.7,79.7,67.7,56.4,69.07,,19.7,26.4,236.29,,0.22,8.33,0.0,13.7,14.4,1017.1,"Mist, Rain, Thunderstorm, Thunderstorm Without Precipitation, Heavy Rain, Light Rain, Sky Coverage Decreasing, Sky Coverage Increasing, Sky Unchanged",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Rain
+Zagreb,06/12/2021,57.0,81.7,70.5,57.0,65.14,81.6,13.1,6.5,245.83,,0.31,4.17,0.0,15.9,9.7,1017.4,"Mist, Fog",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Rain
+Zagreb,06/13/2021,65.4,77.1,70.4,55.2,59.71,,9.5,8.5,145.75,,0.01,4.17,,14.7,9.4,1019.3,Rain,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Rain
+Zagreb,06/14/2021,53.3,75.7,65.1,42.5,45.38,,10.9,14.5,126.88,,0.0,0.0,0.0,18.1,2.2,1022.2,,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/15/2021,49.9,81.1,67.6,48.1,53.13,79.9,6.6,5.7,211.5,47.8,0.0,0.0,0.0,15.4,5.5,1019.4,Sky Unchanged,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/16/2021,55.6,86.0,73.1,54.7,55.45,85.3,5.2,5.7,171.5,,0.0,0.0,0.0,12.2,6.7,1016.9,Sky Unchanged,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/17/2021,57.3,87.9,75.3,55.3,53.37,86.5,8.7,19.7,149.79,,0.0,0.0,0.0,14.7,0.6,1017.3,Mist,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/18/2021,60.9,89.7,77.5,58.9,55.44,88.9,6.7,7.7,168.04,,0.0,0.0,,13.8,1.8,1016.9,,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/19/2021,64.3,91.3,79.3,62.5,58.85,92.8,6.7,9.3,180.54,,0.0,0.0,,12.7,1.3,1014.8,Mist,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/20/2021,66.2,92.3,80.8,64.8,60.38,93.8,8.8,6.7,171.79,,0.0,0.0,,10.2,1.6,1011.7,Mist,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/21/2021,68.2,94.1,82.1,63.4,56.88,94.5,13.2,17.4,221.96,,0.0,0.0,,9.3,0.6,1008.0,"Mist, Fog",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/22/2021,69.8,94.3,82.5,59.6,47.47,92.8,13.2,18.9,242.21,,0.0,0.0,,8.4,0.1,1009.6,Smoke Or Haze,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/23/2021,65.8,95.2,82.6,59.3,47.6,95.2,6.7,12.8,189.38,,0.0,0.0,,11.7,1.3,1014.1,Smoke Or Haze,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/24/2021,69.7,95.9,84.6,63.1,51.56,96.9,13.2,8.5,228.83,,0.0,0.0,,10.2,0.3,1014.0,,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/25/2021,72.6,93.1,81.9,55.5,44.27,88.9,11.1,12.6,212.25,,0.0,0.0,,14.8,3.3,1013.4,Sky Unchanged,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/26/2021,62.5,86.1,76.3,56.2,51.53,85.0,6.7,10.3,99.46,,0.0,0.0,,15.9,3.5,1016.5,,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/27/2021,60.8,89.5,78.0,57.6,51.97,88.3,6.6,10.5,124.46,,0.0,0.0,,15.2,2.6,1016.1,,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/28/2021,62.7,94.0,80.6,59.3,51.71,92.9,6.6,17.9,139.25,,0.0,0.0,,16.4,4.4,1015.1,,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/29/2021,64.2,96.6,80.3,60.1,55.07,96.9,10.8,,183.46,,0.0,0.0,,6.2,,1010.7,,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,06/30/2021,67.8,91.1,79.3,55.6,48.31,88.1,15.7,28.9,216.57,,0.0,0.0,,6.2,43.8,1008.9,,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Partially cloudy
+Zagreb,07/01/2021,58.7,78.5,67.2,56.4,70.19,,15.9,31.1,115.29,,0.0,0.0,,6.2,63.5,1013.3,,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Partially cloudy
+Zagreb,07/02/2021,53.7,80.2,66.9,55.0,69.19,79.9,8.7,,150.94,,0.0,0.0,,6.0,60.0,1015.5,,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Partially cloudy
+Zagreb,07/03/2021,53.7,84.1,70.5,53.9,59.68,82.5,6.0,,131.72,,0.0,0.0,,6.2,67.6,1015.2,,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Partially cloudy
+Zagreb,07/04/2021,62.6,81.8,72.3,58.4,63.01,81.9,11.4,,186.94,,0.0,0.0,,6.1,66.3,1011.1,,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Partially cloudy
+Zagreb,07/05/2021,65.9,77.9,71.0,61.8,74.44,,6.7,10.5,216.29,,0.53,12.5,0.39,9.8,10.8,1011.6,"Drizzle, Rain, Rain Showers, Fog, Light Rain, Sky Coverage Decreasing, Sky Unchanged",45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Rain
+Zagreb,07/06/2021,58.7,89.6,74.8,62.2,68.27,91.7,5.8,,138.26,,0.0,0.0,,6.2,,1013.6,,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear
+Zagreb,07/07/2021,62.7,96.5,80.5,62.9,60.22,97.1,6.6,,165.85,,0.0,0.0,,6.2,,1013.5,,45.8072,15.9676,"Zagreb, Hrvatska","Zagreb, Hrvatska",,Clear

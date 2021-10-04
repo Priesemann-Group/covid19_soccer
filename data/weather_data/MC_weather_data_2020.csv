@@ -1,0 +1,79 @@
+Address,Date time,Minimum Temperature,Maximum Temperature,Temperature,Dew Point,Relative Humidity,Heat Index,Wind Speed,Wind Gust,Wind Direction,Wind Chill,Precipitation,Precipitation Cover,Snow Depth,Visibility,Cloud Cover,Sea Level Pressure,Weather Type,Latitude,Longitude,Resolved Address,Name,Info,Conditions
+Monaco,05/16/2020,54.4,67.8,63.5,58.3,82.96,,14.3,20.3,106.04,,0.26,25.0,,9.5,68.3,1016.2,"Rain, Light Rain, Sky Coverage Increasing",43.7329,7.41754,Monaco,Monaco,,"Rain, Partially cloudy"
+Monaco,05/17/2020,52.9,66.0,61.1,58.6,89.02,,9.7,14.6,259.75,,0.56,33.33,,14.8,68.9,1015.7,"Rain, Thunderstorm Without Precipitation, Light Rain, Sky Coverage Decreasing",43.7329,7.41754,Monaco,Monaco,,"Rain, Partially cloudy"
+Monaco,05/18/2020,58.6,74.9,67.2,57.0,70.59,,13.4,19.8,232.21,,0.0,0.0,,17.0,17.4,1016.8,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,05/19/2020,62.5,78.8,68.5,57.9,69.69,,10.9,17.5,244.21,,0.05,12.5,,16.3,61.3,1012.9,"Rain, Light Rain, Sky Unchanged",43.7329,7.41754,Monaco,Monaco,,"Rain, Partially cloudy"
+Monaco,05/20/2020,63.8,75.7,69.6,57.4,65.84,,10.3,18.1,222.17,,0.0,0.0,,16.8,39.2,1012.8,"Light Rain, Sky Coverage Decreasing",43.7329,7.41754,Monaco,Monaco,,Partially cloudy
+Monaco,05/21/2020,63.3,75.3,70.4,55.1,59.14,,8.8,14.9,209.21,,0.0,0.0,,17.9,6.5,1017.6,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,05/22/2020,63.7,72.3,68.9,60.2,74.06,,9.5,12.6,169.58,,0.0,0.0,,15.8,5.5,1023.2,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,05/23/2020,62.3,73.1,68.7,62.4,80.37,,17.4,25.0,188.63,,0.0,0.0,,11.2,20.5,1023.2,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,05/24/2020,63.9,75.0,69.6,61.1,75.01,,10.3,17.7,179.71,,0.0,0.0,,11.4,19.3,1022.8,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,05/25/2020,65.4,75.3,70.9,55.2,58.23,,9.6,13.9,229.0,,0.0,0.0,,18.7,12.2,1024.6,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,05/26/2020,64.8,76.5,71.0,54.8,56.7,,7.6,13.9,176.63,,0.0,0.0,,18.5,15.1,1024.2,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,05/27/2020,64.1,73.4,70.0,53.2,55.98,,17.0,24.7,116.17,,0.0,0.0,,18.6,67.6,1027.9,,43.7329,7.41754,Monaco,Monaco,,Partially cloudy
+Monaco,05/28/2020,61.0,71.2,66.4,54.2,65.2,,8.5,11.9,182.25,,0.1,12.5,,16.5,17.9,1024.3,Light Rain,43.7329,7.41754,Monaco,Monaco,,Rain
+Monaco,05/29/2020,60.3,67.4,63.9,57.3,79.35,,22.4,31.8,221.38,,0.03,12.5,,13.8,60.1,1019.0,"Thunderstorm, Thunderstorm Without Precipitation, Light Rain, Sky Coverage Increasing",43.7329,7.41754,Monaco,Monaco,,"Rain, Partially cloudy"
+Monaco,05/30/2020,58.2,69.8,64.1,53.1,68.19,,11.3,24.2,268.88,,0.01,8.33,,16.9,39.0,1017.1,"Rain, Light Rain",43.7329,7.41754,Monaco,Monaco,,"Rain, Partially cloudy"
+Monaco,05/31/2020,60.0,70.4,66.0,56.2,70.79,,11.4,15.2,212.88,,0.0,0.0,,17.3,24.2,1015.6,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,06/01/2020,60.2,72.3,67.4,57.5,70.97,,7.5,10.3,219.0,,0.0,0.0,,16.0,12.4,1017.0,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,06/02/2020,65.4,73.6,69.4,58.8,69.1,,12.6,17.0,228.29,,0.0,0.0,,15.4,45.7,1014.6,,43.7329,7.41754,Monaco,Monaco,,Partially cloudy
+Monaco,06/03/2020,62.1,72.4,68.0,60.1,76.22,,19.6,25.7,235.75,,0.0,0.0,,13.9,21.6,1009.3,"Lightning Without Thunder, Light Rain",43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,06/04/2020,50.3,68.0,59.8,60.0,91.34,,10.6,15.2,250.61,,3.54,25.0,,9.5,64.8,1001.1,"Lightning Without Thunder, Mist, Rain, Heavy Rain, Light Rain",43.7329,7.41754,Monaco,Monaco,,"Rain, Partially cloudy"
+Monaco,06/05/2020,58.6,72.5,66.6,57.5,73.05,,15.1,19.4,209.17,,0.0,0.0,,14.9,14.9,998.7,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,06/06/2020,59.7,72.0,67.3,57.9,72.15,,14.1,21.9,196.92,,0.0,0.0,,13.4,1.3,1006.4,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,06/07/2020,51.7,69.5,63.4,61.2,88.58,,10.8,24.2,215.42,,0.72,20.83,,12.1,51.2,1006.0,"Lightning Without Thunder, Mist, Thunderstorm, Rain, Light Rain, Sky Coverage Increasing",43.7329,7.41754,Monaco,Monaco,,"Rain, Partially cloudy"
+Monaco,06/08/2020,60.7,72.0,66.8,59.6,78.14,,13.2,17.7,198.83,,0.0,0.0,0.0,16.1,40.5,1006.2,Lightning Without Thunder,43.7329,7.41754,Monaco,Monaco,,Partially cloudy
+Monaco,06/09/2020,53.8,70.3,64.4,55.2,72.5,,14.1,20.6,215.71,,0.01,4.17,,16.0,48.5,1008.5,"Lightning Without Thunder, Rain, Thunderstorm, Thunderstorm Without Precipitation, Light Rain, Sky Coverage Decreasing",43.7329,7.41754,Monaco,Monaco,,"Rain, Partially cloudy"
+Monaco,06/10/2020,58.5,69.5,64.1,55.0,72.52,,11.5,19.7,252.33,,0.09,8.33,,14.8,34.8,1010.1,"Lightning Without Thunder, Thunderstorm, Rain, Thunderstorm Without Precipitation, Light Rain, Sky Coverage Increasing",43.7329,7.41754,Monaco,Monaco,,"Rain, Partially cloudy"
+Monaco,06/11/2020,56.4,70.2,64.1,55.5,74.1,,11.9,16.9,245.0,,0.0,0.0,,14.2,26.7,1009.6,,43.7329,7.41754,Monaco,Monaco,,Partially cloudy
+Monaco,06/12/2020,62.8,72.2,68.2,58.8,71.92,,23.9,33.4,113.58,,0.0,0.0,,12.8,78.2,1011.3,Mist,43.7329,7.41754,Monaco,Monaco,,Overcast
+Monaco,06/13/2020,64.1,70.7,68.1,60.8,78.18,,17.3,29.7,153.83,,1.04,37.5,,11.3,69.6,1011.3,"Lightning Without Thunder, Mist, Rain, Thunderstorm, Rain Showers, Heavy Rain, Light Rain, Sky Coverage Increasing",43.7329,7.41754,Monaco,Monaco,,"Rain, Partially cloudy"
+Monaco,06/14/2020,59.6,71.3,66.7,57.6,72.85,,10.1,16.8,241.58,,0.0,0.0,,16.0,3.8,1011.6,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,06/15/2020,61.9,73.0,68.7,60.5,75.14,,8.8,11.9,184.21,,0.0,0.0,,16.3,14.7,1013.0,Light Rain,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,06/16/2020,63.6,74.0,68.9,61.3,77.1,,10.1,14.1,267.71,,0.0,0.0,,13.6,30.3,1012.6,"Thunderstorm Without Precipitation, Light Rain",43.7329,7.41754,Monaco,Monaco,,Partially cloudy
+Monaco,06/17/2020,63.9,76.0,70.8,60.4,70.03,,20.0,28.9,194.71,,0.0,0.0,,14.0,29.1,1010.3,,43.7329,7.41754,Monaco,Monaco,,Partially cloudy
+Monaco,06/18/2020,61.9,78.0,69.8,57.3,65.41,,21.0,31.0,234.17,,0.0,0.0,,14.9,18.9,1012.0,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,06/19/2020,62.3,74.0,69.6,58.7,68.57,,17.4,23.1,192.75,,0.0,0.0,,13.9,2.4,1014.4,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,06/20/2020,62.3,74.2,69.6,60.6,73.46,,10.2,15.5,238.25,,0.0,0.0,,14.1,15.0,1016.6,Mist,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,06/21/2020,64.6,76.1,71.5,60.1,67.34,,7.5,14.1,187.17,,0.0,0.0,,16.2,4.5,1015.4,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,06/22/2020,70.4,80.5,75.8,60.3,59.05,82.4,11.4,17.3,257.92,,0.0,0.0,,14.5,3.8,1016.8,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,06/23/2020,71.4,79.4,76.0,60.8,60.08,,11.2,14.9,235.92,,0.0,0.0,,15.5,1.0,1017.9,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,06/24/2020,69.9,78.9,74.9,63.6,68.45,,7.3,14.7,155.33,,0.0,0.0,,15.3,0.6,1018.1,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,06/25/2020,68.8,77.6,74.0,64.0,71.04,,11.8,15.9,194.58,,0.03,4.17,,19.7,0.9,1017.3,Mist,43.7329,7.41754,Monaco,Monaco,,Rain
+Monaco,06/26/2020,67.5,78.5,73.8,65.4,75.23,,10.6,15.5,180.33,,0.0,0.0,,12.8,5.2,1017.0,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,06/27/2020,68.5,79.2,74.6,63.5,68.96,,10.9,15.0,178.33,,0.0,0.0,,15.8,2.9,1016.4,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,06/28/2020,69.0,78.7,74.8,64.9,71.58,,8.1,11.2,194.67,,0.0,0.0,,12.8,0.2,1016.1,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,06/29/2020,70.4,95.5,79.0,65.6,66.67,94.6,22.5,38.4,197.79,,0.0,0.0,,10.0,5.2,1011.3,Mist,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,06/30/2020,72.5,79.3,76.2,69.2,79.08,,9.4,16.3,152.29,,0.0,0.0,,9.3,46.4,1012.1,,43.7329,7.41754,Monaco,Monaco,,Partially cloudy
+Monaco,07/01/2020,72.8,78.3,75.4,68.6,79.78,,8.9,12.5,125.83,,0.0,0.0,,12.6,79.5,1012.7,,43.7329,7.41754,Monaco,Monaco,,Overcast
+Monaco,07/02/2020,72.8,79.0,75.9,69.2,80.03,,10.9,15.3,192.83,,0.0,0.0,,13.5,53.6,1011.6,,43.7329,7.41754,Monaco,Monaco,,Partially cloudy
+Monaco,07/03/2020,63.3,80.2,74.2,64.9,72.85,83.2,17.6,21.1,202.5,,0.12,4.17,,13.6,25.3,1011.2,Thunderstorm,43.7329,7.41754,Monaco,Monaco,,"Rain, Partially cloudy"
+Monaco,07/04/2020,59.0,81.1,74.3,60.7,62.75,83.3,10.7,16.4,219.0,,0.01,8.33,,14.6,1.6,1015.9,"Lightning Without Thunder, Light Rain",43.7329,7.41754,Monaco,Monaco,,Rain
+Monaco,07/05/2020,71.5,80.2,76.6,63.4,64.09,82.1,10.3,14.6,158.83,,0.0,0.0,,17.2,0.0,1016.0,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,07/06/2020,69.3,80.8,76.2,65.9,70.71,83.6,8.7,11.9,158.54,,0.0,0.0,,17.2,4.2,1010.4,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,07/07/2020,70.9,83.3,77.8,65.5,67.01,84.2,13.9,19.5,210.46,,0.0,0.0,,13.7,17.5,1010.5,Mist,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,07/08/2020,70.8,80.6,76.2,63.3,64.31,82.7,9.4,13.2,226.21,,0.0,0.0,,13.9,18.1,1016.0,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,07/09/2020,70.6,80.7,76.5,63.7,64.91,82.4,8.1,12.8,213.25,,0.0,0.0,,16.5,0.0,1016.8,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,07/10/2020,70.1,80.1,75.7,65.6,70.79,83.1,7.8,13.1,223.58,,0.0,0.0,,16.0,21.4,1015.4,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,07/11/2020,71.0,80.5,76.7,68.4,75.69,83.8,17.9,22.8,138.71,,0.0,0.0,,16.3,38.0,1013.9,"Thunderstorm, Thunderstorm Without Precipitation, Sky Coverage Decreasing",43.7329,7.41754,Monaco,Monaco,,Partially cloudy
+Monaco,07/12/2020,73.3,85.1,79.3,67.1,67.43,86.2,14.0,17.7,187.79,,0.0,0.0,,13.3,43.0,1016.8,,43.7329,7.41754,Monaco,Monaco,,Partially cloudy
+Monaco,07/13/2020,72.7,80.8,77.2,62.6,61.07,82.4,14.5,19.1,247.46,,0.01,4.17,,16.5,48.1,1017.6,"Thunderstorm, Rain, Rain Showers, Light Rain, Sky Coverage Increasing, Sky Unchanged",43.7329,7.41754,Monaco,Monaco,,"Rain, Partially cloudy"
+Monaco,07/14/2020,70.1,80.3,74.5,61.4,64.8,81.0,14.9,24.1,247.83,,0.0,0.0,,18.1,52.4,1014.7,"Rain Showers, Sky Coverage Decreasing",43.7329,7.41754,Monaco,Monaco,,Partially cloudy
+Monaco,07/15/2020,67.0,78.8,73.2,60.7,65.18,,11.3,16.0,231.0,,0.02,4.17,,16.7,36.4,1013.1,"Rain, Light Rain, Sky Coverage Decreasing",43.7329,7.41754,Monaco,Monaco,,"Rain, Partially cloudy"
+Monaco,07/16/2020,67.3,79.3,74.4,63.4,68.86,,8.2,13.0,257.13,,0.0,0.0,,17.0,17.5,1014.0,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,07/17/2020,69.1,78.9,74.8,65.4,72.82,,11.2,15.5,195.67,,0.0,0.0,,18.6,31.9,1012.4,"Rain, Light Rain, Sky Coverage Increasing",43.7329,7.41754,Monaco,Monaco,,Partially cloudy
+Monaco,07/18/2020,71.2,79.2,75.0,65.7,73.02,,8.3,12.8,209.38,,0.04,8.33,,15.8,54.7,1013.9,"Rain, Rain Showers, Light Rain, Sky Coverage Increasing",43.7329,7.41754,Monaco,Monaco,,"Rain, Partially cloudy"
+Monaco,07/19/2020,71.5,80.6,75.9,67.2,74.7,83.6,9.9,14.4,201.83,,0.0,0.0,,15.2,46.9,1015.3,Sky Coverage Increasing,43.7329,7.41754,Monaco,Monaco,,Partially cloudy
+Monaco,07/20/2020,71.1,80.6,76.0,68.2,77.16,83.4,10.3,14.0,205.42,,0.0,0.0,,16.1,32.9,1017.3,,43.7329,7.41754,Monaco,Monaco,,Partially cloudy
+Monaco,07/21/2020,70.9,80.8,76.5,68.4,76.39,84.4,8.1,12.3,220.17,,0.0,0.0,,13.6,29.6,1019.5,,43.7329,7.41754,Monaco,Monaco,,Partially cloudy
+Monaco,07/22/2020,70.9,82.0,77.1,68.8,76.0,85.7,10.4,13.6,192.21,,0.0,0.0,,13.8,26.5,1017.8,"Rain, Thunderstorm Without Precipitation",43.7329,7.41754,Monaco,Monaco,,Partially cloudy
+Monaco,07/23/2020,72.3,82.2,77.5,69.8,77.65,87.0,9.5,14.7,197.92,,0.0,0.0,,14.4,30.3,1013.5,Sky Coverage Increasing,43.7329,7.41754,Monaco,Monaco,,Partially cloudy
+Monaco,07/24/2020,73.0,84.2,77.8,66.9,69.81,86.9,24.7,41.9,205.38,,0.94,4.17,,12.5,39.9,1010.1,"Thunderstorm, Thunderstorm Without Precipitation, Sky Coverage Decreasing",43.7329,7.41754,Monaco,Monaco,,"Rain, Partially cloudy"
+Monaco,07/25/2020,70.0,81.1,76.3,63.8,65.7,83.3,8.2,14.9,222.25,,0.0,0.0,,18.4,22.1,1013.0,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,07/26/2020,70.3,80.8,76.4,66.0,70.44,84.6,12.9,16.8,206.88,,0.0,0.0,,16.1,32.4,1014.1,,43.7329,7.41754,Monaco,Monaco,,Partially cloudy
+Monaco,07/27/2020,72.1,82.1,78.1,68.7,73.41,85.8,13.9,17.7,200.29,,0.0,0.0,,14.8,19.8,1017.0,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,07/28/2020,72.8,82.4,78.2,69.3,74.42,87.6,9.2,13.3,209.13,,0.0,0.0,,13.9,24.7,1015.9,Precipitation In Vicinity,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,07/29/2020,72.9,83.0,78.8,71.1,77.68,88.5,8.1,11.8,153.54,,0.0,0.0,,13.5,17.1,1015.5,,43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,07/30/2020,73.9,84.0,79.3,72.0,78.69,90.2,7.9,11.0,226.58,,0.0,0.0,,13.1,25.4,1017.1,,43.7329,7.41754,Monaco,Monaco,,Partially cloudy
+Monaco,07/31/2020,75.9,86.8,80.6,71.7,75.06,92.0,8.4,12.5,213.75,,0.0,0.0,,12.2,21.6,1016.0,"Rain, Sky Coverage Decreasing, Sky Coverage Increasing",43.7329,7.41754,Monaco,Monaco,,Clear
+Monaco,08/01/2020,73.7,84.5,80.2,71.4,74.88,92.5,7.5,12.4,220.04,,0.0,0.0,,12.8,7.3,1013.1,,43.7329,7.41754,Monaco,Monaco,,Clear

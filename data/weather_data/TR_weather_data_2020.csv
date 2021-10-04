@@ -1,0 +1,79 @@
+Address,Date time,Minimum Temperature,Maximum Temperature,Temperature,Dew Point,Relative Humidity,Heat Index,Wind Speed,Wind Gust,Wind Direction,Wind Chill,Precipitation,Precipitation Cover,Snow Depth,Visibility,Cloud Cover,Sea Level Pressure,Weather Type,Latitude,Longitude,Resolved Address,Name,Info,Conditions
+Ankara,05/16/2020,56.6,90.8,75.1,45.7,40.7,87.2,19.9,17.2,230.29,,0.0,0.0,0.0,7.8,5.2,1014.4,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,05/17/2020,54.0,86.6,72.5,41.4,36.72,83.4,5.6,8.1,168.06,,0.0,0.0,0.0,7.8,2.6,1018.3,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,05/18/2020,57.8,90.7,74.9,46.3,40.29,87.0,16.4,17.2,152.25,,0.0,0.0,0.0,7.8,14.3,1015.9,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,05/19/2020,56.6,88.3,74.2,45.8,40.34,84.6,11.0,15.0,185.91,,0.0,0.0,0.0,7.8,4.3,1015.2,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,05/20/2020,58.5,91.4,75.9,44.6,38.12,87.2,13.6,13.9,159.5,,0.0,0.0,0.0,7.8,29.2,1009.8,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Partially cloudy
+Ankara,05/21/2020,62.7,89.4,77.3,42.7,31.42,85.6,26.6,24.2,197.17,,0.01,4.17,0.0,7.8,44.0,1003.2,"Thunderstorm, Thunderstorm Without Precipitation, Rain Showers, Sky Coverage Decreasing, Sky Coverage Increasing",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,05/22/2020,44.5,73.6,58.5,45.5,63.57,,20.8,31.1,266.75,39.0,0.13,8.33,0.0,7.8,48.4,1005.9,"Thunderstorm, Rain Showers, Sky Coverage Increasing, Sky Unchanged",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,05/23/2020,36.1,57.2,48.1,30.5,52.72,,19.3,15.0,229.74,32.5,0.01,4.17,0.0,7.8,43.0,1019.0,Rain Showers,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,05/24/2020,40.6,64.4,53.3,32.3,47.87,,12.8,21.9,88.38,37.4,0.0,0.0,0.0,7.8,26.8,1019.8,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Partially cloudy
+Ankara,05/25/2020,40.8,70.4,57.0,34.2,45.28,,9.9,17.2,169.45,40.1,0.0,0.0,0.0,7.9,28.5,1017.1,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Partially cloudy
+Ankara,05/26/2020,47.8,71.5,59.0,43.2,58.41,,15.1,25.3,230.64,,0.05,8.33,0.0,7.7,78.8,1014.2,"Thunderstorm, Rain Showers, Sky Coverage Increasing",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Overcast"
+Ankara,05/27/2020,48.3,77.7,62.3,44.4,58.33,,15.9,21.9,163.73,47.9,0.22,8.33,0.0,7.8,53.8,1011.3,"Sky Coverage Increasing, Sky Unchanged",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,05/28/2020,48.1,69.6,60.0,40.6,52.75,,13.3,16.1,248.21,,0.0,0.0,0.0,7.8,29.4,1010.0,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Partially cloudy
+Ankara,05/29/2020,45.4,58.8,52.1,43.4,73.32,,11.0,20.8,237.83,41.3,1.28,12.5,1.18,7.3,77.6,1012.1,"Thunderstorm, Rain Showers, Sky Coverage Decreasing, Sky Coverage Increasing",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Overcast"
+Ankara,05/30/2020,43.7,67.9,56.6,42.1,63.06,,11.5,23.0,198.95,42.5,0.01,8.33,0.0,7.8,45.9,1015.4,"Thunderstorm, Rain Showers, Sky Coverage Decreasing",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,05/31/2020,47.3,69.7,59.3,43.1,58.06,,17.8,19.7,144.33,46.6,0.07,8.33,0.0,7.8,50.7,1014.0,"Thunderstorm, Rain Showers, Sky Coverage Decreasing",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,06/01/2020,54.8,68.1,60.4,47.5,64.27,,8.2,19.7,240.71,,0.29,8.33,,7.8,83.6,1008.8,"Rain Showers, Sky Coverage Decreasing",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Overcast"
+Ankara,06/02/2020,51.9,68.4,59.4,44.6,60.31,,13.1,17.2,236.18,,0.13,4.17,0.0,7.9,68.4,1004.9,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,06/03/2020,47.6,70.2,59.4,42.2,57.11,,10.4,15.0,257.17,46.4,0.01,4.17,0.0,7.9,45.1,1006.9,Rain Showers,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,06/04/2020,54.2,71.7,61.2,42.0,52.75,,17.7,17.2,249.32,,0.02,9.09,0.0,7.7,51.8,1010.1,"Rain Showers, Sky Coverage Decreasing, Sky Coverage Increasing",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,06/05/2020,45.8,80.7,65.6,37.7,41.48,78.9,5.3,10.3,131.77,48.4,0.0,0.0,0.0,9.8,14.8,1014.7,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,06/06/2020,55.8,86.5,73.1,34.7,29.93,83.1,8.1,10.3,69.67,,0.0,0.0,0.0,11.0,18.7,1011.6,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,06/07/2020,62.3,91.1,78.3,33.1,22.53,86.9,8.9,24.2,107.71,,0.0,0.0,0.0,11.0,18.8,1005.6,"Lightning Without Thunder, Thunderstorm Without Precipitation, Rain Showers",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,06/08/2020,58.4,90.9,77.2,36.9,27.3,86.6,14.1,33.3,128.04,,0.0,0.0,0.0,11.0,16.2,1004.2,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,06/09/2020,62.8,91.1,78.7,43.2,30.63,87.0,10.0,10.3,105.75,,0.01,4.17,0.0,11.0,25.0,1005.0,Thunderstorm Without Precipitation,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Rain
+Ankara,06/10/2020,64.5,90.7,75.5,45.2,37.01,86.8,12.2,25.3,139.13,,0.01,4.17,0.0,11.0,45.9,1004.5,"Thunderstorm, Thunderstorm Without Precipitation, Rain Showers, Sky Unchanged",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,06/11/2020,56.9,81.7,69.1,49.8,54.69,79.9,12.4,31.1,160.67,,0.85,8.33,0.0,10.7,60.5,1004.8,"Thunderstorm, Thunderstorm Without Precipitation, Rain Showers, Sky Coverage Decreasing, Sky Unchanged",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,06/12/2020,57.5,76.5,64.6,50.0,62.01,,10.8,23.0,167.42,,0.05,8.33,0.0,11.0,54.7,1005.5,"Thunderstorm, Thunderstorm Without Precipitation, Rain Showers, Light Rain, Sky Coverage Increasing, Sky Unchanged",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,06/13/2020,53.2,60.8,58.0,50.8,77.17,,7.1,11.4,223.67,,1.51,4.17,0.0,9.9,72.3,1006.3,"Thunderstorm, Thunderstorm Without Precipitation, Rain Showers, Sky Coverage Decreasing",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,06/14/2020,54.8,72.9,64.1,49.3,61.94,,8.2,15.0,239.38,,0.43,4.17,0.0,11.0,55.2,1007.0,"Thunderstorm, Thunderstorm Without Precipitation, Rain Showers, Sky Coverage Increasing, Sky Unchanged",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,06/15/2020,61.5,71.9,64.1,56.6,77.33,,4.1,15.0,146.33,,0.23,12.5,0.0,10.4,82.9,1008.8,"Thunderstorm, Thunderstorm Without Precipitation, Rain Showers, Sky Coverage Decreasing, Sky Coverage Increasing, Sky Unchanged",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Overcast"
+Ankara,06/16/2020,57.5,82.6,69.9,54.4,63.63,80.8,5.9,20.8,152.25,,0.04,8.33,0.0,11.0,40.9,1008.6,"Mist, Thunderstorm, Thunderstorm Without Precipitation, Fog, Rain Showers, Sky Coverage Decreasing, Sky Coverage Increasing",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,06/17/2020,59.5,82.5,69.3,54.5,61.93,81.0,9.6,25.3,74.79,,0.6,8.33,,9.2,45.9,1006.4,"Thunderstorm, Thunderstorm Without Precipitation, Rain Showers, Sky Coverage Increasing",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,06/18/2020,58.9,76.6,66.4,53.9,65.64,,11.2,21.9,210.71,,0.28,12.5,0.0,10.6,66.3,1005.9,"Lightning Without Thunder, Thunderstorm, Thunderstorm Without Precipitation, Rain Showers, Sky Coverage Decreasing, Sky Coverage Increasing, Sky Unchanged",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,06/19/2020,57.7,70.1,63.9,53.5,69.64,,11.9,20.8,230.83,,0.31,8.33,0.0,10.7,57.7,1007.2,"Thunderstorm, Thunderstorm Without Precipitation, Rain Showers, Sky Coverage Decreasing, Sky Coverage Increasing",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,06/20/2020,57.7,73.2,65.0,52.8,65.8,,7.8,21.9,226.08,,0.08,8.33,0.0,11.0,42.7,1008.4,"Thunderstorm, Rain Showers, Sky Coverage Decreasing, Sky Coverage Increasing",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,06/21/2020,53.4,79.5,68.0,47.5,53.2,,6.0,12.8,148.21,,0.0,0.0,,11.0,29.0,1006.0,"Thunderstorm, Rain Showers",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Partially cloudy
+Ankara,06/22/2020,57.7,82.7,69.7,53.6,61.0,81.0,8.1,15.0,166.79,,0.04,8.33,0.0,10.4,51.8,1005.4,"Thunderstorm, Thunderstorm Without Precipitation, Rain Showers",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,06/23/2020,58.8,83.5,70.7,53.8,59.31,81.3,10.4,21.9,127.71,,0.28,8.33,0.0,11.0,42.5,1006.6,"Lightning Without Thunder, Thunderstorm, Thunderstorm Without Precipitation, Rain Showers, Sky Coverage Decreasing, Sky Unchanged",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,06/24/2020,59.7,78.3,69.0,50.7,54.41,,8.9,16.1,252.42,,0.0,0.0,,11.0,33.2,1012.0,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Partially cloudy
+Ankara,06/25/2020,57.8,80.8,71.1,52.4,54.04,80.0,9.3,13.9,53.08,,0.0,0.0,0.0,11.0,26.2,1013.7,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Partially cloudy
+Ankara,06/26/2020,64.9,82.5,74.0,51.5,47.63,80.7,9.6,18.3,79.46,,0.0,0.0,0.0,11.0,34.4,1011.3,"Thunderstorm, Rain Showers, Sky Coverage Decreasing",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Partially cloudy
+Ankara,06/27/2020,58.0,83.5,72.5,49.4,47.33,81.3,8.3,15.0,74.83,,0.0,0.0,,11.0,10.6,1011.0,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,06/28/2020,62.4,86.9,76.4,50.9,44.59,83.6,8.3,16.1,82.75,,0.0,0.0,0.0,11.0,16.7,1008.6,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,06/29/2020,64.0,88.0,76.7,49.9,42.31,84.4,7.9,11.4,124.21,,0.0,0.0,0.0,11.0,23.8,1005.0,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,06/30/2020,62.5,86.2,76.0,42.4,33.11,82.8,9.5,16.1,135.08,,0.0,0.0,0.0,11.0,3.1,1004.7,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/01/2020,62.2,86.2,76.6,49.9,40.98,83.6,11.2,20.8,26.42,,0.0,0.0,0.0,11.0,15.7,1008.3,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/02/2020,63.5,87.7,78.0,47.4,37.34,84.2,10.7,19.7,43.38,,0.0,0.0,0.0,11.0,2.5,1007.1,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/03/2020,65.8,91.2,79.9,49.9,38.58,87.1,8.2,11.4,138.25,,0.0,0.0,0.0,11.0,16.1,1005.2,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/04/2020,65.3,94.5,81.2,44.6,33.09,89.7,10.3,15.0,123.75,,0.0,0.0,0.0,11.0,1.3,1005.6,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/05/2020,66.7,94.2,81.5,50.5,36.8,90.0,10.0,16.1,76.46,,0.0,0.0,0.0,11.0,6.7,1003.6,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/06/2020,67.8,92.8,82.2,47.4,34.13,88.4,10.3,16.1,38.46,,0.0,0.0,0.0,11.0,3.3,1000.5,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/07/2020,69.5,95.1,81.5,47.5,33.48,90.6,15.2,24.2,103.21,,0.02,4.17,0.0,11.0,26.7,998.6,"Thunderstorm, Thunderstorm Without Precipitation, Rain Showers, Sky Coverage Increasing",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,07/08/2020,68.0,87.7,77.9,50.6,40.08,84.4,15.6,25.3,156.29,,0.04,8.33,,10.9,38.7,1005.0,Thunderstorm,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,07/09/2020,63.6,85.3,75.0,51.1,45.69,83.2,11.8,21.9,23.0,,0.0,0.0,0.0,11.1,12.1,1010.3,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/10/2020,62.9,83.5,73.7,52.3,48.9,82.0,12.9,21.9,36.13,,0.0,0.0,0.0,11.1,11.7,1011.2,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/11/2020,60.0,88.0,75.4,44.1,35.57,84.5,10.7,18.3,35.79,,0.0,0.0,0.0,11.0,0.1,1009.7,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/12/2020,65.4,91.2,78.5,50.8,40.26,87.4,10.7,16.1,106.5,,0.01,4.17,0.0,11.0,20.1,1004.5,"Thunderstorm, Thunderstorm Without Precipitation, Rain Showers",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Rain
+Ankara,07/13/2020,66.7,86.9,76.2,49.0,41.04,83.5,11.2,19.7,91.58,,0.0,0.0,0.0,11.0,27.3,1004.5,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Partially cloudy
+Ankara,07/14/2020,62.6,85.8,75.5,49.5,42.07,83.1,8.5,13.9,65.04,,0.0,0.0,0.0,11.0,32.3,1006.8,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Partially cloudy
+Ankara,07/15/2020,65.6,91.4,78.2,51.5,42.86,87.6,10.1,16.1,190.46,,0.0,0.0,0.0,11.0,19.0,1006.7,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/16/2020,66.6,91.3,77.6,55.9,48.67,89.5,10.3,17.2,167.92,,0.17,4.17,0.0,10.7,29.0,1003.7,"Thunderstorm, Thunderstorm Without Precipitation, Rain Showers, Light Rain, Sky Coverage Decreasing, Sky Coverage Increasing",39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,"Rain, Partially cloudy"
+Ankara,07/17/2020,65.3,85.3,75.6,55.9,52.6,83.5,12.5,21.9,107.88,,0.0,0.0,0.0,11.0,35.1,1003.9,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Partially cloudy
+Ankara,07/18/2020,65.0,91.5,79.0,51.0,41.98,87.6,9.9,12.8,54.38,,0.0,0.0,0.0,11.0,9.4,1004.9,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/19/2020,69.3,96.9,84.7,47.1,31.39,92.2,8.9,13.9,45.29,,0.0,0.0,0.0,11.1,6.8,1004.0,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/20/2020,72.0,95.4,83.5,50.7,33.85,92.4,11.0,16.1,210.83,,0.0,0.0,0.0,11.1,8.0,1003.7,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/21/2020,64.1,86.1,75.3,47.6,39.66,83.2,11.1,16.1,147.58,,0.0,0.0,0.0,11.0,0.2,1009.7,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/22/2020,63.4,85.1,75.3,48.0,40.68,82.5,15.4,24.2,35.46,,0.0,0.0,0.0,11.0,3.3,1009.6,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/23/2020,62.0,84.8,75.1,44.4,34.7,82.0,14.9,30.0,39.13,,0.0,0.0,0.0,11.0,0.4,1007.6,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/24/2020,62.1,86.4,75.9,43.7,35.11,83.0,9.3,17.2,35.33,,0.0,0.0,0.0,11.0,0.1,1006.0,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/25/2020,64.8,89.0,78.3,44.2,32.29,85.2,10.0,15.0,51.38,,0.0,0.0,0.0,11.1,0.0,1004.7,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/26/2020,66.1,94.3,81.7,42.3,28.91,89.6,7.7,11.4,129.92,,0.0,0.0,0.0,11.1,7.4,1004.2,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/27/2020,70.0,93.6,81.7,50.1,36.58,89.6,8.1,20.8,239.26,,0.0,0.0,0.0,11.0,11.1,1005.2,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/28/2020,71.3,88.1,79.7,50.9,37.85,85.3,11.1,20.8,94.71,,0.0,0.0,0.0,11.0,39.3,1006.3,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Partially cloudy
+Ankara,07/29/2020,63.2,91.2,78.3,42.8,30.52,87.1,8.7,16.1,90.04,,0.0,0.0,0.0,11.0,0.0,1010.2,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/30/2020,64.4,91.9,79.8,44.8,31.64,87.7,9.2,13.9,82.78,,0.0,0.0,0.0,11.0,0.4,1010.3,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,07/31/2020,68.0,90.3,80.7,50.9,38.34,86.8,9.3,16.1,74.25,,0.0,0.0,0.0,11.1,6.3,1007.4,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear
+Ankara,08/01/2020,68.6,92.3,80.8,50.3,37.0,88.0,11.0,19.7,98.96,,0.0,0.0,0.0,11.0,16.1,1002.9,,39.9211,32.8539,"Ankara, Türkiye","Ankara, Türkiye",,Clear

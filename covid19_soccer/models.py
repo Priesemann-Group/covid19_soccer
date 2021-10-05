@@ -83,7 +83,9 @@ def create_model_gender(
 
     if beta:
         beta_prior = dl.beta_prior[0, :]
-        beta_weight = 1
+        beta_weight = (
+            dl.stadium_size[0] / dl.population.sum()
+        )  # Scaling by stadium size
         if (
             len(beta_prior[beta_prior > 0]) == 0
         ):  # No stadiums in home country -> don't use beta

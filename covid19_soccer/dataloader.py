@@ -514,15 +514,17 @@ class Dataloader_gender(Dataloader):
             file = self.data_folder + "case_data_gender/" + c + ".csv"
             # load csv
             df = pd.read_csv(file, parse_dates=["date"])
+
             # set multindex
             df = df.set_index(["date", "gender", "age_group"])
+
             # add to dataframe
             self._cases[str(c)] = df["cases"]
             self._deaths[str(c)] = df["deaths"]
 
         # sort index otherwise we cant slice
         self._cases = self._cases.sort_index(level="date")
-        self._deaths = self._cases.sort_index(level="date")
+        self._deaths = self._deaths.sort_index(level="date")
 
     @property
     def new_cases_obs(self):

@@ -1,4 +1,4 @@
-iso2,country,population,capital,population_female,population_male
+iso2,country,population,capital,population_female,population_male,gender_data
 AL,Albania,2874793,Tirana,,
 AD,Andorra,77383,Andorra la Vella,,
 AM,Armenia,2968534,Yerevan,,
@@ -14,9 +14,9 @@ CZ,Czechia,10723088,Prague,,
 DK,Denmark,5806675,Copenhagen,,
 EE,Estonia,1327169,Tallinn,,
 FI,Finland,5546833,Helsinki,,
-FR,France,65376055,Paris,33680000,31590000
+FR,France,65376055,Paris,33680000,31590000,True
 GE,Georgia,10830007,Tbilisi,,
-DE,Germany,83974064,Berlin,42672366,41065751
+DE,Germany,83974064,Berlin,42672366,41065751,True
 GR,Greece,10386806,Athens,,
 HU,Hungary,9642902,Budapest,,
 IS,Iceland,342812,Reykjavik,,
@@ -36,12 +36,12 @@ NL,Netherlands,17161789,Amsterdam,,
 MK,North Macedonia,2083292,Skopje,,
 NO,Norway,5451264,Oslo,,
 PL,Poland,37817143,Warsaw,,
-PT,Portugal,10175557,Lisbon,,
+PT,Portugal,10175557,Lisbon,5430030,4875534,True
 RO,Romania,19146259,Bucharest,,
 RU,Russia,145994256,Moscow,,
 SM,San Marino,33999,City of San Marino,,
-GB-SCT,Scotland,5463300,Edinburgh,2728000,2567400
-GB-ENG,England,56286961,London,26943308,26069149
+GB-SCT,Scotland,5463300,Edinburgh,2728000,2567400,True
+GB-ENG,England,56286961,London,26943308,26069149,True
 RS,Serbia,8703708,Belgrade,,
 SK,Slovakia,5461521,Bratislava,,
 SI,Slovenia,2079141,Ljubljana,,

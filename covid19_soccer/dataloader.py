@@ -25,6 +25,7 @@ class Dataloader:
         data_end=datetime(2021, 8, 15),
         sim_begin=datetime(2021, 5, 16),
         data_folder=f"{os.path.dirname(__file__)}/../data/",
+        offset_games=0,
     ):
         """
         Parameters
@@ -41,6 +42,7 @@ class Dataloader:
         self.data_begin = data_begin
         self.data_end = data_end
         self.sim_begin = sim_begin
+        self.offset_games = offset_games
 
         # Load country lookup
         self.lookup = pd.read_csv(os.path.join(self.data_folder, "countries.csv"))
@@ -84,6 +86,11 @@ class Dataloader:
         self.timetable["date"] = pd.to_datetime(
             self.timetable["date"], format="%Y-%m-%d"
         )
+        # Shift the date of the games if offset is greater 0
+        if offset_games > 0:
+            self.timetable["date"] = self.timetable["date"] + timedelta(
+                days=offset_games
+            )
 
         jhu = cov19_data.JHU(True)
         jhu.download_all_available_data(force_local=True)
@@ -241,7 +248,40 @@ class Dataloader:
             temp_g = []
             for c, country in enumerate(self.countries_iso2):
                 if game["team1"] == country or game["team2"] == country:
-                    temp_g.append(1)
+                    temp_g.append(1.0)
+                else:
+                    temp_g.append(0)
+            temp.append(temp_g)
+
+        return np.array(temp).T
+
+    @property
+    def weighted_alpha_prior(self):
+        """
+        The alpha prior matrix encodes the prior expectation of the effect of a game on the reproduction number.
+
+        shape : (country, game)
+        """
+
+        # Easy implementation of tensor:
+        #    - 0 if game is played by different team
+        #    - 1 if game is played by own team
+
+        temp = []
+        for g, game in self.timetable.iterrows():
+            temp_g = []
+            for c, country in enumerate(self.countries_iso2):
+                if game["team1"] == country or game["team2"] == country:
+                    if game["team1"] == "GB-ENG" and game["team2"] == "GB-SCT":
+                        temp_g.append(2)
+                    elif game["phase"] == "FI":
+                        temp_g.append(1.5)
+                    elif game["phase"] == "HF":
+                        temp_g.append(1.3)
+                    elif game["phase"] == "VF":
+                        temp_g.append(1.2)
+                    else:
+                        temp_g.append(1.0)
                 else:
                     temp_g.append(0)
             temp.append(temp_g)
@@ -424,6 +464,7 @@ class Dataloader_gender(Dataloader):
         data_end=datetime(2021, 8, 15),
         sim_begin=datetime(2021, 5, 16),
         data_folder=f"{os.path.dirname(__file__)}/../data/",
+        offset_games=0,
     ):
         """
         Parameters
@@ -440,6 +481,7 @@ class Dataloader_gender(Dataloader):
         self.data_begin = data_begin
         self.data_end = data_end
         self.sim_begin = sim_begin
+        self.offset_games = offset_games
 
         # Load country lookup
         self.lookup = pd.read_csv(os.path.join(self.data_folder, "countries.csv"))
@@ -480,6 +522,10 @@ class Dataloader_gender(Dataloader):
         self.timetable["date"] = pd.to_datetime(
             self.timetable["date"], format="%Y-%m-%d"
         )
+        if offset_games > 0:
+            self.timetable["date"] = self.timetable["date"] + timedelta(
+                days=offset_games
+            )
 
         # Load case data from folder "data/case_data_gender"
         self.__load_cases()
@@ -514,10 +560,8 @@ class Dataloader_gender(Dataloader):
             file = self.data_folder + "case_data_gender/" + c + ".csv"
             # load csv
             df = pd.read_csv(file, parse_dates=["date"])
-
             # set multindex
             df = df.set_index(["date", "gender", "age_group"])
-
             # add to dataframe
             self._cases[str(c)] = df["cases"]
             self._deaths[str(c)] = df["deaths"]
@@ -569,5 +613,5 @@ class Dataloader_gender(Dataloader):
 if __name__ == "__main__":
     countries = ["Scotland"]
 
-    dl = Dataloader_gender(countries)
+    dl = Dataloader_gender(countries, offset_games=4 * 7)
     da = Dataloader_gender()

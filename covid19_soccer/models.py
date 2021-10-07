@@ -3,9 +3,12 @@ import logging
 import pymc3 as pm
 import theano.tensor as tt
 import datetime
+import pandas as pd
+import numpy as np
 
-from .dataloader import Dataloader_gender
+from .dataloader import Dataloader_gender, Dataloader
 from . import effect_gender
+from . import effect
 from .utils import get_cps
 from .compartmental_models import kernelized_spread_soccer
 
@@ -16,13 +19,253 @@ from covid19_inference.model import (
     student_t_likelihood,
     delay_cases,
     Cov19Model,
+    uncorrelated_prior_I,
+    kernelized_spread,
+    SIR,
 )
 
 log = logging.getLogger(__name__)
 
 
+def create_model(
+    use_alpha=True,
+    use_beta=True,
+    use_gamma=False,
+    last_year=False,
+    hierarchical_spreading_rate=False,
+    dataloader=None,
+    spread_method="SIR",
+):
+    """
+    Constructs a model using the defined model features. The default
+    model is the main one described in our publication without any
+    additionally modeled effect such as seasonality or temperature
+    dependency.
+
+    Parameters
+    ----------
+    alpha : bool, optional
+        ToDo
+        default: True
+    beta : bool, optional
+        ToDo
+        default: True
+    gamma : bool, optional
+        Add the proposed effect of temperature to our
+        model.
+        default: False
+    spread_method: str, optional
+        Can be SIR or kernelized
+
+    Returns
+    -------
+    pymc3.Model
+    """
+
+    """ # Building the model
+    """
+    if dataloader is None:
+        dl = Dataloader(countries=["Germany", "FR", "Italy"])
+    else:
+        dl = dataloader
+    # print(dl.countries)
+    # Define changepoints (we define all vars to surpress the automatic prints)
+
+    if spread_method == "SIR":
+        pr_sigma_lambda_cp = 0.2
+        pr_median_lambda = 0.125
+    elif spread_method == "kernelized":
+        pr_sigma_lambda_cp = 0.3
+        pr_median_lambda = 1.0
+    else:
+        raise RuntimeError("spread_method has to be SIR or kernelized")
+
+    change_points = []
+    for day in pd.date_range(
+        start=dl.data_begin - datetime.timedelta(days=10), end=dl.data_end
+    ):
+        if day.weekday() == 6:
+            # Add cp
+            change_points.append(
+                dict(  # one possible change point every sunday
+                    pr_mean_date_transient=day,
+                    pr_sigma_date_transient=1,
+                    pr_sigma_lambda=pr_sigma_lambda_cp,  # wiggle compared to previous point
+                    relative_to_previous=True,
+                    pr_factor_to_previous=1.0,
+                    pr_sigma_transient_len=1,
+                    pr_median_transient_len=4,
+                    pr_median_lambda=pr_median_lambda,
+                )
+            )
+    pr_delay = 10
+
+    if last_year:
+        new_cases_obs = dl.new_cases_obs_last_year
+        temperature = dl.temperature_last_year
+    else:
+        new_cases_obs = dl.new_cases_obs
+        temperature = dl.temperature
+
+    params = {
+        "new_cases_obs": new_cases_obs,
+        "data_begin": dl.data_begin,
+        "fcast_len": 0,
+        "diff_data_sim": int((dl.data_begin - dl.sim_begin).days),
+        "N_population": dl.population,
+    }
+
+    with Cov19Model(**params) as this_model:
+        """
+        First part of the basic spreading dynamics modeled alike to our publication:
+            "Inferring change points in the spread of COVID-19
+            reveals the effectiveness of interventions"
+        see https://science.sciencemag.org/content/369/6500/eabb9789.full
+        """
+        # Get base reproduction number/spreading rate
+        if not hierarchical_spreading_rate:
+            sigma_lambda_cp = (
+                pm.HalfStudentT(
+                    name="sigma_lambda_cp",
+                    nu=4,
+                    sigma=1,
+                    transform=pm.transforms.log_exp_m1,
+                )
+            ) * 0.1
+            sigma_lambda_week_cp = None
+        else:
+            sigma_lambda_cp = (
+                pm.HalfStudentT(
+                    name="sigma_lambda_cp",
+                    nu=4,
+                    sigma=1,
+                    transform=pm.transforms.log_exp_m1,
+                )
+            ) * 0.05
+            sigma_lambda_week_cp = (
+                pm.HalfStudentT(
+                    name="sigma_lambda_week_cp",
+                    nu=4,
+                    sigma=1,
+                    transform=pm.transforms.log_exp_m1,
+                )
+            ) * 0.1
+        base_lambda_t_log = lambda_t_with_sigmoids(
+            change_points_list=change_points,
+            pr_median_lambda_0=pr_median_lambda,
+            hierarchical=hierarchical_spreading_rate,
+            name_lambda_t="base_lambda_t",
+            sigma_lambda_cp=sigma_lambda_cp,
+            sigma_lambda_week_cp=sigma_lambda_week_cp,
+        )
+
+        # Adds the recovery rate mu to the model as a random variable
+        if spread_method == "SIR":
+            mu = pm.Lognormal(name="mu", mu=np.log(1 / 8), sigma=0.2)
+
+        if spread_method == "SIR":
+            pm.Deterministic("base_eff_spreading_rate", tt.exp(base_lambda_t_log) - mu)
+        else:
+            pm.Deterministic("base_R_t", tt.exp(base_lambda_t_log))
+
+        # This builds a decorrelated prior for I_begin for faster inference. It is not
+        # necessary to use it, one can simply remove it and use the default argument for
+        # pr_I_begin in cov19.SIR
+        if spread_method == "SIR":
+            prior_I = uncorrelated_prior_I(
+                lambda_t_log=base_lambda_t_log, mu=mu, pr_median_delay=pr_delay
+            )
+        else:
+            new_E_begin = uncorrelated_prior_E()
+
+        """
+        Begin of new parts from the publication:
+            "Inference of EURO 2020 match-induced effect in
+            COVID-19 cases across Europe"
+            see TODO
+        """
+
+        # Part to multiply with delta function
+        eff = tt.zeros((dl.nRegions, dl.nGames))
+        if use_alpha:
+            eff += effect.alpha(
+                nRegions=dl.nRegions,
+                nPhases=dl.nPhases,
+                alpha_prior=dl.alpha_prior,
+                game2phase=dl.game2phase,
+            )
+        if use_beta:
+            eff += effect.beta(
+                nRegions=dl.nRegions,
+                nPhases=dl.nPhases,
+                beta_prior=dl.beta_prior,
+                S_c=dl.stadium_size / dl.population,
+                game2phase=dl.game2phase,
+            )
+
+        # Additive factor without delta function
+        add = tt.zeros(dl.nRegions)
+        if use_gamma:
+            add += effect.gamma(T_c=temperature)
+
+        #
+        t = np.arange(this_model.sim_len)
+        t_g = [(game - this_model.sim_begin).days for game in dl.date_of_games]
+
+        d = effect._delta(np.subtract.outer(t, t_g))
+
+        # Calc effect on R
+        lambda_t_log = base_lambda_t_log + add + d.dot((eff).T)
+        lambda_t = tt.exp(lambda_t_log)
+
+        if spread_method == "SIR":
+            pm.Deterministic("lambda_t", lambda_t)
+            pm.Deterministic("R_t", lambda_t / mu)
+            pm.Deterministic("eff_spreading_rate", lambda_t - mu)
+        else:
+            pm.Deterministic("R_t", lambda_t)
+
+        """
+        Second part of the basic spreading dynamics modeled alike to our publication:
+            "Inferring change points in the spread of COVID-19
+            reveals the effectiveness of interventions"
+        see https://science.sciencemag.org/content/369/6500/eabb9789.full
+        """
+        # Use lambda_t_log and mu as parameters for the SIR model.
+        # The SIR model generates the inferred new daily cases.
+        if spread_method == "kernelized":
+            new_cases = kernelized_spread(
+                lambda_t_log=lambda_t_log, pr_new_E_begin=new_E_begin
+            )
+        else:
+            new_cases = SIR(lambda_t_log=lambda_t_log, mu=mu, pr_I_begin=prior_I)
+
+        # Delay the cases by a lognormal reporting delay and add them as a trace variable
+        new_cases = delay_cases(
+            cases=new_cases,
+            name_cases="delayed_cases",
+            pr_mean_of_median=pr_delay,
+            pr_median_of_width=0.3,
+        )
+
+        # Modulate the inferred cases by a abs(sin(x)) function, to account for weekend effects
+        # Also adds the "new_cases" variable to the trace that has all model features.
+        new_cases = week_modulation(cases=new_cases, name_cases="new_cases")
+        # Define the likelihood, uses the new_cases_obs set as model parameter
+        student_t_likelihood(cases=new_cases)
+
+    return this_model
+
+
 def create_model_gender(
-    dataloader=None, beta=True, use_gamma=False,
+    dataloader=None,
+    beta=True,
+    use_gamma=False,
+    draw_width_delay=False,
+    use_weighted_alpha_prior=False,
+    prior_delay=5,
+    width_delay_prior=0.2,
+    sigma_incubation=1,
 ):
     """
     High level function to create an abstract pymc3 model using different defined
@@ -53,12 +296,18 @@ def create_model_gender(
     else:
         dl = dataloader
 
+    if prior_delay == -1:
+        if dl.countries[0] in ["Germany"]:
+            prior_delay = 7
+        elif dl.countries[0] in ["Scotland", "France", "England"]:
+            prior_delay = 4
+        else:
+            raise RuntimeError("Country not known")
     # Config for changepoints
     pr_sigma_lambda_cp = 0.3
     pr_median_lambda = 1.0
 
     # Median of the prior for the delay in case reporting, we assume 10 days
-    pr_delay = 10
 
     cps_dict = dict(  # one possible change point every sunday
         pr_sigma_lambda=pr_sigma_lambda_cp,  # wiggle compared to previous point
@@ -79,13 +328,14 @@ def create_model_gender(
         **cps_dict
     )
 
-    alpha_prior = dl.alpha_prior[0, :]  # only select first country
+    if use_weighted_alpha_prior:
+        alpha_prior = dl.weighted_alpha_prior[0, :]
+    else:
+        alpha_prior = dl.alpha_prior[0, :]  # only select first country
 
     if beta:
         beta_prior = dl.beta_prior[0, :]
-        beta_weight = (
-            dl.stadium_size[0] / dl.population.sum()
-        )  # Scaling by stadium size
+        beta_weight = dl.stadium_size[0] / dl.population.sum()
         if (
             len(beta_prior[beta_prior > 0]) == 0
         ):  # No stadiums in home country -> don't use beta
@@ -190,18 +440,24 @@ def create_model_gender(
             C_soccer=C_soccer,
             pr_new_E_begin=new_E_begin,
             use_gamma=use_gamma,
+            pr_sigma_median_incubation=sigma_incubation
+            if sigma_incubation > 0
+            else None,
         )
 
         # Delay the cases by a log-normal reporting delay and add them as a trace variable
         new_cases = delay_cases(
             cases=new_cases,
             name_cases="delayed_cases",
-            pr_mean_of_median=pr_delay,
-            pr_median_of_width=3.0,
+            pr_mean_of_median=prior_delay,
+            pr_sigma_of_median=width_delay_prior,
+            pr_median_of_width=1.5 / 5 * prior_delay,
+            pr_sigma_of_width=0.4 / 5 * prior_delay if draw_width_delay else None,
             seperate_on_axes=False,
             num_seperated_axes=2,  # num genders
             # num_variants=dl.nGenders,
             use_gamma=use_gamma,
+            diff_input_output=0,
         )
 
         # Modulate the inferred cases by a abs(sin(x)) function, to account for weekend effects

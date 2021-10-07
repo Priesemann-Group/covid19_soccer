@@ -92,7 +92,7 @@ def distribution(
                 array_prior=prior[:, i] if prior is not None else None,
                 dist_name=title,
                 dist_math=dist_math,
-                suffix=f"{i}",
+                suffix=f"{i}" if len(indices) > 1 else "",
                 ax=axes[j] if hasattr(axes, "__len__") else axes,
             )
         if title:

@@ -59,6 +59,8 @@ def R_t_soccer(alpha_prior, date_of_games, beta_prior=None, S=None, model=None):
     # Sum over all games
     R_soccer = tt.exp(tt.dot(d, eff)) - 1.0
 
+    R_soccer = tt.clip(R_soccer, -10, 10)  # to avoid nans
+
     return R_soccer
 
 
@@ -89,14 +91,14 @@ def alpha(alpha_prior):
     Δα_g = tt.as_tensor_variable(alpha_prior)
 
     # Same across all games
-    α_mean = pm.Normal(name="alpha_mean", mu=0, sigma=1)
+    α_mean = pm.Normal(name="alpha_mean", mu=0, sigma=2)
 
     # Per game priors
     # - generated depending on a alpha_prior
     Δα_g_sparse = pm.Normal(
         "Delta_alpha_g_sparse", mu=0, sigma=1, shape=len(alpha_prior[alpha_prior > 0])
     )
-    σ_g = pm.HalfNormal(name="sigma_alpha_g", sigma=0.1)
+    σ_g = pm.HalfNormal(name="sigma_alpha_g", sigma=0.5)
 
     # Set the entries for the played games
     Δα_g = tt.set_subtensor(Δα_g[alpha_prior > 0], Δα_g_sparse)
@@ -141,7 +143,7 @@ def beta(beta_prior, S):
     Δβ_g_sparse = pm.Normal(
         "Delta_beta_g_sparse", mu=0, sigma=1, shape=len(beta_prior[beta_prior > 0])
     )
-    σ_g = pm.HalfNormal(name="sigma_beta_g", sigma=0.1)
+    σ_g = pm.HalfNormal(name="sigma_beta_g", sigma=0.25)
 
     # Set the entries for the played games
     Δβ_g = tt.set_subtensor(Δβ_g[beta_prior > 0], Δβ_g_sparse)

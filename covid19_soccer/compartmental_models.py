@@ -205,14 +205,14 @@ def kernelized_spread_soccer(
     S_t, new_E_t_m, new_E_t_f, new_I_t = outputs
     pm.Deterministic(name_new_I_t, new_I_t)
 
+    new_E_t = tt.stack((new_E_t_m, new_E_t_f), axis=-1)
+
     if name_S_t is not None:
         pm.Deterministic(name_S_t, S_t)
     if name_new_E_t is not None:
-        pm.Deterministic(
-            name_new_E_t, new_E_t_m + new_E_t_f,
-        )
+        pm.Deterministic(name_new_E_t, new_E_t)
 
     if return_all:
         return new_I_t, new_E_t_m, new_E_t_f, S_t
     else:
-        return new_I_t
+        return new_E_t

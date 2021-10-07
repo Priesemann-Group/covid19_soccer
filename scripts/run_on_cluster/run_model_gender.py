@@ -56,6 +56,37 @@ parser.add_argument(
 )
 
 parser.add_argument(
+    "--offset_games", type=int, help="Offset of the soccer games in days", default=0
+)
+parser.add_argument(
+    "--draw_delay",
+    type=str2bool,
+    help="Use distribution to draw width of delay",
+    default=False,
+)
+parser.add_argument(
+    "--weighted_alpha_prior",
+    type=str2bool,
+    help="Use weighted alpha prior",
+    default=False,
+)
+
+parser.add_argument(
+    "--prior_delay", type=int, help="prior_delay", default=5,
+)
+
+parser.add_argument(
+    "--width_delay_prior", type=float, help="width of the delay prior", default=0.2,
+)
+
+parser.add_argument(
+    "--sigma_incubation",
+    type=float,
+    help="prior width of the mean latent period",
+    default=1.0,
+)
+
+parser.add_argument(
     "--tune", type=int, help="How many tuning steps?", default=1000,
 )
 
@@ -74,71 +105,113 @@ parser.add_argument(
     "--dir", type=str, help="Directory for saving traces", default="./pickled"
 )
 
-args = parser.parse_args()
 
 """ Basic logger setup
 We want each job to print to a different file, for easier debuging once
 run on a cluster.
 """
 
-f_str = "UEFA"
-for arg in args.__dict__:
-    if arg in ["log", "dir"]:
-        continue
-    f_str += f"-{arg}={args.__dict__[arg]}"
 
-# Write all logs to file
-fh = logging.FileHandler(args.log + "/" + f_str + ".log")
-fh.setFormatter(
-    logging.Formatter("%(asctime)s::%(levelname)-4s [%(name)s] %(message)s")
-)
-fh.setLevel(logging.DEBUG)
-log.addHandler(fh)
-cov19.log.addHandler(fh)
+def dict_2_string(dictonary):
+    """
+    Creates a string from a dictornary
+    """
 
-# Redirect all errors to file
-# sys.stderr = open(args.log + "/" + f_str + ".stderr", "w")
-# sys.stdout = open(args.log + "/" + f_str + ".stdout", "w")
+    f_str = "UEFA"
+    for arg in dictonary:
+        if arg in ["log", "dir"]:
+            continue
+        f_str += f"-{arg}={args.__dict__[arg]}"
+    return f_str
 
-# Redirect pymc3 output
-logPymc3 = logging.getLogger("pymc3")
-logPymc3.addHandler(fh)
+
+def log_to_file(log_dir, fstring):
+    """
+    Writes all logs to a file
+    
+    Parameters
+    ----------
+    log_dir: string
+        Directory for logging
+    fstring: string
+        Filename for the logging
+    """
+
+    # Write all logs to file
+    fh = logging.FileHandler(log_dir + "/" + fstring + ".log")
+    fh.setFormatter(
+        logging.Formatter("%(asctime)s::%(levelname)-4s [%(name)s] %(message)s")
+    )
+    fh.setLevel(logging.DEBUG)
+    log.addHandler(fh)
+    cov19.log.addHandler(fh)
+
+    # Redirect all errors to file
+    # sys.stderr = open(args.log + "/" + f_str + ".stderr", "w")
+    # sys.stdout = open(args.log + "/" + f_str + ".stdout", "w")
+
+    # Redirect pymc3 output
+    logPymc3 = logging.getLogger("pymc3")
+    logPymc3.addHandler(fh)
+
 
 # Print some basic infos
-log.info(f"Script started: {datetime.datetime.now()}")
-log.info(f"Args: {args.__dict__}")
 
+if __name__ == "__main__":
 
-""" Create our model
-We also create a default dataloader here, and print the countries which are used!
-"""
-cov19.data_retrieval.set_data_dir(fname="./data_covid19_inference")
+    # Parse input arguments
+    args = parser.parse_args()
+    input_args_dict = args.__dict__
 
-dl = covid19_uefa.dataloader.Dataloader_gender(
-    data_folder="../../data/", countries=[args.country]
-)
-log.info(f"Data loaded for {dl.countries}")
+    # Setup logging to file
+    log_to_file(args.log, dict_2_string(input_args_dict))
 
-model = covid19_uefa.models.create_model_gender(
-    dataloader=dl, beta=args.beta, use_gamma=True
-)
+    # Log starting time and simulation parameters
+    log.info(f"Script started: {datetime.datetime.now()}")
+    log.info(f"Args: {args.__dict__}")
 
+    """ Create our model
+    We also create a default dataloader here, and print the countries which are used!
+    """
+    cov19.data_retrieval.set_data_dir(fname="./data_covid19_inference")
 
-""" MCMC sampling
-"""
+    dl = covid19_uefa.dataloader.Dataloader_gender(
+        data_folder="../../data/",
+        countries=[args.country],
+        offset_games=args.offset_games,
+    )
+    log.info(f"Data loaded for {dl.countries}")
 
-multitrace, trace, multitrace_tuning, trace_tuning = cov19.robust_sample(
-    model,
-    tune=args.tune,
-    draws=args.draws,
-    tuning_chains=30,
-    final_chains=8,
-    cores=32,
-    return_tuning=True,
-    max_treedepth=args.max_treedepth,
-)
+    model = covid19_uefa.models.create_model_gender(
+        dataloader=dl,
+        beta=args.beta,
+        use_gamma=True,
+        draw_width_delay=args.draw_delay,
+        use_weighted_alpha_prior=args.weighted_alpha_prior,
+        prior_delay=args.prior_delay,
+        width_delay_prior=args.width_delay_prior,
+        sigma_incubation=args.sigma_incubation,
+    )
 
+    """ MCMC sampling
+    """
 
-# Save trace/model so we dont have to rerun sampling every time we change some plotting routines
-with open(os.path.join(args.dir, f"{f_str}.pickled"), "wb") as f:
-    pickle.dump((model, trace), f)
+    multitrace, trace, multitrace_tuning, trace_tuning = cov19.robust_sample(
+        model,
+        tune=args.tune,
+        draws=args.draws,
+        tuning_chains=30,
+        final_chains=8,
+        cores=32,
+        return_tuning=True,
+        max_treedepth=args.max_treedepth,
+        target_accept=0.95,
+    )
+
+    # Save trace/model so we dont have to rerun sampling every time we change some plotting routines
+    with open(
+        os.path.join(args.dir, f"{dict_2_string(input_args_dict)}.pickled"), "wb"
+    ) as f:
+        pickle.dump((model, trace), f)
+
+    log.info(f"Script finished: {datetime.datetime.now()}")

@@ -266,7 +266,6 @@ def create_model_gender(
     prior_delay=-1,
     width_delay_prior=0.1,
     sigma_incubation=-1,
-    disable_all_games=False,
 ):
     """
     High level function to create an abstract pymc3 model using different defined
@@ -326,17 +325,23 @@ def create_model_gender(
         dl.data_end,
         interval=10,
         offset=5,
-        **cps_dict
+        **cps_dict,
     )
 
-    if use_weighted_alpha_prior:
+    if use_weighted_alpha_prior == 1:
         alpha_prior = dl.weighted_alpha_prior[0, :]
-    else:
+    elif use_weighted_alpha_prior == 0:
         alpha_prior = dl.alpha_prior[0, :]  # only select first country
+    elif use_weighted_alpha_prior == -1:
+        alpha_prior = 0.0
+    else:
+        raise RuntimeError(
+            f"Unknown use_weighted_alpha_prior: {use_weighted_alpha_prior}"
+        )
 
     if beta:
         beta_prior = dl.beta_prior[0, :]
-        beta_weight = dl.stadium_size[0] / dl.population.sum()
+        beta_weight = 1
         if (
             len(beta_prior[beta_prior > 0]) == 0
         ):  # No stadiums in home country -> don't use beta
@@ -346,10 +351,6 @@ def create_model_gender(
         beta_prior = None
         beta_weight = None
         stadium_size = None
-
-    if disable_all_games:
-        alpha_prior = np.zeros(alpha_prior.shape)
-        beta_prior = None
 
     # Construct model params dict
     params = {
@@ -424,7 +425,7 @@ def create_model_gender(
         pm.Deterministic("C_base", C_base)
 
         # Soccer gender interconnection matrix (i.e. for soccer matches)
-        f_female = pm.Gamma("factor_female", alpha=4, beta=40)
+        f_female = pm.Gamma("factor_female", alpha=6, beta=30)
         # Set theano tensor (maybe there is a better way to do that)
         C_0 = tt.stack([1.0 - f_female, f_female])
         C_1 = tt.stack([f_female, f_female * f_female])

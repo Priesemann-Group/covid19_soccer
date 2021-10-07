@@ -65,17 +65,11 @@ parser.add_argument(
     default=False,
 )
 parser.add_argument(
-    "--weighted_alpha_prior",
-    type=str2bool,
-    help="Use weighted alpha prior",
-    default=False,
-)
-parser.add_argument(
-    "--disable_all_games", type=str2bool, help="Disable all games", default=False,
+    "--weighted_alpha_prior", type=int, help="Use weighted alpha prior", default=0,
 )
 
 parser.add_argument(
-    "--prior_delay", type=int, help="prior_delay", default=-1,
+    "--prior_delay", type=int, help="prior_delay", default=5,
 )
 
 parser.add_argument(
@@ -194,7 +188,6 @@ if __name__ == "__main__":
         prior_delay=args.prior_delay,
         width_delay_prior=args.width_delay_prior,
         sigma_incubation=args.sigma_incubation,
-        disable_all_games=args.disable_all_games,
     )
 
     """ MCMC sampling

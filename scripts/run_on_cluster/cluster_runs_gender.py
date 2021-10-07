@@ -34,34 +34,34 @@ dir_traces = "/data.nst/jdehning/covid_uefa_traces"
 countries = ["Scotland", "Germany", "France", "England"]
 
 # [tune,draw,treedepth]
-sampling = [[200, 300, 10], [500, 1000, 12], [1000, 1500, 12]]
+sampling = [
+    [200, 300, 10],
+    # [500, 1000, 12],
+    [1000, 1500, 12],
+]
 
 # True or false
 beta = [0, 1]
 
 # Games offset i.e. effect if soccer games would be x days later
-offset = [0]
+offset = [0, -28, -10, -8, -6, -4, -2, -1, 1, 2, 4, 6, 8, 10, 28]
 
 # draw delay width i.e. true false
 draw_delay = [1]
 
 # Use weighted alpha prior
-weighted_alpha = [0]
+weighted_alpha = [0, -1]
 
-# Own delay for each country
-prior_delay = [-1]
+prior_delay = [-1, 2, 4, 5, 6, 7, 8, 10, 12]
 
 # prior width of the mean latent period
 sigma_incubation = [-1]
 
 width_delay_prior = [0.1]
 
-# disable all game validation
-disable_games = [0, 1]
-
-
 mapping = []
-# Big loop over all parameters
+
+
 for b in beta:
     for country in countries:
         for draw_args in sampling:
@@ -69,25 +69,36 @@ for b in beta:
                 for off in offset:
                     for wa in weighted_alpha:
                         for pd in prior_delay:
-                            for dg in disable_games:
-                                for wdp in width_delay_prior:
-                                    for si in sigma_incubation:
-                                        if b == 1 and not off == 0:
+                            for wdp in width_delay_prior:
+                                for si in sigma_incubation:
+                                    default_vals = True if b == 0 else False
+                                    if not off == 0:
+                                        if not default_vals:
                                             continue
-                                        if wdp == 0.2 and not off == 0:
+                                        else:
+                                            default_vals = False
+                                    if not wa == 0:
+                                        if not default_vals:
                                             continue
-                                        ma = []
-                                        ma.append(b)
-                                        ma.append(country)
-                                        ma += draw_args
-                                        ma.append(off)
-                                        ma.append(delay)
-                                        ma.append(wa)
-                                        ma.append(pd)
-                                        ma.append(wdp)
-                                        ma.append(si)
-                                        ma.append(dg)
-                                        mapping.append(tuple(ma))
+                                        else:
+                                            default_vals = False
+                                    if not pd == -1:
+                                        if not default_vals:
+                                            continue
+                                        else:
+                                            default_vals = False
+
+                                    ma = []
+                                    ma.append(b)
+                                    ma.append(country)
+                                    ma += draw_args
+                                    ma.append(off)
+                                    ma.append(delay)
+                                    ma.append(wa)
+                                    ma.append(pd)
+                                    ma.append(wdp)
+                                    ma.append(si)
+                                    mapping.append(tuple(ma))
 
 
 def exec(
@@ -102,7 +113,6 @@ def exec(
     prior_delay,
     width_delay_prior,
     sigma_incubation,
-    disable_all_games,
 ):
     """
     Executes python script
@@ -119,7 +129,6 @@ def exec(
         f"--prior_delay {prior_delay} "
         f"--width_delay_prior {width_delay_prior} "
         f"--sigma_incubation {sigma_incubation} "
-        f"--disable_all_games {disable_all_games} "
     )
 
 

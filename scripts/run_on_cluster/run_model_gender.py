@@ -2,7 +2,7 @@
 # @Author:        Sebastian B. Mohr
 # @Email:
 # @Created:       2021-07-05 12:19:04
-# @Last Modified: 2021-07-05 13:37:55
+# @Last Modified: 2021-10-07 12:14:32
 # ------------------------------------------------------------------------------ #
 # Run the soccer model with different input parameters
 #
@@ -19,11 +19,11 @@ import pickle
 import os
 
 
-sys.path.append("../../covid19_inference_repo/")
+sys.path.append("../../covid19_inference")
 import covid19_inference as cov19
 
 sys.path.append("../../")
-import covid19_uefa
+import covid19_soccer
 
 
 def str2bool(v):
@@ -70,9 +70,12 @@ parser.add_argument(
     help="Use weighted alpha prior",
     default=False,
 )
+parser.add_argument(
+    "--disable_all_games", type=str2bool, help="Disable all games", default=False,
+)
 
 parser.add_argument(
-    "--prior_delay", type=int, help="prior_delay", default=5,
+    "--prior_delay", type=int, help="prior_delay", default=-1,
 )
 
 parser.add_argument(
@@ -175,14 +178,14 @@ if __name__ == "__main__":
     """
     cov19.data_retrieval.set_data_dir(fname="./data_covid19_inference")
 
-    dl = covid19_uefa.dataloader.Dataloader_gender(
+    dl = covid19_soccer.dataloader.Dataloader_gender(
         data_folder="../../data/",
         countries=[args.country],
         offset_games=args.offset_games,
     )
     log.info(f"Data loaded for {dl.countries}")
 
-    model = covid19_uefa.models.create_model_gender(
+    model = covid19_soccer.models.create_model_gender(
         dataloader=dl,
         beta=args.beta,
         use_gamma=True,
@@ -191,6 +194,7 @@ if __name__ == "__main__":
         prior_delay=args.prior_delay,
         width_delay_prior=args.width_delay_prior,
         sigma_incubation=args.sigma_incubation,
+        disable_all_games=args.disable_all_games,
     )
 
     """ MCMC sampling

@@ -261,11 +261,12 @@ def create_model_gender(
     dataloader=None,
     beta=True,
     use_gamma=False,
-    draw_width_delay=False,
+    draw_width_delay=True,
     use_weighted_alpha_prior=False,
-    prior_delay=5,
-    width_delay_prior=0.2,
-    sigma_incubation=1,
+    prior_delay=-1,
+    width_delay_prior=0.1,
+    sigma_incubation=-1,
+    disable_all_games=False,
 ):
     """
     High level function to create an abstract pymc3 model using different defined
@@ -345,6 +346,10 @@ def create_model_gender(
         beta_prior = None
         beta_weight = None
         stadium_size = None
+
+    if disable_all_games:
+        alpha_prior = np.zeros(alpha_prior.shape)
+        beta_prior = None
 
     # Construct model params dict
     params = {
@@ -473,7 +478,7 @@ def create_model_gender(
         )
 
         # Define the likelihood, uses the new_cases_obs set as model parameter
-        student_t_likelihood(cases=new_cases)
+        student_t_likelihood(cases=new_cases, sigma_shape=1)
 
     return this_model
 
@@ -482,6 +487,7 @@ if __name__ == "__main__":
     import sys
 
     sys.path.append("../")
-    import covid19_uefa
+    sys.path.append("../covid19_inference/")
+    import covid19_soccer
 
-    model = covid19_uefa.create_model_gender()
+    model = covid19_soccer.create_model_gender()

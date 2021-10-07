@@ -301,6 +301,8 @@ def create_model_gender(
             prior_delay = 7
         elif dl.countries[0] in ["Scotland", "France", "England"]:
             prior_delay = 4
+        elif dl.countries[0] in ["Portugal"]:
+            prior_delay = 5
         else:
             raise RuntimeError("Country not known")
     # Config for changepoints

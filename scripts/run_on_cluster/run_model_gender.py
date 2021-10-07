@@ -19,7 +19,7 @@ import pickle
 import os
 
 
-sys.path.append("../../covid19_inference")
+sys.path.append("../../covid19_inference/")
 import covid19_inference as cov19
 
 sys.path.append("../../")

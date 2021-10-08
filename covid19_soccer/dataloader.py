@@ -87,7 +87,7 @@ class Dataloader:
             self.timetable["date"], format="%Y-%m-%d"
         )
         # Shift the date of the games if offset is greater 0
-        if offset_games > 0:
+        if offset_games != 0:
             self.timetable["date"] = self.timetable["date"] + timedelta(
                 days=offset_games
             )
@@ -522,7 +522,7 @@ class Dataloader_gender(Dataloader):
         self.timetable["date"] = pd.to_datetime(
             self.timetable["date"], format="%Y-%m-%d"
         )
-        if offset_games > 0:
+        if offset_games != 0:
             self.timetable["date"] = self.timetable["date"] + timedelta(
                 days=offset_games
             )

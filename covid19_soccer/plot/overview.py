@@ -6,9 +6,10 @@ import matplotlib.ticker as mtick
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from .utils import get_from_trace
+from .utils import get_from_trace, lighten_color
 from .rcParams import colors
 import covid19_inference as cov19
+from .distributions import distribution
 
 
 def plot_overview_quad(traces,models,dls):
@@ -84,10 +85,6 @@ def plot_overview_quad(traces,models,dls):
             elif country in ["France"]:
                 a3.set_ylim(-30,30)
 
-            fmt = '%.0f%%' # Format you want the ticks, e.g. '40%'
-            xticks = mtick.FormatStrFormatter(fmt)
-            a3.yaxis.set_major_formatter(xticks)
-
 
 
             if plot_beta:
@@ -128,9 +125,11 @@ def plot_overview_single(
     dl,
     ylim_cases=[0,1000],
     ylim_fraction=[0.6,1.5],
-    ylim_relative=[0,100],
+    ylim_relative=None,
     xlim_ts=[datetime.datetime(2021,5,30),datetime.datetime(2021,7,23)],
-    title=""
+    title="",
+    verbose=True,
+    violin=False
     ):
     
     fig = plt.figure(figsize=(6,5))
@@ -147,9 +146,26 @@ def plot_overview_single(
     #plot_rsoccer(a2, traces[country], models[country], dls[country])
     plot_reproductionViolin(a2, trace, model, dl)
 
-    a3 = fig.add_subplot(grid[0:,-1])
-    plot_relative_from_soccer(a3, trace, model, dl, ylim_relative)
-
+    a3 = fig.add_subplot(grid[0:-1,-1])
+    plot_relative_from_soccer(a3, trace, model, dl, ylim_relative, verbose=verbose, violin=violin)
+    
+    a4 = fig.add_subplot(grid[-1,-1])
+    distribution(
+        model,
+        trace,
+        "delay",
+        nSamples_prior=1000,
+        title="",
+        dist_math="D",
+        ax=a4,
+    )
+    
+    # Set right and bottom axis
+    a4.yaxis.tick_right()
+    a4.spines['right'].set_visible(True)
+    a4.spines['top'].set_visible(False)
+    a4.spines['left'].set_visible(False)
+    
     # Markup
     for ax in [a0,a1,a2]:
         ax.set_xlim(xlim_ts)
@@ -167,12 +183,9 @@ def plot_overview_single(
     # remove labels for first and second timeseries
     for ax in [a0,a1]:
         ax.set(xticklabels=[])
-
-    fmt = '%.0f%%' # Format you want the ticks, e.g. '40%'
-    xticks = mtick.FormatStrFormatter(fmt)
-    a3.yaxis.set_major_formatter(xticks)
     
     a0.set_title(title)
+    return fig
 
 # Functions
 def plot_cases(ax,trace,model,dl,ylim):
@@ -351,7 +364,7 @@ def plot_reproductionViolin(ax,trace,model,dl):
 
     return ax
 
-def plot_relative_from_soccer(ax, trace, model, dl, ylim_relative, begin=None, end=None):
+def plot_relative_from_soccer(ax, trace, model, dl, ylim_relative=None, begin=None, end=None,verbose=True,violin=False):
     if begin is None:
         begin = datetime.datetime(2021,6,11)
     if end is None:
@@ -393,31 +406,66 @@ def plot_relative_from_soccer(ax, trace, model, dl, ylim_relative, begin=None, e
     percentage = pd.DataFrame(np.concatenate((male,female)),columns=["percentage_soccer","gender"])
     percentage["gender"] = pd.cut(percentage["gender"], bins=[-1,0.5,1], labels=["male","female"])
     percentage["percentage_soccer"] = percentage["percentage_soccer"]*100
+    if violin:
+        percentage["percentage_soccer"] = percentage["percentage_soccer"] + np.random.normal(size=len(percentage["percentage_soccer"]),loc=0,scale=0.0001)
     percentage['dummy'] = 0
     
-    g = sns.violinplot(
-        data=percentage,
-        y="percentage_soccer",
-        x="dummy",
-        hue="gender",
-        scale="width",
-        inner="quartile",
-        orient="v",
-        ax=ax,
-        split=True,
-        palette={"male": colors["male"], "female": colors["female"]},
-        linewidth=1,
-        saturation=1,
-    )
+    if violin:
+        g = sns.violinplot(
+            data=percentage,
+            y="percentage_soccer",
+            x="dummy",
+            hue="gender",
+            scale="width",
+            inner="quartile",
+            orient="v",
+            ax=ax,
+            split=True,
+            palette={"male": colors["male"], "female": colors["female"]},
+            linewidth=1,
+            saturation=1,
+        )
+        ax.collections[0].set_edgecolor(colors["male"]) # Set outline colors
+        ax.collections[1].set_edgecolor(colors["female"]) # Set outline colors
+    else:
+        g = sns.stripplot(
+            data=percentage,
+            y="percentage_soccer",
+            x="dummy",
+            hue="gender",
+            dodge=True,
+            palette={"male": colors["male"], "female": colors["female"]},
+            alpha=.25,
+            zorder=1,
+            size=2
+        )
+        sns.pointplot(
+            y="percentage_soccer",
+            x="dummy",
+            hue="gender",
+            data=percentage,
+            dodge=.8 - .8 / 3,
+            join=False,
+            palette={"male": lighten_color(colors["male"],1.3), "female": lighten_color(colors["female"],1.3)},
+            markers="d",
+            ci=95,
+            scale = 0.6
+        )
     ax.legend([],[], frameon=False)
     ax.yaxis.set_label_position("right")
     ax.yaxis.tick_right()
-    ax.collections[0].set_edgecolor(colors["male"]) # Set outline colors
-    ax.collections[1].set_edgecolor(colors["female"]) # Set outline colors
     ax.set_xticklabels([])
-    ax.set_ylim(ylim_relative)
     
+    if ylim_relative is not None:
+        ax.set_ylim(ylim_relative)
     
+    # Set y tick format
+    if 1.0 < np.mean(percentage["percentage_soccer"]) or np.mean(percentage["percentage_soccer"]) < -1.0:
+        fmt = '%.0f%%' # Format you want the ticks, e.g. '40%'
+        xticks = mtick.FormatStrFormatter(fmt)
+        ax.yaxis.set_major_formatter(xticks)
+    
+    # Set labels
     ax.set_ylabel("Percentage of soccer related\ninfections during the Championship")
     ax.set_xlabel("")
     ax.set_xticks([])
@@ -427,8 +475,9 @@ def plot_relative_from_soccer(ax, trace, model, dl, ylim_relative, begin=None, e
     ax.spines['bottom'].set_visible(False)
     ax.spines['top'].set_visible(False)
     ax.spines['left'].set_visible(False)
-    print(f"CI [50,2.5,97.5] {dl.countries}:")
-    print(f"\tmale {np.percentile(ratio_soccer[:,0], [50,2.5,97.5])}")
-    print(f"\tfemale {np.percentile(ratio_soccer[:,1], [50,2.5,97.5])}")
+    if verbose:
+        print(f"CI [50,2.5,97.5] {dl.countries}:")
+        print(f"\tmale {np.percentile(ratio_soccer[:,0], [50,2.5,97.5])}")
+        print(f"\tfemale {np.percentile(ratio_soccer[:,1], [50,2.5,97.5])}")
 
     return ax

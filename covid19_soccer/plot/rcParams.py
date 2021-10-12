@@ -23,10 +23,10 @@ def get_rcparams_default():
         draw_ci_95=True,
         draw_ci_75=False,
         draw_ci_50=False,
-        color_model="tab:green",
-        color_data="tab:blue",
+        color_model="#33BBEE",
+        color_data="#060434",
         color_prior="#708090",
-        color_posterior="tab:green",
+        color_posterior="#33BBEE",
         color_annot="#646464",
         timeseries_xticklabel_rotation=0,  # In degree
     )

@@ -266,6 +266,7 @@ def create_model_gender(
     prior_delay=-1,
     width_delay_prior=0.1,
     sigma_incubation=-1,
+    median_width_delay=1.5,
 ):
     """
     High level function to create an abstract pymc3 model using different defined
@@ -459,7 +460,7 @@ def create_model_gender(
             name_cases="delayed_cases",
             pr_mean_of_median=prior_delay,
             pr_sigma_of_median=width_delay_prior,
-            pr_median_of_width=1.5 / 5 * prior_delay,
+            pr_median_of_width=median_width_delay / 5 * prior_delay,
             pr_sigma_of_width=0.4 / 5 * prior_delay if draw_width_delay else None,
             seperate_on_axes=False,
             num_seperated_axes=2,  # num genders

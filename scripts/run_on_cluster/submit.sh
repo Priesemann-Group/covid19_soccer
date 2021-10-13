@@ -5,7 +5,7 @@
 #$ -cwd
 #$ -o $HOME/repositories/covid19_soccer/scripts/run_on_cluster/log/output-soccer
 #$ -e $HOME/repositories/covid19_soccer/scripts/run_on_cluster/log/errors-soccer
-#$ -t 1:128:1
+#$ -t 10
 
 # avoid multithreading in numpy
 export OPENBLAS_NUM_THREADS=1

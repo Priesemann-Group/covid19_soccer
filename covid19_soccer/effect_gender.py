@@ -46,10 +46,16 @@ def R_t_soccer(alpha_prior, date_of_games, beta_prior=None, S=None, model=None):
     model = modelcontext(model)
 
     # Effect for each game
-    eff = alpha(alpha_prior)
+    alpha_raw = alpha(alpha_prior)
+    alpha_R = tt.nnet.softplus(alpha_raw) - np.log(2)
+    pm.Deterministic("alpha_R", alpha_R)
+    eff = alpha_R
 
     if beta_prior is not None:
-        eff += beta(beta_prior, S)
+        beta_raw = beta(beta_prior, S)
+        beta_R = tt.nnet.softplus(beta_raw) - np.log(2)
+        pm.Deterministic("beta_R", beta_R)
+        eff += beta_R
 
     # Construct d = δ(t_g−t)
     t = np.arange(model.sim_len)
@@ -57,9 +63,9 @@ def R_t_soccer(alpha_prior, date_of_games, beta_prior=None, S=None, model=None):
     d = _delta(np.subtract.outer(t, t_g))
 
     # Sum over all games
-    R_soccer = tt.exp(tt.dot(d, eff)) - 1.0
+    R_soccer = tt.dot(d, eff)
 
-    R_soccer = tt.clip(R_soccer, -10, 10)  # to avoid nans
+    R_soccer = tt.clip(R_soccer, 0, 50)  # to avoid nans
 
     return R_soccer
 
@@ -91,14 +97,14 @@ def alpha(alpha_prior):
     Δα_g = tt.as_tensor_variable(alpha_prior)
 
     # Same across all games
-    α_mean = pm.Normal(name="alpha_mean", mu=0, sigma=2)
+    α_mean = pm.Normal(name="alpha_mean", mu=0, sigma=5)
 
     # Per game priors
     # - generated depending on a alpha_prior
     Δα_g_sparse = pm.Normal(
         "Delta_alpha_g_sparse", mu=0, sigma=1, shape=len(alpha_prior[alpha_prior > 0])
     )
-    σ_g = pm.HalfNormal(name="sigma_alpha_g", sigma=0.5)
+    σ_g = pm.HalfNormal(name="sigma_alpha_g", sigma=5)
 
     # Set the entries for the played games
     Δα_g = tt.set_subtensor(Δα_g[alpha_prior > 0], Δα_g_sparse)
@@ -136,14 +142,14 @@ def beta(beta_prior, S):
     Δβ_g = tt.as_tensor_variable(beta_prior)
 
     # Same across all games
-    β_mean = pm.Normal(name="beta_mean", mu=0, sigma=1)
+    β_mean = pm.Normal(name="beta_mean", mu=0, sigma=2)
 
     # Offset per game
     # - generated depending on a alpha_prior
     Δβ_g_sparse = pm.Normal(
         "Delta_beta_g_sparse", mu=0, sigma=1, shape=len(beta_prior[beta_prior > 0])
     )
-    σ_g = pm.HalfNormal(name="sigma_beta_g", sigma=0.25)
+    σ_g = pm.HalfNormal(name="sigma_beta_g", sigma=2)
 
     # Set the entries for the played games
     Δβ_g = tt.set_subtensor(Δβ_g[beta_prior > 0], Δβ_g_sparse)

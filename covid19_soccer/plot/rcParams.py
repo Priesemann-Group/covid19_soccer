@@ -1,13 +1,14 @@
 colors = {
-    "data":"#060434", #black
-    "fraction":"#33BBEE", #cyan
-    "cases":  "#0077BB",# teal
-    "male": "#EE7733", #orange
-    "female":"#EE3377", # magenta
-    "Repr": "#009988", # blue
+    "data": "#060434",  # black
+    "fraction": "#33BBEE",  # cyan
+    "cases": "#0077BB",  # teal
+    "male": "#EE7733",  # orange
+    "female": "#EE3377",  # magenta
+    "Repr": "#009988",  # blue
     "c": "#e5f6ff2",
     "d": "#f2f4f8",
 }
+
 
 def get_rcparams_default():
     """

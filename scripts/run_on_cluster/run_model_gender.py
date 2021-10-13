@@ -84,6 +84,14 @@ parser.add_argument(
 )
 
 parser.add_argument(
+    "--median_width_delay",
+    type=float,
+    help="prior width of the testing delay",
+    default=1.5,
+)
+
+
+parser.add_argument(
     "--tune", type=int, help="How many tuning steps?", default=1000,
 )
 

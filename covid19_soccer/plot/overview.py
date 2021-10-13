@@ -309,7 +309,7 @@ def plot_alphaMean(ax,trace,model,dl,beta=False):
     ax.set_ylabel("Mean effect of all \n played soccer games")
     ax.axhline(0,color="tab:gray",ls="--",zorder=-5)
     return ax
-def plot_reproductionViolin(ax,trace,model,dl):
+def plot_reproductionViolin(ax,trace,model,dl,plot_dates=True,color=None):
     """
     Violin plot for the additional R values for each game and country.
     
@@ -329,8 +329,16 @@ def plot_reproductionViolin(ax,trace,model,dl):
     # Get date of game and participants
     games = dl.timetable.loc[(dl.alpha_prior > 0)[0]]
     ticks = [(vals["date"]-model.sim_begin).days for i,vals in games.iterrows()]
-    ticks = np.array([vals["date"] for i,vals in games.iterrows()])
+    if plot_dates:
+        ticks = np.array([vals["date"] for i,vals in games.iterrows()])
+    else:
+        ticks = np.array(ticks)-np.min(ticks)
+    
+    # Create pandas dataframe for easy plotting
     R_soccer = pd.DataFrame(R_soccer,columns=ticks)
+    
+    if not plot_dates:
+        ticks=np.arange((dl.alpha_prior > 0).sum())*4
     
     p = np.percentile(R_soccer, [0.5, 50, 99.5], axis=0)
     ax.errorbar(
@@ -339,7 +347,7 @@ def plot_reproductionViolin(ax,trace,model,dl):
         yerr=p[0,2],
         #width=2,
         #ecolor="tab:gray",
-        color=colors["Repr"],
+        color=colors["Repr"] if color is None else color,
         ls="",
         marker="_",
         ms=4,
@@ -348,18 +356,9 @@ def plot_reproductionViolin(ax,trace,model,dl):
         #error_kw= {"alpha":1,"lw":0.8,"ecolor":colors[1]}
     )
     ax.axhline(0,color="tab:gray",lw=0.5,alpha=0.5,ls="--")
-    #ax.set_xticks([vals["date"] for i,vals in games.iterrows()])
     
     R_t_soccer = get_from_trace("R_t_soccer",trace)
-    # Plot base and soccer Reproduction number
-    
-    # Construct ylabels
-    #ylabels= []
-    #for i, vals in games.iterrows():
-    #    label =vals["date"].strftime("%d.%-m.%y")
-    #    label +=f'\n{vals["team1"]} vs {vals["team2"]}'
-    #    label +=f'\nin {vals["location"]}'
-    #ax.set_xlabel("Effect of game")
+
     ax.set_ylabel("Additive rep.\nnumber")
 
     return ax

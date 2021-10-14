@@ -3,7 +3,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-Supplementary code for our **Using gender disparities to measure the EURO~2020 match-induced effect on COVID-19 cases in selected European countries** publication. **This is an ongoing project!** Read the latest draft of the publication [here](./Draft_covid19_soccer_211004.pdf) (updated on 4th October 2021).
+Supplementary code for our **Using gender disparities to measure the EURO~2020 match-induced effect on COVID-19 cases in selected European countries** publication. **This is an ongoing project!** Read the latest draft of the publication [here](./Draft_covid19_soccer_211014.pdf) (updated on 4th October 2021).
 
 ## Usage
 Clone with 

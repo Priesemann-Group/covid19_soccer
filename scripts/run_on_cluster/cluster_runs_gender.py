@@ -45,9 +45,10 @@ beta = [0, 1]
 # beta = [0]
 
 # Games offset i.e. effect if soccer games would be x days later
-# offset = [0, -35, -28, -10, -8, -6, -4, -2, -1, 1, 2, 4, 6, 8, 10, 28, 35]
+# offset = [0, -35, -15, -10, -8, -6, -5, -4, -2, -1, 1, 2, 3, 4, 5, 6, 8, 10, 15, 35]
 # offset = [-35, -28, -10, -8, -6, -4, -2, -1, 35]
-offset = [0]
+# offset = [0]
+offset = [0, -5, -4, -2, -1, 1, 2, 3, 4, 5]
 
 # draw delay width i.e. true false
 draw_delay = [1]
@@ -56,7 +57,7 @@ draw_delay = [1]
 # weighted_alpha = [0, -1]
 weighted_alpha = [0]
 
-# prior_delay = [-1, 2, 4, 5, 6, 7, 8, 10, 12]
+# prior_delay = [-1, 2, 3, 4, 5, 6, 7, 8, 10, 12]
 prior_delay = [-1]
 
 # prior width of the mean latent period
@@ -64,15 +65,14 @@ sigma_incubation = [-1]
 
 width_delay_prior = [0.1]
 
-# median_width_delay = [1.5, 1.0, 2.5]
-median_width_delay = [1.5]
+median_width_delay = [1.5, 1.0, 2.5]
+# median_width_delay = [1.5]
 
 mapping = []
 
-
-for b in beta:
-    for country in countries:
-        for draw_args in sampling:
+for draw_args in sampling:
+    for b in beta:
+        for country in countries:
             for delay in draw_delay:
                 for off in offset:
                     for wa in weighted_alpha:

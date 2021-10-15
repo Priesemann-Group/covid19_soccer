@@ -52,3 +52,5 @@ id, date, phase, team1, team2, goals1, goals2, location
 048, 2021-07-06, HF, IT, ES, 5, 3, London
 049, 2021-07-07, HF, GB-ENG, DK, 2, 1, London
 050, 2021-07-11, FI, IT, GB-ENG, 4, 3, London
+051, 2021-07-07, HF, GB-SCT, DK, 2, 1, London
+052, 2021-07-11, FI, IT, GB-SCT, 4, 3, London

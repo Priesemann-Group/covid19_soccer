@@ -65,7 +65,7 @@ def R_t_soccer(alpha_prior, date_of_games, beta_prior=None, S=None, model=None):
     # Sum over all games
     R_soccer = tt.dot(d, eff)
 
-    R_soccer = tt.clip(R_soccer, 0, 50)  # to avoid nans
+    R_soccer = tt.clip(R_soccer, -50, 50)  # to avoid nans
 
     return R_soccer
 

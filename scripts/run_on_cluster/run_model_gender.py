@@ -196,6 +196,7 @@ if __name__ == "__main__":
         prior_delay=args.prior_delay,
         width_delay_prior=args.width_delay_prior,
         sigma_incubation=args.sigma_incubation,
+        median_width_delay=args.median_width_delay,
     )
 
     """ MCMC sampling

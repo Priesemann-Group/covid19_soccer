@@ -34,7 +34,7 @@ def distribution(
         Which dimensions do you want to plot? default: None i.e. all
 
     """
-    
+
     data = trace.posterior[key]
 
     # This function all may change in a future pymc3 version

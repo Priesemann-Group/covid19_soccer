@@ -355,7 +355,7 @@ def plot_reproductionViolin(ax,trace,model,dl,plot_dates=True,color=None):
         capsize=1.5,
         #error_kw= {"alpha":1,"lw":0.8,"ecolor":colors[1]}
     )
-    ax.axhline(0,color="tab:gray",lw=0.5,alpha=0.5,ls="--")
+    ax.axhline(0,color="tab:gray",lw=0.5,alpha=0.5,ls="--",zorder=-5)
     
     R_t_soccer = get_from_trace("R_t_soccer",trace)
 

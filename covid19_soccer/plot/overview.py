@@ -188,7 +188,7 @@ def plot_overview_single(
     return fig
 
 # Functions
-def plot_cases(ax,trace,model,dl,ylim):
+def plot_cases(ax,trace,model,dl,ylim=None,color=None):
     """
     Plots number of cases
     """
@@ -199,7 +199,7 @@ def plot_cases(ax,trace,model,dl,ylim):
         y = (new_cases[:,:,0]+new_cases[:,:,1]) / (dl.population[0,0]+dl.population[1,0]) *1e6, # incidence
         what="model",
         ax=ax,
-        color=colors["cases"]
+        color=colors["cases"] if color is None else color
     )
     cov19.plot._timeseries(
         x = pd.date_range(model.data_begin,model.data_end),
@@ -214,10 +214,13 @@ def plot_cases(ax,trace,model,dl,ylim):
     end = datetime.datetime(2021,7,11)
     
     ax.fill_betweenx(np.arange(0,1000),begin,end,alpha=0.1)
-    ax.set_ylim(ylim)
+    if ylim is not None:
+        ax.set_ylim(ylim)
     ax.set_ylabel("Incidence")
 
-def plot_fraction(ax,trace,model,dl,ylim_fraction):
+def plot_fraction(ax,trace,model,dl,ylim_fraction=None):
+    
+    
     
     new_cases = get_from_trace("new_cases",trace)
     
@@ -241,7 +244,9 @@ def plot_fraction(ax,trace,model,dl,ylim_fraction):
     )
 
     ax.set_ylabel("Gender\nimbalance")
-    ax.set_ylim(ylim_fraction)
+    
+    if ylim_fraction is not None:
+        ax.set_ylim(ylim_fraction)
     for label in ax.xaxis.get_ticklabels()[::2]:
         label.set_visible(False)
         
@@ -340,11 +345,11 @@ def plot_reproductionViolin(ax,trace,model,dl,plot_dates=True,color=None):
     if not plot_dates:
         ticks=np.arange((dl.alpha_prior > 0).sum())*4
     
-    p = np.percentile(R_soccer, [0.5, 50, 99.5], axis=0)
+    p = np.percentile(R_soccer, [2.5, 50, 97.5], axis=0)
     ax.errorbar(
         x=ticks,
         y=p[1],
-        yerr=p[0,2],
+        yerr=[p[1] - p[0], p[2] - p[0]],
         #width=2,
         #ecolor="tab:gray",
         color=colors["Repr"] if color is None else color,

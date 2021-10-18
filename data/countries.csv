@@ -1,18 +1,18 @@
 iso2,country,population,capital,population_female,population_male,gender_data
-AL,Albania,2874793,Tirana,,
-AD,Andorra,77383,Andorra la Vella,,
+AL,Albania,2874793,Tirana,1437169,1440317,False
+AD,Andorra,77383,Andorra la Vella,37521,40145,False
 AM,Armenia,2968534,Yerevan,,
-AT,Austria,8933346,Vienna,,
+AT,Austria,8933346,Vienna,4625459,4413428,True
 AZ,Azerbaijan,10226319,Baku,,
 BY,Belarus,9446352,Minsk,,
-BE,Belgium,11396775,Brussels,,
+BE,Belgium,11396775,Brussels,5964800,5737303,True
 BA,Bosnia and Herzegovina,3261291,Sarajevo,,
-BG,Bulgaria,6911167,Sofia,,
+BG,Bulgaria,6911167,Sofia,,,False
 HR,Croatia,4087234,Zagreb,,
 CY,Cyprus,1213585,Nicosia,,
-CZ,Czechia,10723088,Prague,,
-DK,Denmark,5806675,Copenhagen,,
-EE,Estonia,1327169,Tallinn,,
+CZ,Czechia,10723088,Prague,5454016,5258381,True
+DK,Denmark,5806675,Copenhagen,2936607,2889298,True
+EE,Estonia,1327169,Tallinn,702669,616473,
 FI,Finland,5546833,Helsinki,,
 FR,France,65376055,Paris,33680000,31590000,True
 GE,Georgia,10830007,Tbilisi,,

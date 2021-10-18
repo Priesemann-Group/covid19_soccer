@@ -24,7 +24,7 @@ args.id = args.id - 1
 log.info(f"ID: {args.id}")
 
 
-dir_traces = "/data.nst/jdehning/covid_uefa_traces2"
+dir_traces = "/data.nst/jdehning/covid_uefa_traces4"
 
 """ Create possible different combinations
 """
@@ -48,7 +48,8 @@ beta = [0, 1]
 # offset = [0, -35, -15, -10, -8, -6, -5, -4, -2, -1, 1, 2, 3, 4, 5, 6, 8, 10, 15, 35]
 # offset = [-35, -28, -10, -8, -6, -4, -2, -1, 35]
 # offset = [0]
-offset = [0, -5, -4, -2, -1, 1, 2, 3, 4, 5]
+# offset = [0, -5, -4, -2, -1, 1, 2, 3, 4, 5]
+offset = [0, -3, -2, -1, 1, 2, 3]
 
 # draw delay width i.e. true false
 draw_delay = [1]

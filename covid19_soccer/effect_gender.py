@@ -45,25 +45,23 @@ def R_t_soccer(alpha_prior, date_of_games, beta_prior=None, S=None, model=None):
     log.info("R_t_soccer with deltas")
     model = modelcontext(model)
 
-    # Effect for each game
-    alpha_raw = alpha(alpha_prior)
-    alpha_R = tt.nnet.softplus(alpha_raw) - np.log(2)
-    pm.Deterministic("alpha_R", alpha_R)
-    eff = alpha_R
-
-    if beta_prior is not None:
-        beta_raw = beta(beta_prior, S)
-        beta_R = tt.nnet.softplus(beta_raw) - np.log(2)
-        pm.Deterministic("beta_R", beta_R)
-        eff += beta_R
-
     # Construct d = δ(t_g−t)
     t = np.arange(model.sim_len)
     t_g = [(game - model.sim_begin).days for game in date_of_games]
     d = _delta(np.subtract.outer(t, t_g))
 
+    # Effect for each game
+    alpha_raw = alpha(alpha_prior)
+    pm.Deterministic("alpha_R", tt.expm1(alpha_raw))
+    eff = tt.expm1(tt.dot(d, alpha_raw))
+
+    if beta_prior is not None:
+        beta_raw = beta(beta_prior, S)
+        pm.Deterministic("beta_R", tt.expm1(beta_raw))
+        eff += tt.expm1(tt.dot(d, beta_raw))
+
     # Sum over all games
-    R_soccer = tt.dot(d, eff)
+    R_soccer = eff
 
     R_soccer = tt.clip(R_soccer, -50, 50)  # to avoid nans
 
@@ -142,14 +140,14 @@ def beta(beta_prior, S):
     Δβ_g = tt.as_tensor_variable(beta_prior)
 
     # Same across all games
-    β_mean = pm.Normal(name="beta_mean", mu=0, sigma=2)
+    β_mean = pm.Normal(name="beta_mean", mu=0, sigma=5)
 
     # Offset per game
     # - generated depending on a alpha_prior
     Δβ_g_sparse = pm.Normal(
         "Delta_beta_g_sparse", mu=0, sigma=1, shape=len(beta_prior[beta_prior > 0])
     )
-    σ_g = pm.HalfNormal(name="sigma_beta_g", sigma=2)
+    σ_g = pm.HalfNormal(name="sigma_beta_g", sigma=5)
 
     # Set the entries for the played games
     Δβ_g = tt.set_subtensor(Δβ_g[beta_prior > 0], Δβ_g_sparse)

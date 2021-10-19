@@ -370,14 +370,9 @@ def create_model_gender(
         # using sigmoidals. Even though the function is called lambda_t
         # the specific values are controlled by the priors and are around one.
         # https://science.sciencemag.org/content/369/6500/eabb9789.full
-        sigma_lambda_cp = (
-            pm.HalfStudentT(
-                name="sigma_lambda_cp",
-                nu=4,
-                sigma=1,
-                transform=pm.transforms.log_exp_m1,
-            )
-        ) * 0.1
+        sigma_lambda_cp = pm.HalfNormal(
+            name="sigma_lambda_cp", sigma=0.5, transform=pm.transforms.log_exp_m1,
+        )
         sigma_lambda_week_cp = None
         R_t_base_log = lambda_t_with_sigmoids(
             change_points_list=change_points,
@@ -421,7 +416,7 @@ def create_model_gender(
         pm.Deterministic("R_t_add_fact", R_t_add)
 
         # Default gender interconnection matrix
-        c_off = pm.Beta("c_off", alpha=4, beta=4)
+        c_off = pm.Beta("c_off", alpha=8, beta=8)
         C_0 = tt.stack([1.0 - c_off, c_off])
         C_1 = tt.stack([c_off, 1.0 - c_off])
         C_base = tt.stack([C_0, C_1])

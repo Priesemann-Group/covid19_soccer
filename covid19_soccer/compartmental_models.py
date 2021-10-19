@@ -176,6 +176,8 @@ def kernelized_spread_soccer(
             * tt.tensordot(R_base * C_base + R_soccer * C_soccer, new_I_t, axes=1)
         )
 
+        new_E_t = tt.clip(new_E_t, 0, N)
+
         # Update susceptible compartment
         S_t = S_t - new_E_t
         S_t = tt.clip(S_t, -1, N)

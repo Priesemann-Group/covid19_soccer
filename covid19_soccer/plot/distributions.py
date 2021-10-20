@@ -150,7 +150,9 @@ def _distribution(
 
     """
     if ax is None:
-        fig, ax = plt.subplots(figsize=(4.5 / 3, 1),)
+        fig, ax = plt.subplots(
+            figsize=(4.5 / 3, 1),
+        )
 
     # ------------------------------------------------------------------------------ #
     # Plot
@@ -201,7 +203,11 @@ def _distribution(
             zorder=101,
         )
         _add_mpl_rect_around_text(
-            [tel_md, tel_ci], ax, facecolor="white", alpha=0.5, zorder=99,
+            [tel_md, tel_ci],
+            ax,
+            facecolor="white",
+            alpha=0.5,
+            zorder=99,
         )
     except Exception as e:
         log.debug(f"Unable to create inset with {dist_name} value: {e}")

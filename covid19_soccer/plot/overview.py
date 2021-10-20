@@ -17,7 +17,12 @@ def plot_overview_quad(traces, models, dls):
 
     fig = plt.figure(figsize=(6, 5))
     # Two columns/rows
-    outer_grid = fig.add_gridspec(2, 2, wspace=0.35, hspace=0.25,)
+    outer_grid = fig.add_gridspec(
+        2,
+        2,
+        wspace=0.35,
+        hspace=0.25,
+    )
     # out = fig.add_subplot(outer_grid[0:,-1])
     # out.set_ylabel("Percentage of soccer related infections\nduring the duration of the Championship")
     # Two rows
@@ -160,7 +165,13 @@ def plot_overview_single(
 
     a4 = fig.add_subplot(grid[-1, -1])
     distribution(
-        model, trace, "delay", nSamples_prior=1000, title="", dist_math="D", ax=a4,
+        model,
+        trace,
+        "delay",
+        nSamples_prior=1000,
+        title="",
+        dist_math="D",
+        ax=a4,
     )
 
     # Set right and bottom axis
@@ -192,7 +203,7 @@ def plot_overview_single(
 
 
 # Functions
-def plot_cases(ax, trace, model, dl, ylim=None, color=None):
+def plot_cases(ax, trace, model, dl, ylim=None, color=None, color_data=None):
     """
     Plots number of cases
     """
@@ -218,13 +229,20 @@ def plot_cases(ax, trace, model, dl, ylim=None, color=None):
         ms=1.5,
         alpha=0.8,
     )
+
+    # Show time of uefa championship
     begin = datetime.datetime(2021, 6, 11)
     end = datetime.datetime(2021, 7, 11)
+    ax.fill_betweenx(np.arange(0, 10000), begin, end, alpha=0.1)
 
-    ax.fill_betweenx(np.arange(0, 1000), begin, end, alpha=0.1)
+    # Adjust ylim
     if ylim is not None:
         ax.set_ylim(ylim)
+
+    # Markup
     ax.set_ylabel("Incidence")
+
+    return ax
 
 
 def plot_fraction(ax, trace, model, dl, ylim_fraction=None):
@@ -264,8 +282,8 @@ def plot_fraction(ax, trace, model, dl, ylim_fraction=None):
 
 def plot_rsoccer(ax, trace, model, dl):
     """
-    Plots the base and soccer reproduction number 
-    
+    Plots the base and soccer reproduction number
+
     Parameters
     ----------
     trace:
@@ -331,7 +349,7 @@ def plot_alphaMean(ax, trace, model, dl, beta=False):
 def plot_reproductionViolin(ax, trace, model, dl, plot_dates=True, color=None):
     """
     Violin plot for the additional R values for each game and country.
-    
+
     """
     key = "alpha"
 

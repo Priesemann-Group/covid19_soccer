@@ -87,7 +87,7 @@ parser.add_argument(
     "--median_width_delay",
     type=float,
     help="prior width of the testing delay",
-    default=1.5,
+    default=1.0,
 )
 
 

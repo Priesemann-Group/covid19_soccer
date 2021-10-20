@@ -90,6 +90,13 @@ parser.add_argument(
     default=1.0,
 )
 
+parser.add_argument(
+    "--interval_cps",
+    type=float,
+    help="number of days between change points",
+    default=10.0,
+)
+
 
 parser.add_argument(
     "--tune", type=int, help="How many tuning steps?", default=1000,
@@ -197,6 +204,7 @@ if __name__ == "__main__":
         width_delay_prior=args.width_delay_prior,
         sigma_incubation=args.sigma_incubation,
         median_width_delay=args.median_width_delay,
+        interval_cps=args.interval_cps,
     )
 
     """ MCMC sampling

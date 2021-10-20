@@ -267,6 +267,7 @@ def create_model_gender(
     width_delay_prior=0.1,
     sigma_incubation=-1,
     median_width_delay=1.0,
+    interval_cps=10,
 ):
     """
     High level function to create an abstract pymc3 model using different defined
@@ -306,27 +307,23 @@ def create_model_gender(
             prior_delay = 5
         else:
             raise RuntimeError("Country not known")
-    # Config for changepoints
-    pr_sigma_lambda_cp = 0.3
-    pr_median_lambda = 1.0
 
     # Median of the prior for the delay in case reporting, we assume 10 days
-
+    default_interval = 10
+    ratio_interval = interval_cps / default_interval
     cps_dict = dict(  # one possible change point every sunday
-        pr_sigma_lambda=pr_sigma_lambda_cp,  # wiggle compared to previous point
         relative_to_previous=True,
         pr_factor_to_previous=1.0,
-        pr_sigma_transient_len=1,
-        pr_median_transient_len=4,
-        pr_median_lambda=pr_median_lambda,
-        pr_sigma_date_transient=3.5,
+        pr_sigma_transient_len=1 * ratio_interval,
+        pr_median_transient_len=4 * ratio_interval,
+        pr_sigma_date_transient=3.5 * ratio_interval,
     )
 
     # Change points every 10 days
     change_points = get_cps(
         dl.data_begin - datetime.timedelta(days=10),
         dl.data_end,
-        interval=10,
+        interval=interval_cps,
         offset=5,
         **cps_dict,
     )
@@ -376,7 +373,7 @@ def create_model_gender(
         sigma_lambda_week_cp = None
         R_t_base_log = lambda_t_with_sigmoids(
             change_points_list=change_points,
-            pr_median_lambda_0=pr_median_lambda,
+            pr_median_lambda_0=1.0,
             hierarchical=False,
             sigma_lambda_cp=sigma_lambda_cp,
             sigma_lambda_week_cp=sigma_lambda_week_cp,
@@ -395,17 +392,14 @@ def create_model_gender(
         )
         pm.Deterministic("R_t_soccer", R_t_add)
 
+        sigma_lambda_cp_noise = pm.HalfNormal(
+            name="sigma_lambda_cp_noise", sigma=0.2, transform=pm.transforms.log_exp_m1,
+        )
         R_t_add_noise = lambda_t_with_sigmoids(
-            change_points_list=get_cps(
-                this_model.data_begin,
-                this_model.sim_end,
-                interval=10,
-                pr_median_transient_len=4,
-                pr_sigma_transient_len=1,
-                pr_sigma_date_transient=3.5,
-            ),
+            change_points_list=change_points,
             pr_median_lambda_0=1.0,
             pr_sigma_lambda_0=0.1,
+            sigma_lambda_cp=sigma_lambda_cp_noise,
             name_lambda_t="R_t_add_noise_fact",
             prefix_lambdas="R_t_add_noise_fact_",
             shape=1,

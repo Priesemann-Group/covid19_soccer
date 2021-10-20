@@ -24,7 +24,7 @@ args.id = args.id - 1
 log.info(f"ID: {args.id}")
 
 
-dir_traces = "/data.nst/jdehning/covid_uefa_traces7"
+dir_traces = "/data.nst/jdehning/covid_uefa_traces8"
 
 """ Create possible different combinations
 """
@@ -69,6 +69,8 @@ width_delay_prior = [0.1]
 median_width_delay = [0.5, 1.0, 2.0]
 # median_width_delay = [1.5]
 
+interval_cps = [10.0, 6.0, 20.0]
+
 mapping = []
 
 for draw_args in sampling:
@@ -81,40 +83,47 @@ for draw_args in sampling:
                             for wdp in width_delay_prior:
                                 for si in sigma_incubation:
                                     for mwd in median_width_delay:
-                                        default_vals = True if b == 0 else False
-                                        if not off == 0:
-                                            if not default_vals:
-                                                continue
-                                            else:
-                                                default_vals = False
-                                        if not wa == 0:
-                                            if not default_vals:
-                                                continue
-                                            else:
-                                                default_vals = False
-                                        if not pd == -1:
-                                            if not default_vals:
-                                                continue
-                                            else:
-                                                default_vals = False
-                                        if not mwd == 1.5:
-                                            if not default_vals:
-                                                continue
-                                            else:
-                                                default_vals = False
+                                        for inter in interval_cps:
+                                            default_vals = True if b == 0 else False
+                                            if not off == 0:
+                                                if not default_vals:
+                                                    continue
+                                                else:
+                                                    default_vals = False
+                                            if not wa == 0:
+                                                if not default_vals:
+                                                    continue
+                                                else:
+                                                    default_vals = False
+                                            if not pd == -1:
+                                                if not default_vals:
+                                                    continue
+                                                else:
+                                                    default_vals = False
+                                            if not mwd == 1.0:
+                                                if not default_vals:
+                                                    continue
+                                                else:
+                                                    default_vals = False
+                                            if not inter == 10.0:
+                                                if not default_vals:
+                                                    continue
+                                                else:
+                                                    default_vals = False
 
-                                        ma = []
-                                        ma.append(b)
-                                        ma.append(country)
-                                        ma += draw_args
-                                        ma.append(off)
-                                        ma.append(delay)
-                                        ma.append(wa)
-                                        ma.append(pd)
-                                        ma.append(wdp)
-                                        ma.append(si)
-                                        ma.append(mwd)
-                                        mapping.append(tuple(ma))
+                                            ma = []
+                                            ma.append(b)
+                                            ma.append(country)
+                                            ma += draw_args
+                                            ma.append(off)
+                                            ma.append(delay)
+                                            ma.append(wa)
+                                            ma.append(pd)
+                                            ma.append(wdp)
+                                            ma.append(si)
+                                            ma.append(mwd)
+                                            ma.append(inter)
+                                            mapping.append(tuple(ma))
 
 
 def exec(
@@ -130,6 +139,7 @@ def exec(
     width_delay_prior,
     sigma_incubation,
     median_width_delay,
+    interval_cps,
 ):
     """
     Executes python script
@@ -147,6 +157,7 @@ def exec(
         f"--width_delay_prior {width_delay_prior} "
         f"--sigma_incubation {sigma_incubation} "
         f"--median_width_delay {median_width_delay} "
+        f"--interval_cps {interval_cps} "
     )
 
 

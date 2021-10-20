@@ -1,6 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import logging
+import datetime
+import numpy as np
 
 from covid19_inference.plot import _timeseries
 from .utils import get_from_trace
@@ -36,11 +38,14 @@ def incidence(
     )
 
     # Plot data
+    data_points = (
+        (dl.new_cases_obs[:, 0, 0] + dl.new_cases_obs[:, 1, 0])
+        / (dl.population[0, 0] + dl.population[1, 0])
+        * 1e6
+    )
     _timeseries(
         x=pd.date_range(model.data_begin, model.data_end),
-        y=(dl.new_cases_obs[:, 0, 0] + dl.new_cases_obs[:, 1, 0])
-        / (dl.population[0, 0] + dl.population[1, 0])
-        * 1e6,  # male/female
+        y=data_points,
         what="data",
         ax=ax,
         color=rcParams.color_data if color_data is None else color_data,
@@ -56,6 +61,8 @@ def incidence(
     # Adjust ylim
     if ylim is not None:
         ax.set_ylim(ylim)
+    else:
+        ax.set_ylim(data_points.min(), data_points.max())
 
     # Markup
     ax.set_ylabel("Incidence")
@@ -90,7 +97,7 @@ def fraction_male_female(
     )
 
     # Plot data
-    cov19.plot._timeseries(
+    _timeseries(
         x=pd.date_range(model.data_begin, model.data_end),
         y=(dl.new_cases_obs[:, 0, 0] / dl.population[0, 0])
         / (dl.new_cases_obs[:, 1, 0] / dl.population[1, 0]),  # male/female

@@ -543,3 +543,170 @@ def plot_relative_from_soccer(
         print(f"\tfemale {np.percentile(ratio_soccer[:,1], [50,2.5,97.5])}")
 
     return ax
+
+
+from .timeseries import *
+from .distributions import distribution
+from matplotlib.lines import Line2D
+from matplotlib.patches import Patch
+
+
+def single_extended(trace, model, dl, xlim=None):
+    """
+    Create an extended overview plot for a single model run. Adjust colors with rcParams
+    """
+
+    fig = plt.figure(figsize=(7, 1.7 * 4))
+    axes_ts = []
+
+    grid = fig.add_gridspec(
+        5, 3, wspace=0.15, hspace=0.25, width_ratios=[1, 0.25, 0.25]
+    )
+
+    """ timeseries plots
+    """
+    # Cases
+    ax = fig.add_subplot(grid[0, 0])
+    incidence(ax, trace, model, dl)
+    axes_ts.append(ax)
+
+    # Gender imbalance
+    ax = fig.add_subplot(grid[1, 0])
+    fraction_male_female(ax, trace, model, dl)
+    axes_ts.append(ax)
+
+    # R_base
+    ax = fig.add_subplot(grid[2, 0])
+    R_base(ax, trace, model, dl)
+    axes_ts.append(ax)
+
+    # R_soccer + R_noise
+    ax = fig.add_subplot(grid[3, 0])
+    R_soccer(ax, trace, model, dl, add_noise=True)
+    axes_ts.append(ax)
+
+    """ distributions
+    """
+    # delay
+    ax = fig.add_subplot(grid[0, 1])
+    distribution(
+        model,
+        trace,
+        "delay",
+        nSamples_prior=5000,
+        title="",
+        dist_math="D",
+        ax=ax,
+    )
+    ax = fig.add_subplot(grid[0, 2])
+    distribution(
+        model,
+        trace,
+        "delay-width",
+        nSamples_prior=5000,
+        title="",
+        dist_math="\sigma_{D}",
+        ax=ax,
+    )
+
+    # gender interaction factors
+    ax = fig.add_subplot(grid[1, 1])
+    distribution(
+        model,
+        trace,
+        "factor_female",
+        nSamples_prior=5000,
+        title="",
+        dist_math="\omega_{fem}",
+        ax=ax,
+    )
+    ax = fig.add_subplot(grid[1, 2])
+    distribution(
+        model,
+        trace,
+        "c_off",
+        nSamples_prior=5000,
+        title="",
+        dist_math="c_{off}",
+        ax=ax,
+    )
+
+    # likelihood and week modulation
+    ax = fig.add_subplot(grid[2, 1])
+    distribution(
+        model,
+        trace,
+        "sigma_obs",
+        nSamples_prior=5000,
+        title="",
+        dist_math="\sigma_{obs}",
+        ax=ax,
+    )
+    ax = fig.add_subplot(grid[2, 2])
+    distribution(
+        model,
+        trace,
+        "weekend_factor",
+        nSamples_prior=5000,
+        title="",
+        dist_math="h_{w}",  # What was
+        ax=ax,
+    )
+
+    ax = fig.add_subplot(grid[3, 1])
+    distribution(
+        model,
+        trace,
+        "offset_modulation",
+        nSamples_prior=5000,
+        title="",
+        dist_math="\chi_{w}",  # What was
+        ax=ax,
+    )
+
+    """ Legend
+    """
+    custom_lines = [
+        Line2D(
+            [0],
+            [0],
+            marker="d",
+            color=rcParams.color_data,
+            label="Scatter",
+            markersize=4,
+            lw=0,
+        ),
+        Line2D([0], [0], color=rcParams.color_model, lw=2),
+        Line2D([0], [0], color=rcParams.color_prior, lw=2),
+        Patch(
+            [0],
+            [0],
+            color=rcParams.color_posterior,
+            lw=2.5,
+        ),
+    ]
+    ax = fig.add_subplot(grid[3, 2])
+    ax.legend(
+        custom_lines,
+        [
+            "Data",
+            "Model",
+            "Prior",
+            "Posterior",
+        ],
+        loc="center",
+    )
+    ax.axis("off")
+
+    # Adjust xlim for timeseries plots
+    for ax in axes_ts:
+        if xlim is None:
+            ax.set_xlim(model.sim_begin, model.sim_end)
+        else:
+            ax.set_xlim(xlim)
+
+        # Hack: Disable every second ticklabel
+        for label in ax.xaxis.get_ticklabels()[::2]:
+            label.set_visible(False)
+
+    return fig

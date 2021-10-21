@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib.dates as mdates
+from .rcParams import *
 
 
 def get_from_trace(var, trace):
@@ -36,3 +38,12 @@ def lighten_color(color, amount=0.5):
         c = color
     c = colorsys.rgb_to_hls(*mc.to_rgb(c))
     return colorsys.hls_to_rgb(c[0], 1 - amount * (1 - c[1]), c[2])
+
+
+def format_date_axis(ax):
+    """
+    Formats axis with dates
+    """
+    ax.xaxis.set_major_locator(mdates.WeekdayLocator(interval=4))
+    ax.xaxis.set_minor_locator(mdates.WeekdayLocator(interval=1))
+    ax.xaxis.set_major_formatter(mdates.DateFormatter(rcParams.date_format))

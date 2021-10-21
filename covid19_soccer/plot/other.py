@@ -2,6 +2,8 @@ import seaborn as sns
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
+from matplotlib.lines import Line2D
+from matplotlib.patches import Patch
 import pandas as pd
 import numpy as np
 import logging
@@ -265,5 +267,98 @@ def soccer_related_cases(
         log.info(f"CI [50,2.5,97.5] {dl.countries}:")
         log.info(f"\tmale {np.percentile(ratio_soccer[:,0], [50,2.5,97.5])}")
         log.info(f"\tfemale {np.percentile(ratio_soccer[:,1], [50,2.5,97.5])}")
+
+    return ax
+
+
+def legend(ax=None, prior=True, posterior=True, model=True, data=True, sex=True):
+    """
+    Plots a legend
+    """
+
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(3, 3))
+
+    lines = []
+    labels = []
+
+    # Data
+    if data:
+        lines.append(
+            Line2D(
+                [0],
+                [0],
+                marker="d",
+                color=rcParams.color_data,
+                markersize=4,
+                lw=0,
+            )
+        )
+        labels.append("Data")
+
+    # Model
+    if model:
+        lines.append(
+            Line2D(
+                [0],
+                [0],
+                color=rcParams.color_model,
+                lw=2,
+            )
+        )
+        labels.append("Model")
+
+    # Prior
+    if prior:
+        lines.append(
+            Line2D(
+                [0],
+                [0],
+                color=rcParams.color_prior,
+                lw=2,
+            )
+        )
+        labels.append("Prior")
+
+    # Posterior
+    if posterior:
+        lines.append(
+            Patch(
+                [0],
+                [0],
+                color=rcParams.color_posterior,
+                lw=2.5,
+            ),
+        )
+        labels.append("Posterior")
+
+    # male
+    if sex:
+        lines.append(
+            Patch(
+                [0],
+                [0],
+                color=rcParams.color_male,
+                lw=2.5,
+            ),
+        )
+        labels.append("Male")
+
+        # female
+        lines.append(
+            Patch(
+                [0],
+                [0],
+                color=rcParams.color_female,
+                lw=2.5,
+            ),
+        )
+        labels.append("Female")
+
+    ax.legend(
+        lines,
+        labels,
+    )
+    ax.axis("off")
 
     return ax

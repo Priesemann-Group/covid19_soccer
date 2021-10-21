@@ -103,7 +103,7 @@ def game_effects(
 
     """ Markup
     """
-    ax.set_ylabel("Game effects")
+    ax.set_ylabel("Game\neffects")
 
     # Format x axis
     ax.set_xlim(xlim)

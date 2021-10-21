@@ -267,7 +267,7 @@ def single_extended(trace, model, dl, xlim=None):
     return fig
 
 
-def multi(traces, models, dls, nColumns=2, xlim=None, verbose=False):
+def multi(traces, models, dls, nColumns=2, xlim=None, verbose=False, plot_delay=False):
     """
     Creates a overview plot for multiple model runs e.g. different countries.
 
@@ -295,18 +295,26 @@ def multi(traces, models, dls, nColumns=2, xlim=None, verbose=False):
         wspace=0.4,
         hspace=0.35,
     )
+    axes = []
     for i, (trace, model, dl) in enumerate(zip(traces, models, dls)):
         # Mapping to 2d index
         x = i % nColumns
         y = i // nColumns
 
-        axes = single(
-            trace, model, dl, outer_grid=outer_grid[x, y], xlim=xlim, verbose=verbose
+        axes_t = single(
+            trace,
+            model,
+            dl,
+            outer_grid=outer_grid[x, y],
+            xlim=xlim,
+            verbose=verbose,
+            plot_delay=plot_delay,
         )
 
-        axes[0].set_title(dl.countries[0])
+        axes_t[0].set_title(dl.countries[0])
+        axes.append(axes_t)
 
     # Kinda dirty fix to align y labels, does not work incredible well
     fig.align_ylabels()
 
-    return fig
+    return axes_t

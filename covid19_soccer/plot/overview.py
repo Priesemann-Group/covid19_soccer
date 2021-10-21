@@ -547,13 +547,85 @@ def plot_relative_from_soccer(
 
 from .timeseries import *
 from .distributions import distribution
+from .other import *
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 
 
+def single(trace, model, dl, xlim=None, outer_grid=None):
+    """
+    Create a single simple overview plot for one model run / country.
+    This plot contains Incidence, fraction_male_female the single game effects
+    and the soccer related percentage of infections.
+
+    Adjust colors with rcParams
+
+    Parameters
+    ----------
+    outer_grid : mpl grid
+        If you want to plot the overview plot inside another grid,
+        usefull for comparisons
+
+    Returns
+    -------
+    axes
+
+    """
+    if outer_grid is None:
+        fig = plt.figure(figsize=(7, 5))
+        grid = fig.add_gridspec(3, 2, wspace=0.35, hspace=0.25, width_ratios=[1, 0.3])
+    else:
+        grid = outer_grid.subgridspec(
+            3, 2, wspace=0.35, hspace=0.25, width_ratios=[1, 0.3]
+        )
+
+    axes_ts = []
+    """ Timeseries plots
+    """
+    # Cases
+    ax = fig.add_subplot(grid[0, 0])
+    incidence(ax, trace, model, dl)
+    axes_ts.append(ax)
+
+    # Gender imbalance
+    ax = fig.add_subplot(grid[1, 0])
+    fraction_male_female(ax, trace, model, dl)
+    axes_ts.append(ax)
+
+    # Single game effects
+    ax = fig.add_subplot(grid[2, 0])
+    game_effects(ax, trace, model, dl)
+    axes_ts.append(ax)
+
+    """ Relative soccer related cases
+    """
+    ax = fig.add_subplot(grid[0:, -1])
+    soccer_related_cases(ax, trace, model, dl)
+
+    # Markup
+    if xlim is None:
+        xlim = [model.sim_begin, model.sim_end]
+
+    for ax in axes_ts:
+        ax.set_xlim(xlim)
+        format_date_axis(ax)
+
+        ax.spines["right"].set_visible(False)
+        ax.spines["top"].set_visible(False)
+
+    axes_ts.append(ax)
+
+    return axes_ts
+
+
 def single_extended(trace, model, dl, xlim=None):
     """
-    Create an extended overview plot for a single model run. Adjust colors with rcParams
+    Create an extended overview plot for a single model run.
+    This includes incidence, gender imbalance, R_base, R_soccer+R_noise,
+    delay, delay-width, factor_female, c_off, sigma_obs
+    and the weekend factors.
+
+    Adjust colors with rcParams
     """
 
     fig = plt.figure(figsize=(7, 1.7 * 4))

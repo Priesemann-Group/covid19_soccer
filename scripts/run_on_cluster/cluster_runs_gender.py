@@ -32,12 +32,25 @@ dir_traces = "/data.nst/jdehning/covid_uefa_traces8"
 
 # Countries with gender data
 countries = ["Scotland", "Germany", "France", "England", "Portugal"]
+countries = [
+    "Austria",
+    "Belgium",
+    "Czechia",
+    "Italy",
+    "Netherlands",
+    "Portugal",
+    "Slovakia",
+    "Slovenia",
+    "Spain",
+    "Sweden",
+    "Switzerland",
+]
 
 # [tune,draw,treedepth]
 sampling = [
     [200, 300, 10],
-    # [500, 1000, 12],
-    [1000, 1500, 12],
+    [500, 1000, 12],
+    # [1000, 1500, 12],
 ]
 
 # True or false
@@ -50,6 +63,7 @@ beta = [0, 1]
 # offset = [0]
 # offset = [0, -5, -4, -2, -1, 1, 2, 3, 4, 5]
 offset = [0, -3, -2, -1, 1, 2, 3, 4, 5]
+offset = [0]
 
 # draw delay width i.e. true false
 draw_delay = [1]
@@ -66,10 +80,11 @@ sigma_incubation = [-1]
 
 width_delay_prior = [0.1]
 
-median_width_delay = [0.5, 1.0, 2.0]
-# median_width_delay = [1.5]
+# median_width_delay = [0.5, 1.0, 2.0]
+median_width_delay = [1.0]
 
 interval_cps = [10.0, 6.0, 20.0]
+interval_cps = [10.0]
 
 mapping = []
 

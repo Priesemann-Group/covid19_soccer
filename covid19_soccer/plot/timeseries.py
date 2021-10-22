@@ -13,19 +13,12 @@ log = logging.getLogger(__name__)
 
 
 def incidence(
-    ax,
-    trace,
-    model,
-    dl,
-    ylim=None,
-    color=None,
-    color_data=None,
+    ax, trace, model, dl, ylim=None, color=None, color_data=None,
 ):
     """
     Plots incidence: modelfit and data
     """
     new_cases = get_from_trace("new_cases", trace)
-
     # Plot model fit
     _timeseries(
         x=pd.date_range(model.sim_begin, model.sim_end),
@@ -62,7 +55,7 @@ def incidence(
     if ylim is not None:
         ax.set_ylim(ylim)
     else:
-        ax.set_ylim(data_points.min(), data_points.max())
+        ax.set_ylim(0, data_points.max() + 50)
 
     # Markup
     ax.set_ylabel("Incidence")
@@ -71,13 +64,7 @@ def incidence(
 
 
 def fraction_male_female(
-    ax,
-    trace,
-    model,
-    dl,
-    ylim=None,
-    color=None,
-    color_data=None,
+    ax, trace, model, dl, ylim=None, color=None, color_data=None,
 ):
     """
     Plot fraction between male and female cases normalized by population size
@@ -136,7 +123,10 @@ def R_soccer(ax, trace, model, dl, ylim=None, color=None, add_noise=False):
     )
 
     # Plot baseline
-    ax.axhline(1, ls="--", color="tab:gray", zorder=-100)
+    if add_noise:
+        ax.axhline(1, ls="--", color="tab:gray", zorder=-100)
+    else:
+        ax.axhline(0, ls="--", color="tab:gray", zorder=-100)
 
     # Adjust ylim
     if ylim is not None:
@@ -173,5 +163,30 @@ def R_base(ax, trace, model, dl, ylim=None, color=None):
 
     # Markup
     ax.set_ylabel("$R_{base}$")
+
+    return ax
+
+
+def R_noise(ax, trace, model, dl, ylim=None, color=None):
+    R_noise = get_from_trace("R_t_add_noise_fact", trace)[:, :, 0]
+
+    # Plot model fit
+    _timeseries(
+        x=pd.date_range(model.sim_begin, model.sim_end),
+        y=R_noise,
+        ax=ax,
+        what="model",
+        color=rcParams.color_model if color is None else color,
+    )
+
+    # Plot baseline
+    ax.axhline(1, ls="--", color="tab:gray", zorder=-100)
+
+    # Adjust ylim
+    if ylim is not None:
+        ax.set_ylim(ylim)
+
+    # Markup
+    ax.set_ylabel("$R_{noise}$")
 
     return ax

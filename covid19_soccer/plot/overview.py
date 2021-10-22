@@ -9,7 +9,14 @@ from matplotlib.patches import Patch
 
 
 def single(
-    trace, model, dl, xlim=None, outer_grid=None, plot_delay=False, verbose=False
+    trace,
+    model,
+    dl,
+    xlim=None,
+    outer_grid=None,
+    plot_delay=False,
+    plot_beta=False,
+    verbose=False,
 ):
     """
     Create a single simple overview plot for one model run / country.
@@ -64,7 +71,8 @@ def single(
         ax = fig.add_subplot(grid[0:-1, -1])
     else:
         ax = fig.add_subplot(grid[0:, -1])
-    soccer_related_cases(ax, trace, model, dl, verbose=verbose)
+
+    soccer_related_cases(ax, trace, model, dl, verbose=verbose, add_beta=plot_beta)
 
     if plot_delay:
         ax_delay = fig.add_subplot(grid[-1, -1])
@@ -111,11 +119,11 @@ def single_extended(trace, model, dl, xlim=None):
     Adjust colors with rcParams
     """
 
-    fig = plt.figure(figsize=(7, 1.7 * 4))
+    fig = plt.figure(figsize=(7, 1.35 * 4))
     axes_ts = []
 
     grid = fig.add_gridspec(
-        5, 3, wspace=0.15, hspace=0.25, width_ratios=[1, 0.25, 0.25]
+        4, 3, wspace=0.15, hspace=0.25, width_ratios=[1, 0.25, 0.25]
     )
 
     """ timeseries plots
@@ -135,23 +143,23 @@ def single_extended(trace, model, dl, xlim=None):
     R_base(ax, trace, model, dl)
     axes_ts.append(ax)
 
-    # R_soccer + R_noise
+    # R_soccer
     ax = fig.add_subplot(grid[3, 0])
     R_soccer(ax, trace, model, dl, add_noise=True)
     axes_ts.append(ax)
 
+    # R_noise
+    # ax = fig.add_subplot(grid[4, 0])
+    # R_noise(ax, trace, model, dl)
+    # axes_ts.append(ax)
+
     """ distributions
     """
+
     # delay
     ax = fig.add_subplot(grid[0, 1])
     distribution(
-        model,
-        trace,
-        "delay",
-        nSamples_prior=5000,
-        title="",
-        dist_math="D",
-        ax=ax,
+        model, trace, "delay", nSamples_prior=5000, title="", dist_math="D", ax=ax,
     )
     ax = fig.add_subplot(grid[0, 2])
     distribution(
@@ -204,7 +212,7 @@ def single_extended(trace, model, dl, xlim=None):
         "weekend_factor",
         nSamples_prior=5000,
         title="",
-        dist_math="h_{w}",  # What was
+        dist_math="h_{w}",
         ax=ax,
     )
 
@@ -215,7 +223,7 @@ def single_extended(trace, model, dl, xlim=None):
         "offset_modulation",
         nSamples_prior=5000,
         title="",
-        dist_math="\chi_{w}",  # What was
+        dist_math="\chi_{w}",
         ax=ax,
     )
 
@@ -233,23 +241,11 @@ def single_extended(trace, model, dl, xlim=None):
         ),
         Line2D([0], [0], color=rcParams.color_model, lw=2),
         Line2D([0], [0], color=rcParams.color_prior, lw=2),
-        Patch(
-            [0],
-            [0],
-            color=rcParams.color_posterior,
-            lw=2.5,
-        ),
+        Patch([0], [0], color=rcParams.color_posterior, lw=2.5,),
     ]
     ax = fig.add_subplot(grid[3, 2])
     ax.legend(
-        custom_lines,
-        [
-            "Data",
-            "Model",
-            "Prior",
-            "Posterior",
-        ],
-        loc="center",
+        custom_lines, ["Data", "Model", "Prior", "Posterior",], loc="center",
     )
     ax.axis("off")
 
@@ -267,7 +263,16 @@ def single_extended(trace, model, dl, xlim=None):
     return fig
 
 
-def multi(traces, models, dls, nColumns=2, xlim=None, verbose=False, plot_delay=False):
+def multi(
+    traces,
+    models,
+    dls,
+    nColumns=2,
+    xlim=None,
+    verbose=False,
+    plot_delay=False,
+    plot_beta=False,
+):
     """
     Creates a overview plot for multiple model runs e.g. different countries.
 
@@ -289,12 +294,7 @@ def multi(traces, models, dls, nColumns=2, xlim=None, verbose=False, plot_delay=
 
     fig = plt.figure(figsize=(3.5 * nColumns, 2.5 * nRows))
 
-    outer_grid = fig.add_gridspec(
-        nRows,
-        nColumns,
-        wspace=0.4,
-        hspace=0.35,
-    )
+    outer_grid = fig.add_gridspec(nRows, nColumns, wspace=0.4, hspace=0.35,)
     axes = []
     for i, (trace, model, dl) in enumerate(zip(traces, models, dls)):
         # Mapping to 2d index
@@ -305,10 +305,11 @@ def multi(traces, models, dls, nColumns=2, xlim=None, verbose=False, plot_delay=
             trace,
             model,
             dl,
-            outer_grid=outer_grid[x, y],
+            outer_grid=outer_grid[y, x],
             xlim=xlim,
             verbose=verbose,
             plot_delay=plot_delay,
+            plot_beta=plot_beta,
         )
 
         axes_t[0].set_title(dl.countries[0])
@@ -317,4 +318,4 @@ def multi(traces, models, dls, nColumns=2, xlim=None, verbose=False, plot_delay=
     # Kinda dirty fix to align y labels, does not work incredible well
     fig.align_ylabels()
 
-    return axes_t
+    return axes

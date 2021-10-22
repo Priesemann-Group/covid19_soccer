@@ -9,7 +9,7 @@ import numpy as np
 import logging
 import datetime
 
-from .utils import get_from_trace, lighten_color, format_date_axis
+from .utils import get_from_trace, lighten_color, format_date_axis, _apply_delta
 from .rcParams import *
 
 
@@ -61,7 +61,7 @@ def game_effects(
             showmedians=False,
             showextrema=False,
             # quantiles=[0.025,0.975],
-            points=100,
+            points=1000,
             widths=1.5,
         )
         # Color violinstatistics
@@ -76,7 +76,7 @@ def game_effects(
             pc.set_facecolor(lighten_color(color, 0.8))
             pc.set_edgecolor(lighten_color(color, 0.8))
 
-        ax.scatter(dates, medians, marker="x", color=color, s=15, zorder=3, lw=1)
+        ax.scatter(dates, medians, marker=".", color=color, s=10, zorder=3, lw=1)
         ax.vlines(dates, quartile1, quartile3, color=color, linestyle="-", lw=1)
         ax.scatter(dates, quartile1, color=color, marker="_", s=10, zorder=3, lw=1)
         ax.scatter(dates, quartile3, color=color, marker="_", s=10, zorder=3, lw=1)
@@ -125,6 +125,7 @@ def soccer_related_cases(
     type="violin",
     xlim=None,
     verbose=True,
+    add_beta=False,
 ):
     """
     Plots the soccer related casenumbers by male and female.
@@ -139,6 +140,8 @@ def soccer_related_cases(
         End date for relative cases calculation
     colors : list, len = 2
         Colors of male and female
+    key : str
+        Which key to use, possible is "alpha", "beta" and None.
 
     """
     if begin is None:
@@ -146,34 +149,52 @@ def soccer_related_cases(
     if end is None:
         end = datetime.datetime(2021, 7, 11)
 
+    if "beta_R" not in trace.posterior and add_beta:
+        log.warning("Did not find beta_R in trace, continue without")
+        add_beta = False
+
     # Get params from trace and dataloader
     new_E_t = get_from_trace("new_E_t", trace)
     S_t = get_from_trace("S_t", trace)
     new_I_t = get_from_trace("new_I_t", trace)
     R_t_base = get_from_trace("R_t_base", trace)
+    R_t_noise = get_from_trace("R_t_add_noise_fact", trace)[..., 0]
     C_base = get_from_trace("C_base", trace)
     C_soccer = get_from_trace("C_soccer", trace)
-    R_t_soccer = get_from_trace("R_t_add_fact", trace)
+
+    R_t_alpha = get_from_trace(f"alpha_R", trace)
+    R_t_alpha = _apply_delta(R_t_alpha.T, model, dl).T
+    if add_beta:
+        R_t_beta = get_from_trace(f"beta_R", trace)
+        R_t_beta = _apply_delta(R_t_beta.T, model, dl).T
 
     pop = model.N_population
     i_begin = (begin - model.sim_begin).days
     i_end = (end - model.sim_begin).days + 1  # inclusiv last day
 
-    # Calculate cases per gender contact
-    # d is draws
-    # t is time
-    # i,j is gender
+    """ Calculate base effect without soccer
+    """
     R_t_ij_base = np.einsum("dt,dij->dtij", R_t_base, C_base)
     infections_base = S_t / pop * np.einsum("dti,dtij->dti", new_I_t, R_t_ij_base)
-    R_t_ij_soccer = np.einsum("dt,dij->dtij", R_t_soccer, C_soccer)
-    infections_soccer = S_t / pop * np.einsum("dti,dtij->dtj", new_I_t, R_t_ij_soccer)
+    R_t_ij_noise = np.einsum("dt,dij->dtij", R_t_noise, C_soccer)
+    infections_base += S_t / pop * np.einsum("dti,dtij->dti", new_I_t, R_t_ij_noise)
+
+    """ Calculate soccer effect
+    """
+    R_t_ij_alpha = np.einsum("dt,dij->dtij", R_t_alpha, C_soccer)
+    infections_alpha = S_t / pop * np.einsum("dti,dtij->dtj", new_I_t, R_t_ij_alpha)
+    if add_beta:
+        R_t_ij_beta = np.einsum("dt,dij->dtij", R_t_beta, C_soccer)
+        infections_beta = S_t / pop * np.einsum("dti,dtij->dtj", new_I_t, R_t_ij_beta)
 
     # Sum over the choosen range (i.e. month of uefa championship)
     num_infections_base = np.sum(infections_base[..., i_begin:i_end, :], axis=-2)
-    num_infections_soccer = np.sum(infections_soccer[..., i_begin:i_end, :], axis=-2)
+    num_infections_alpha = np.sum(infections_alpha[..., i_begin:i_end, :], axis=-2)
+    if add_beta:
+        num_infections_beta = np.sum(infections_beta[..., i_begin:i_end, :], axis=-2)
 
     # Create pandas dataframe for easy violin plot
-    ratio_soccer = num_infections_soccer / (num_infections_base + num_infections_soccer)
+    ratio_soccer = num_infections_alpha / (num_infections_base + num_infections_alpha)
     male = np.stack((ratio_soccer[:, 0], np.zeros(ratio_soccer[:, 0].shape)), axis=1)
     female = np.stack((ratio_soccer[:, 1], np.ones(ratio_soccer[:, 1].shape)), axis=1)
     percentage = pd.DataFrame(
@@ -182,8 +203,26 @@ def soccer_related_cases(
     percentage["gender"] = pd.cut(
         percentage["gender"], bins=[-1, 0.5, 1], labels=["male", "female"]
     )
+    percentage["pos"] = "alpha"
+
+    if add_beta:
+        ratio_soccer = num_infections_beta / (num_infections_base + num_infections_beta)
+        male = np.stack(
+            (ratio_soccer[:, 0], np.zeros(ratio_soccer[:, 0].shape)), axis=1
+        )
+        female = np.stack(
+            (ratio_soccer[:, 1], np.ones(ratio_soccer[:, 1].shape)), axis=1
+        )
+        df_beta = pd.DataFrame(
+            np.concatenate((male, female)), columns=["percentage_soccer", "gender"]
+        )
+        df_beta["gender"] = pd.cut(
+            df_beta["gender"], bins=[-1, 0.5, 1], labels=["male", "female"]
+        )
+        df_beta["pos"] = "beta"
+        percentage = pd.concat([percentage, df_beta])
     percentage["percentage_soccer"] = percentage["percentage_soccer"] * 100
-    percentage["pos"] = 0
+
     # Colors
     color_male = rcParams.color_male if colors is None else colors[0]
     color_female = rcParams.color_female if colors is None else colors[1]
@@ -205,6 +244,9 @@ def soccer_related_cases(
         )
         ax.collections[0].set_edgecolor(color_male)  # Set outline colors
         ax.collections[1].set_edgecolor(color_female)  # Set outline colors
+        if add_beta:
+            ax.collections[2].set_edgecolor(color_male)  # Set outline colors
+            ax.collections[3].set_edgecolor(color_female)  # Set outline colors
     elif type == "scatter":
         g = sns.stripplot(
             data=percentage,
@@ -285,79 +327,36 @@ def legend(ax=None, prior=True, posterior=True, model=True, data=True, sex=True)
     # Data
     if data:
         lines.append(
-            Line2D(
-                [0],
-                [0],
-                marker="d",
-                color=rcParams.color_data,
-                markersize=4,
-                lw=0,
-            )
+            Line2D([0], [0], marker="d", color=rcParams.color_data, markersize=4, lw=0,)
         )
         labels.append("Data")
 
     # Model
     if model:
-        lines.append(
-            Line2D(
-                [0],
-                [0],
-                color=rcParams.color_model,
-                lw=2,
-            )
-        )
+        lines.append(Line2D([0], [0], color=rcParams.color_model, lw=2,))
         labels.append("Model")
 
     # Prior
     if prior:
-        lines.append(
-            Line2D(
-                [0],
-                [0],
-                color=rcParams.color_prior,
-                lw=2,
-            )
-        )
+        lines.append(Line2D([0], [0], color=rcParams.color_prior, lw=2,))
         labels.append("Prior")
 
     # Posterior
     if posterior:
-        lines.append(
-            Patch(
-                [0],
-                [0],
-                color=rcParams.color_posterior,
-                lw=2.5,
-            ),
-        )
+        lines.append(Patch([0], [0], color=rcParams.color_posterior, lw=2.5,),)
         labels.append("Posterior")
 
     # male
     if sex:
-        lines.append(
-            Patch(
-                [0],
-                [0],
-                color=rcParams.color_male,
-                lw=2.5,
-            ),
-        )
+        lines.append(Patch([0], [0], color=rcParams.color_male, lw=2.5,),)
         labels.append("Male")
 
         # female
-        lines.append(
-            Patch(
-                [0],
-                [0],
-                color=rcParams.color_female,
-                lw=2.5,
-            ),
-        )
+        lines.append(Patch([0], [0], color=rcParams.color_female, lw=2.5,),)
         labels.append("Female")
 
     ax.legend(
-        lines,
-        labels,
+        lines, labels,
     )
     ax.axis("off")
 

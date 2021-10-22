@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.dates as mdates
 from .rcParams import *
+from ..effect_gender import _delta
 
 
 def get_from_trace(var, trace):
@@ -47,3 +48,11 @@ def format_date_axis(ax):
     ax.xaxis.set_major_locator(mdates.WeekdayLocator(interval=4))
     ax.xaxis.set_minor_locator(mdates.WeekdayLocator(interval=1))
     ax.xaxis.set_major_formatter(mdates.DateFormatter(rcParams.date_format))
+
+
+def _apply_delta(eff, model, dl):
+    t = np.arange(model.sim_len)
+    t_g = [(game - model.sim_begin).days for game in dl.date_of_games]
+    d = _delta(np.subtract.outer(t, t_g)).eval()
+
+    return np.dot(d, eff)

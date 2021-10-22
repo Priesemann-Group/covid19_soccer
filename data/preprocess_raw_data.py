@@ -269,3 +269,106 @@ def Portugal():
             line["totalDeaths"],
         ]
     df.to_csv(path_or_buf=processed_data_path + "PT.csv", index=False)
+
+
+def Austria():
+    at = pd.read_csv(raw_data_path + "AT.csv", sep=";")
+    at["Time"] = pd.to_datetime(at["Time"], format="%d.%m.%Y 00:00:00")
+    at = at.drop(
+        columns=[
+            "Altersgruppe",
+            "Bundesland",
+            "AnzEinwohner",
+            "BundeslandID",
+            "AltersgruppeID",
+        ]
+    )
+    at = at.groupby(["Time", "Geschlecht"]).sum()
+    at = at.sort_values(["Geschlecht", "Time"])
+    at = at.groupby(["Geschlecht"]).diff()
+    at = at.reset_index()
+
+    at["Geschlecht"] = at["Geschlecht"].replace(
+        to_replace={"M": "male", "W": "female"},
+    )
+    at = at.rename(
+        columns={
+            "Anzahl": "cases",
+            "Time": "date",
+            "Geschlecht": "gender",
+            "AnzahlTot": "deaths",
+            "AnzahlGeheilt": "recovered",
+        }
+    )
+    at.to_csv(path_or_buf=processed_data_path + "AT.csv", index=False)
+
+
+def Belgium():
+    df = pd.read_csv(raw_data_path + "BE.csv")
+    df["DATE"] = pd.to_datetime(df["DATE"], format="%Y-%m-%d")
+    df.drop(columns=["PROVINCE", "REGION", "AGEGROUP"])
+    df = df.groupby(["DATE", "SEX"]).sum()
+    df = df.sort_values(["SEX", "DATE"])
+    df = df.reset_index()
+    df["SEX"] = df["SEX"].replace(to_replace={"M": "male", "F": "female"},)
+    df = df.rename(columns={"CASES": "cases", "DATE": "date", "SEX": "gender",})
+
+    df.to_csv(path_or_buf=processed_data_path + "BE.csv", index=False)
+
+
+def Czech():
+    df = pd.read_csv(raw_data_path + "CZ.csv")
+    df["datum"] = pd.to_datetime(df["datum"], format="%Y-%m-%d")
+    df = df.rename(columns={"datum": "date", "pohlavi": "gender", "vek": "age"})
+    df["cases"] = 1
+    df = df.drop(
+        columns=[
+            "age",
+            "kraj_nuts_kod",
+            "okres_lau_kod",
+            "nakaza_v_zahranici",
+            "nakaza_zeme_csu_kod",
+        ]
+    )
+    df = df.groupby(["date", "gender"]).count()
+    df = df.reset_index()
+    df["gender"] = df["gender"].replace(to_replace={"M": "male", "Z": "female"},)
+    df = df.sort_values(["gender", "date"])
+
+    df.to_csv(path_or_buf=processed_data_path + "CZ.csv", index=False)
+
+
+def Netherlands():
+    df = pd.read_csv(raw_data_path + "NL.csv", sep=";")
+
+    # Select onset of symptoms only
+    df = df[df["Date_statistics_type"] == "DOO"]
+    df["Date_statistics"] = pd.to_datetime(df["Date_statistics"], format="%Y-%m-%d")
+
+    df = df.drop(
+        columns=[
+            "Date_file",
+            "Date_statistics_type",
+            "Agegroup",
+            "Province",
+            "Hospital_admission",
+            "Deceased",
+            "Week_of_death",
+            "Municipal_health_service",
+        ]
+    )
+    df = df.rename(columns={"Date_statistics": "date", "Sex": "gender"})
+    df["cases"] = 1
+    mi = min(df["date"])
+    ma = max(df["date"])
+    df = df.groupby(["date", "gender"]).count()
+    idx = pd.date_range(mi, ma)
+    df = df.reindex(
+        pd.MultiIndex.from_product([idx, ["Female", "Male"]], names=["date", "gender"]),
+        fill_value=0,
+    )
+    df = df.reset_index()
+    df["gender"] = df["gender"].replace(
+        to_replace={"Male": "male", "Female": "female"},
+    )
+    df.to_csv(path_or_buf=processed_data_path + "NL.csv", index=False)

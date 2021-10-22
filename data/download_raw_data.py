@@ -11,6 +11,17 @@ urls = {
     "BE.csv": "https://epistat.sciensano.be/Data/COVID19BE_CASES_AGESEX.csv",
     "CZ.csv": "https://onemocneni-aktualne.mzcr.cz/api/v2/covid-19/osoby.csv",
     "DK.zip": "https://files.ssi.dk/covid19/overvagning/dashboard/overvaagningsdata-dashboard-covid19-18102021-77fq",
+    # Greece: https://github.com/Covid-19-Response-Greece/covid19-data-greece/tree/master/data/greece/gender_distribution
+    # Latvia: https://data.gov.lv/dati/lv/dataset/covid-19/resource/dc3bac3e-0330-427e-bfe0-8d5cb0cf9383?inner_span=True
+    # Italy: Can't find the source -> coveragedb
+    "NL.csv": "https://data.rivm.nl/covid-19/COVID-19_casus_landelijk.csv",
+    # Norway: weekly cases by gender only
+    # Romania: only deaths by gender publicly available
+    # Slovakia: Can't find the source -> coveragedb
+    # Slovenia: Can't find the source -> coveragedb
+    # Spain: Can't find the source -> coveragedb
+    # Sweden: Can't find the source -> coveragedb
+    # Switzerland: Can't find the source -> coveragedb
 }
 
 

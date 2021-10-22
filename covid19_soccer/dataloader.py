@@ -488,17 +488,9 @@ class Dataloader_gender(Dataloader):
 
         # Default arguments
         if countries is None:
-            countries = list(self.lookup["country"].values)
-            for rem in [
-                "Liechtenstein",
-                "Kosovo",
-                "Iceland",
-                "Malta",
-                "Monaco",
-                "San Marino",
-                "Andorra",
-            ]:
-                countries.remove(rem)
+            countries = list(
+                self.lookup[self.lookup["gender_data"] == "True"]["country"].values
+            )
 
         # Check if country exists in database
         for c in countries:
@@ -541,7 +533,7 @@ class Dataloader_gender(Dataloader):
             os.path.splitext(file)[0].split("/")[-1] for file in all_files
         ]
 
-        # select selected countries
+        # select selected countries from available ones
         iso2 = [
             self.lookup[self.lookup["country"] == c]["iso2"].values[0]
             for c in self.countries
@@ -561,10 +553,14 @@ class Dataloader_gender(Dataloader):
             # load csv
             df = pd.read_csv(file, parse_dates=["date"])
             # set multindex
+            if "age_group" not in df.columns:
+                df["age_group"] = "total"
             df = df.set_index(["date", "gender", "age_group"])
+
             # add to dataframe
             self._cases[str(c)] = df["cases"]
-            self._deaths[str(c)] = df["deaths"]
+            if "deaths" in df.columns:
+                self._deaths[str(c)] = df["deaths"]
 
         # sort index otherwise we cant slice
         self._cases = self._cases.sort_index(level="date")
@@ -615,3 +611,11 @@ if __name__ == "__main__":
 
     dl = Dataloader_gender(countries, offset_games=4 * 7)
     da = Dataloader_gender()
+
+    import matplotlib.pyplot as plt
+    import pandas as pd
+
+    plt.plot(
+        np.stack([pd.date_range(da.data_begin, da.data_end)] * 15).T,
+        da.new_cases_obs[:, 0, :] / da.new_cases_obs[:, 1, :],
+    )

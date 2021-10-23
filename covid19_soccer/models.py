@@ -303,10 +303,12 @@ def create_model_gender(
             prior_delay = 7
         elif dl.countries[0] in ["Scotland", "France", "England"]:
             prior_delay = 4
-        elif dl.countries[0] in ["Portugal"]:
-            prior_delay = 5
+        # elif dl.countries[0] in ["Portugal"]:
+        # prior_delay = 5
         else:
-            raise RuntimeError("Country not known")
+            prior_delay = 5
+            width_delay_prior = 0.15
+            # raise RuntimeError("Country not known")
 
     # Median of the prior for the delay in case reporting, we assume 10 days
     default_interval = 10
@@ -367,7 +369,7 @@ def create_model_gender(
         # using sigmoidals. Even though the function is called lambda_t
         # the specific values are controlled by the priors and are around one.
         # https://science.sciencemag.org/content/369/6500/eabb9789.full
-        sigma_lambda_cp = pm.HalfNormal(
+        sigma_lambda_cp = pm.HalfCauchy(
             name="sigma_lambda_cp", sigma=0.5, transform=pm.transforms.log_exp_m1,
         )
         sigma_lambda_week_cp = None
@@ -392,7 +394,7 @@ def create_model_gender(
         )
         pm.Deterministic("R_t_soccer", R_t_add)
 
-        sigma_lambda_cp_noise = pm.HalfNormal(
+        sigma_lambda_cp_noise = pm.HalfCauchy(
             name="sigma_lambda_cp_noise", sigma=0.2, transform=pm.transforms.log_exp_m1,
         )
         R_t_add_noise = lambda_t_with_sigmoids(
@@ -417,7 +419,7 @@ def create_model_gender(
         pm.Deterministic("C_base", C_base)
 
         # Soccer gender interconnection matrix (i.e. for soccer matches)
-        f_female = pm.Gamma("factor_female", alpha=6, beta=30)
+        f_female = pm.Beta("factor_female", alpha=10, beta=40)
         # Set theano tensor (maybe there is a better way to do that)
         C_0 = tt.stack([1.0 - f_female, f_female])
         C_1 = tt.stack([f_female, f_female * f_female])

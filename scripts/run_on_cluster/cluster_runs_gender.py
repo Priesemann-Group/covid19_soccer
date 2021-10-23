@@ -31,8 +31,12 @@ dir_traces = "/data.nst/jdehning/covid_uefa_traces8"
 
 
 # Countries with gender data
-countries = ["Scotland", "Germany", "France", "England", "Portugal"]
+# countries = ["Scotland", "Germany", "France", "England"]
 countries = [
+    "Scotland",
+    "Germany",
+    "France",
+    "England",
     "Austria",
     "Belgium",
     "Czechia",
@@ -40,10 +44,7 @@ countries = [
     "Netherlands",
     "Portugal",
     "Slovakia",
-    "Slovenia",
     "Spain",
-    "Sweden",
-    "Switzerland",
 ]
 
 # [tune,draw,treedepth]

@@ -370,7 +370,7 @@ def create_model_gender(
         # the specific values are controlled by the priors and are around one.
         # https://science.sciencemag.org/content/369/6500/eabb9789.full
         sigma_lambda_cp = pm.HalfCauchy(
-            name="sigma_lambda_cp", sigma=0.5, transform=pm.transforms.log_exp_m1,
+            name="sigma_lambda_cp", beta=0.5, transform=pm.transforms.log_exp_m1,
         )
         sigma_lambda_week_cp = None
         R_t_base_log = lambda_t_with_sigmoids(
@@ -395,7 +395,7 @@ def create_model_gender(
         pm.Deterministic("R_t_soccer", R_t_add)
 
         sigma_lambda_cp_noise = pm.HalfCauchy(
-            name="sigma_lambda_cp_noise", sigma=0.2, transform=pm.transforms.log_exp_m1,
+            name="sigma_lambda_cp_noise", beta=0.2, transform=pm.transforms.log_exp_m1,
         )
         R_t_add_noise = lambda_t_with_sigmoids(
             change_points_list=change_points,

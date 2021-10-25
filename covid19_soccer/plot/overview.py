@@ -17,6 +17,8 @@ def single(
     plot_delay=False,
     plot_beta=False,
     verbose=False,
+    type_game_effects="violin",
+    type_soccer_related_cases="violin",
 ):
     """
     Create a single simple overview plot for one model run / country.
@@ -62,7 +64,7 @@ def single(
 
     # Single game effects
     ax = fig.add_subplot(grid[2, 0])
-    game_effects(ax, trace, model, dl)
+    game_effects(ax, trace, model, dl,type=type_game_effects)
     axes_ts.append(ax)
 
     """ Distribution(s)
@@ -72,7 +74,7 @@ def single(
     else:
         ax = fig.add_subplot(grid[0:, -1])
 
-    soccer_related_cases(ax, trace, model, dl, verbose=verbose, add_beta=plot_beta)
+    soccer_related_cases(ax, trace, model, dl, verbose=verbose, add_beta=plot_beta,type=type_soccer_related_cases)
 
     if plot_delay:
         ax_delay = fig.add_subplot(grid[-1, -1])
@@ -272,6 +274,8 @@ def multi(
     verbose=False,
     plot_delay=False,
     plot_beta=False,
+    type_game_effects="violin",
+    type_soccer_related_cases="violin",
 ):
     """
     Creates a overview plot for multiple model runs e.g. different countries.
@@ -310,6 +314,8 @@ def multi(
             verbose=verbose,
             plot_delay=plot_delay,
             plot_beta=plot_beta,
+            type_game_effects=type_game_effects,
+            type_soccer_related_cases=type_soccer_related_cases
         )
 
         axes_t[0].set_title(dl.countries[0])

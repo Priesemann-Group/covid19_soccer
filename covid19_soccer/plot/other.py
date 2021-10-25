@@ -62,7 +62,7 @@ def game_effects(
             showextrema=False,
             # quantiles=[0.025,0.975],
             points=1000,
-            widths=1.5,
+            widths=2,
         )
         # Color violinstatistics
         for partname in violin_parts:
@@ -73,13 +73,13 @@ def game_effects(
             vp.set_linewidth(1)
 
         for pc in violin_parts["bodies"]:
-            pc.set_facecolor(lighten_color(color, 0.8))
-            pc.set_edgecolor(lighten_color(color, 0.8))
+            pc.set_facecolor(lighten_color(color, 0.6))
+            pc.set_edgecolor(lighten_color(color, 0.6))
 
-        ax.scatter(dates, medians, marker=".", color=color, s=10, zorder=3, lw=1)
+        ax.scatter(dates, medians, marker=".", color=color, s=8, zorder=3, lw=1)
         ax.vlines(dates, quartile1, quartile3, color=color, linestyle="-", lw=1)
-        ax.scatter(dates, quartile1, color=color, marker="_", s=10, zorder=3, lw=1)
-        ax.scatter(dates, quartile3, color=color, marker="_", s=10, zorder=3, lw=1)
+        #ax.scatter(dates, quartile1, color=color, marker="_", s=20, zorder=3, lw=1.5)
+        #ax.scatter(dates, quartile3, color=color, marker="_", s=20, zorder=3, lw=1.5)
 
     elif type == "boxplot":
         box_parts = ax.boxplot(

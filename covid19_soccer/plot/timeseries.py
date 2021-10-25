@@ -55,7 +55,7 @@ def incidence(
     if ylim is not None:
         ax.set_ylim(ylim)
     else:
-        ax.set_ylim(0, data_points.max() + 50)
+        ax.set_ylim(0, data_points.max() + data_points.max()/8)
 
     # Markup
     ax.set_ylabel("Incidence")
@@ -72,12 +72,13 @@ def fraction_male_female(
     """
 
     new_cases = get_from_trace("new_cases", trace)
-
+    
+    model_points = ((new_cases[:, :, 0] / dl.population[0, 0])
+        / (new_cases[:, :, 1] / dl.population[1, 0]))
     # Plot model fit
     _timeseries(
         x=pd.date_range(model.sim_begin, model.sim_end),
-        y=(new_cases[:, :, 0] / dl.population[0, 0])
-        / (new_cases[:, :, 1] / dl.population[1, 0]),  # male/female
+        y=model_points,  # male/female
         what="model",
         ax=ax,
         color=rcParams.color_model if color is None else color,

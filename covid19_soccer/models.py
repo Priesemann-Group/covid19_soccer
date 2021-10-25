@@ -9,6 +9,7 @@ import numpy as np
 from .dataloader import Dataloader_gender, Dataloader
 from . import effect_gender
 from . import effect
+from . import delay_by_weekday
 from .utils import get_cps
 from .compartmental_models import kernelized_spread_soccer
 
@@ -301,7 +302,7 @@ def create_model_gender(
     if prior_delay == -1:
         if dl.countries[0] in ["Germany"]:
             prior_delay = 7
-        elif dl.countries[0] in ["Scotland", "France", "England"]:
+        elif dl.countries[0] in ["Scotland", "France", "England", "Netherlands"]:
             prior_delay = 4
         # elif dl.countries[0] in ["Portugal"]:
         # prior_delay = 5
@@ -419,7 +420,7 @@ def create_model_gender(
         pm.Deterministic("C_base", C_base)
 
         # Soccer gender interconnection matrix (i.e. for soccer matches)
-        f_female = pm.Beta("factor_female", alpha=10, beta=40)
+        f_female = pm.Beta("factor_female", alpha=15, beta=60)
         # Set theano tensor (maybe there is a better way to do that)
         C_0 = tt.stack([1.0 - f_female, f_female])
         C_1 = tt.stack([f_female, f_female * f_female])
@@ -459,6 +460,8 @@ def create_model_gender(
             use_gamma=use_gamma,
             diff_input_output=0,
         )
+
+        new_cases = delay_by_weekday.delay_cases_weekday(new_cases)
 
         # Modulate the inferred cases by a abs(sin(x)) function, to account for weekend effects
         # Also adds the "new_cases" variable to the trace that has all model features.

@@ -64,7 +64,7 @@ def single(
 
     # Single game effects
     ax = fig.add_subplot(grid[2, 0])
-    game_effects(ax, trace, model, dl,type=type_game_effects)
+    game_effects(ax, trace, model, dl, type=type_game_effects)
     axes_ts.append(ax)
 
     """ Distribution(s)
@@ -74,7 +74,15 @@ def single(
     else:
         ax = fig.add_subplot(grid[0:, -1])
 
-    soccer_related_cases(ax, trace, model, dl, verbose=verbose, add_beta=plot_beta,type=type_soccer_related_cases)
+    soccer_related_cases(
+        ax,
+        trace,
+        model,
+        dl,
+        verbose=verbose,
+        add_beta=plot_beta,
+        type=type_soccer_related_cases,
+    )
 
     if plot_delay:
         ax_delay = fig.add_subplot(grid[-1, -1])
@@ -315,7 +323,7 @@ def multi(
             plot_delay=plot_delay,
             plot_beta=plot_beta,
             type_game_effects=type_game_effects,
-            type_soccer_related_cases=type_soccer_related_cases
+            type_soccer_related_cases=type_soccer_related_cases,
         )
 
         axes_t[0].set_title(dl.countries[0])

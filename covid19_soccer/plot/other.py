@@ -78,8 +78,8 @@ def game_effects(
 
         ax.scatter(dates, medians, marker=".", color=color, s=8, zorder=3, lw=1)
         ax.vlines(dates, quartile1, quartile3, color=color, linestyle="-", lw=1)
-        #ax.scatter(dates, quartile1, color=color, marker="_", s=20, zorder=3, lw=1.5)
-        #ax.scatter(dates, quartile3, color=color, marker="_", s=20, zorder=3, lw=1.5)
+        # ax.scatter(dates, quartile1, color=color, marker="_", s=20, zorder=3, lw=1.5)
+        # ax.scatter(dates, quartile3, color=color, marker="_", s=20, zorder=3, lw=1.5)
 
     elif type == "boxplot":
         box_parts = ax.boxplot(

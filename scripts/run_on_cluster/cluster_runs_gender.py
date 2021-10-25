@@ -11,6 +11,7 @@ import argparse
 import logging
 import os
 import itertools
+from multiprocessing import Pool
 
 log = logging.getLogger("ClusterRunner")
 
@@ -24,14 +25,15 @@ args.id = args.id - 1
 log.info(f"ID: {args.id}")
 
 
-dir_traces = "/data.nst/jdehning/covid_uefa_traces9"
+dir_traces = "/data.nst/jdehning/covid_uefa_traces10"
 
 """ Create possible different combinations
 """
 
 
 # Countries with gender data
-# countries = ["Scotland", "Germany", "France", "England"]
+countries = ["Scotland", "Germany", "France", "England"]
+"""
 countries = [
     "Scotland",
     "Germany",
@@ -46,6 +48,7 @@ countries = [
     "Slovakia",
     "Spain",
 ]
+"""
 
 # [tune,draw,treedepth]
 sampling = [
@@ -63,8 +66,9 @@ beta = [0, 1]
 # offset = [-35, -28, -10, -8, -6, -4, -2, -1, 35]
 # offset = [0]
 # offset = [0, -5, -4, -2, -1, 1, 2, 3, 4, 5]
-offset = [0, -3, -2, -1, 1, 2, 3, 4, 5]
+# offset = [0, -3, -2, -1, 1, 2, 3, 4, 5]
 offset = [0]
+offset = [0, -35, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 35]
 
 # draw delay width i.e. true false
 draw_delay = [1]
@@ -73,19 +77,19 @@ draw_delay = [1]
 # weighted_alpha = [0, -1]
 weighted_alpha = [0]
 
-# prior_delay = [-1, 2, 3, 4, 5, 6, 7, 8, 10, 12]
-prior_delay = [-1]
+prior_delay = [-1, 2, 3, 4, 5, 6, 7, 8, 10, 12]
+# prior_delay = [-1]
 
 # prior width of the mean latent period
 sigma_incubation = [-1]
 
 width_delay_prior = [0.1]
 
-# median_width_delay = [0.5, 1.0, 2.0]
-median_width_delay = [1.0]
+median_width_delay = [0.5, 1.0, 2.0]
+# median_width_delay = [1.0]
 
 interval_cps = [10.0, 6.0, 20.0]
-interval_cps = [10.0]
+# interval_cps = [10.0]
 
 mapping = []
 
@@ -142,24 +146,42 @@ for draw_args in sampling:
                                             mapping.append(tuple(ma))
 
 
-def exec(
-    beta,
-    country,
-    tune,
-    draws,
-    max_treedepth,
-    offset,
-    draw_delay,
-    weighted_alpha,
-    prior_delay,
-    width_delay_prior,
-    sigma_incubation,
-    median_width_delay,
-    interval_cps,
-):
+num_jobs_per_node = 3
+mapping_clustered = []
+ended = False
+for i in range(len(mapping)):
+    if not num_jobs_per_node * i >= len(mapping):
+        mapping_clustered.append([])
+    for j in range(num_jobs_per_node):
+        i_mapping = num_jobs_per_node * i + j
+        if i_mapping < len(mapping):
+            mapping_clustered[-1].append(mapping[i_mapping])
+        else:
+            ended = True
+            break
+    if ended:
+        break
+
+
+def exec(args_list):
     """
     Executes python script
     """
+    (
+        beta,
+        country,
+        tune,
+        draws,
+        max_treedepth,
+        offset,
+        draw_delay,
+        weighted_alpha,
+        prior_delay,
+        width_delay_prior,
+        sigma_incubation,
+        median_width_delay,
+        interval_cps,
+    ) = args_list
     os.system(
         f"python run_model_gender.py "
         f"-b {beta} -c {country} "
@@ -177,4 +199,6 @@ def exec(
     )
 
 
-exec(*mapping[args.id])
+if __name__ == "__main__":
+    with Pool(num_jobs_per_node) as p:
+        p.map(exec, mapping_clustered[args.id])

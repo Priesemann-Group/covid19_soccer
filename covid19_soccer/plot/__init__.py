@@ -1,4 +1,3 @@
-from .distributions import *
-from .violin import *
-from .overview import *
-from .utils import *
+from . import other, timeseries, overview
+from .distributions import distribution
+from .rcParams import *

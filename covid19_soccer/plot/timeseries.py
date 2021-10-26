@@ -5,7 +5,7 @@ import datetime
 import numpy as np
 
 from covid19_inference.plot import _timeseries
-from .utils import get_from_trace
+from .utils import get_from_trace, format_date_axis
 
 from .rcParams import *
 
@@ -59,6 +59,7 @@ def incidence(
 
     # Markup
     ax.set_ylabel("Incidence")
+    format_date_axis(ax)
 
     return ax
 
@@ -102,6 +103,7 @@ def fraction_male_female(
 
     # Markup
     ax.set_ylabel("Gender\nimbalance")
+    format_date_axis(ax)
 
     return ax
 

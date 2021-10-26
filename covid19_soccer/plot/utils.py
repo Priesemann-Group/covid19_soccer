@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.dates as mdates
+from cairosvg import svg2png
+
 from .rcParams import *
 from ..effect_gender import _delta
 
@@ -56,3 +58,8 @@ def _apply_delta(eff, model, dl):
     d = _delta(np.subtract.outer(t, t_g)).eval()
 
     return np.dot(d, eff)
+
+
+def get_flag(iso2):
+    svg2png(url=f"https://hatscripts.github.io/circle-flags/flags/{iso2}.svg",write_to=f'./figures/{iso2}.png')
+    return f'./figures/{iso2}.png'

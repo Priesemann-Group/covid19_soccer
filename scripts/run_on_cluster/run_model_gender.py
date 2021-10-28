@@ -56,7 +56,7 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "--offset_games", type=int, help="Offset of the soccer games in days", default=0
+    "--offset_data", type=int, help="Offset of the data in days", default=0
 )
 parser.add_argument(
     "--draw_delay",
@@ -190,7 +190,7 @@ if __name__ == "__main__":
     dl = covid19_soccer.dataloader.Dataloader_gender(
         data_folder="../../data/",
         countries=[args.country],
-        offset_games=args.offset_games,
+        offset_data=args.offset_data,
     )
     log.info(f"Data loaded for {dl.countries}")
 
@@ -216,7 +216,7 @@ if __name__ == "__main__":
         draws=args.draws,
         tuning_chains=30,
         final_chains=8,
-        cores=32,
+        cores=11,
         return_tuning=True,
         max_treedepth=args.max_treedepth,
         target_accept=0.95,

@@ -61,5 +61,8 @@ def _apply_delta(eff, model, dl):
 
 
 def get_flag(iso2):
-    svg2png(url=f"https://hatscripts.github.io/circle-flags/flags/{iso2}.svg",write_to=f'./figures/{iso2}.png')
-    return f'./figures/{iso2}.png'
+    svg2png(
+        url=f"https://hatscripts.github.io/circle-flags/flags/{iso2}.svg",
+        write_to=f"./figures/{iso2}.png",
+    )
+    return f"./figures/{iso2}.png"

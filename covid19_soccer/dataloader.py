@@ -26,6 +26,7 @@ class Dataloader:
         sim_begin=datetime(2021, 5, 16),
         data_folder=f"{os.path.dirname(__file__)}/../data/",
         offset_games=0,
+        offset_data=0,
     ):
         """
         Parameters
@@ -43,6 +44,7 @@ class Dataloader:
         self.data_end = data_end
         self.sim_begin = sim_begin
         self.offset_games = offset_games
+        self.offset_data = timedelta(days=offset_data)
 
         # Load country lookup
         self.lookup = pd.read_csv(os.path.join(self.data_folder, "countries.csv"))
@@ -207,7 +209,9 @@ class Dataloader:
         shape : (time, country)
         """
 
-        return self._cases[self.data_begin : self.data_end]
+        return self._cases[
+            self.data_begin + self.offset_data : self.data_end + self.offset_data
+        ]
 
     @property
     def total_deaths(self):
@@ -217,7 +221,9 @@ class Dataloader:
         shape : (time, country)
         """
 
-        return self._deaths[self.data_begin : self.data_end]
+        return self._deaths[
+            self.data_begin + self.offset_data : self.data_end + self.offset_data
+        ]
 
     @property
     def new_cases_obs_last_year(self):
@@ -376,7 +382,7 @@ class Dataloader:
                 missing_days = set(
                     pd.to_datetime(
                         [
-                            self.data_begin + timedelta(days=i)
+                            self.data_begin + timedelta(days=i) + self.offset_data
                             for i in range(len_data - num_days_missing_at_end)
                         ]
                     )
@@ -465,6 +471,7 @@ class Dataloader_gender(Dataloader):
         sim_begin=datetime(2021, 5, 16),
         data_folder=f"{os.path.dirname(__file__)}/../data/",
         offset_games=0,
+        offset_data=0,
     ):
         """
         Parameters
@@ -482,6 +489,7 @@ class Dataloader_gender(Dataloader):
         self.data_end = data_end
         self.sim_begin = sim_begin
         self.offset_games = offset_games
+        self.offset_data = timedelta(days=offset_data)
 
         # Load country lookup
         self.lookup = pd.read_csv(os.path.join(self.data_folder, "countries.csv"))
@@ -574,8 +582,16 @@ class Dataloader_gender(Dataloader):
         shape : (time, gender, country)
         """
         temp = pd.DataFrame()
-        temp_m = self._cases.loc[self.data_begin : self.data_end, "male", "total"]
-        temp_f = self._cases.loc[self.data_begin : self.data_end, "female", "total"]
+        temp_m = self._cases.loc[
+            self.data_begin + self.offset_data : self.data_end + self.offset_data,
+            "male",
+            "total",
+        ]
+        temp_f = self._cases.loc[
+            self.data_begin + self.offset_data : self.data_end + self.offset_data,
+            "female",
+            "total",
+        ]
 
         # Reshape to date, gender and male at the front
         return np.stack((temp_m.to_numpy(), temp_f.to_numpy()), axis=1)

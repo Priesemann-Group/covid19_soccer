@@ -350,62 +350,76 @@ def multi_v2(
 ):
     """ Create overview plot for all countries.
     """
-    fig = plt.figure(figsize=(7,1.2*4+1.7))
+    fig = plt.figure(figsize=(7, 1.2 * 4 + 1.7))
 
-    
-    outer_outer_grid = fig.add_gridspec(2, 1,hspace=0.2,height_ratios=(1.2*4,1.7))
-    
+    outer_outer_grid = fig.add_gridspec(2, 1, hspace=0.2, height_ratios=(1.2 * 4, 1.7))
+
     axes = []
     """ Plot example rows:
     """
     nRows = 4
     outer_grid = outer_outer_grid[0].subgridspec(nRows, 1, hspace=0.1)
-    index_examples = [0,1,2,3]
+    index_examples = [0, 1, 2, 3]
     for row in range(nRows):
-        inner_grid = outer_grid[row].subgridspec(1, 3, width_ratios=(1,1,1),wspace=0.35)
+        inner_grid = outer_grid[row].subgridspec(
+            1, 3, width_ratios=(1, 1, 1), wspace=0.35
+        )
         ax_row = []
-        
+
         # Plot incidence
         ax = fig.add_subplot(inner_grid[0, 0])
-        incidence(ax, traces[index_examples[row]], models[index_examples[row]], dls[index_examples[row]])
+        incidence(
+            ax,
+            traces[index_examples[row]],
+            models[index_examples[row]],
+            dls[index_examples[row]],
+        )
         ax_row.append(ax)
 
         # Plot imbalance
         ax = fig.add_subplot(inner_grid[0, 1])
-        fraction_male_female(ax, traces[index_examples[row]], models[index_examples[row]], dls[index_examples[row]])
+        fraction_male_female(
+            ax,
+            traces[index_examples[row]],
+            models[index_examples[row]],
+            dls[index_examples[row]],
+        )
         ax_row.append(ax)
-        
+
         # Plot game effect
         ax = fig.add_subplot(inner_grid[0, 2])
-        game_effects(ax, traces[index_examples[row]], models[index_examples[row]], dls[index_examples[row]])
+        game_effects(
+            ax,
+            traces[index_examples[row]],
+            models[index_examples[row]],
+            dls[index_examples[row]],
+        )
         ax_row.append(ax)
-        
+
         axes.append(ax_row)
-        
+
         # Markup timeseries
         for ax in ax_row:
             ax.set_xlim(xlim)
-            
-            if row != nRows-1:
+
+            if row != nRows - 1:
                 ax.set_xticklabels([])
-    
-        
+
     """ Last row: overview plot of all countries:
     """
-    inner_grid = outer_outer_grid[-1].subgridspec(1, 2, width_ratios=(12.,0.5))
+    inner_grid = outer_outer_grid[-1].subgridspec(1, 2, width_ratios=(12.0, 0.5))
     ax_row = []
-    
+
     # Plot percentage of soccer
     ax = fig.add_subplot(inner_grid[0, 0])
-    soccer_related_cases_overview(ax,traces,models,dls,plot_flags=True)
+    soccer_related_cases_overview(ax, traces, models, dls, plot_flags=True)
     ax_row.append(ax)
 
     # Plot legend into corner
     ax = fig.add_subplot(inner_grid[0, 1])
-    legend(ax=ax,posterior=False,prior=False)
+    legend(ax=ax, posterior=False, prior=False)
     ax_row.append(ax)
     ax_row.append(None)
     axes.append(ax_row)
-    
-    
+
     return np.array(axes)

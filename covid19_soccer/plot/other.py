@@ -4,14 +4,20 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
-from matplotlib.offsetbox import OffsetImage,AnnotationBbox
+from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
 import pandas as pd
 import numpy as np
 import logging
 import datetime
 
-from .utils import get_from_trace, lighten_color, format_date_axis, _apply_delta, get_flag
+from .utils import (
+    get_from_trace,
+    lighten_color,
+    format_date_axis,
+    _apply_delta,
+    get_flag,
+)
 from .rcParams import *
 
 
@@ -314,6 +320,7 @@ def soccer_related_cases(
 
     return ax
 
+
 def soccer_related_cases_overview(
     ax,
     traces,
@@ -323,7 +330,8 @@ def soccer_related_cases_overview(
     end=None,
     colors=None,
     type="violin",
-    plot_flags=False
+    plot_flags=False,
+    offset=0,
 ):
     """
     Plots comparison of soccer related cases for multiple countries.
@@ -333,10 +341,10 @@ def soccer_related_cases_overview(
         begin = datetime.datetime(2021, 6, 11)
     if end is None:
         end = datetime.datetime(2021, 7, 11)
-        
+
     percentage = pd.DataFrame()
-    means,countries=[],[]
-    for i ,(trace,model,dl) in enumerate(zip(traces,models,dls)):
+    means, countries = [], []
+    for i, (trace, model, dl) in enumerate(zip(traces, models, dls)):
         # Get params from trace and dataloader
         new_E_t = get_from_trace("new_E_t", trace)
         S_t = get_from_trace("S_t", trace)
@@ -367,9 +375,15 @@ def soccer_related_cases_overview(
         num_infections_alpha = np.sum(infections_alpha[..., i_begin:i_end, :], axis=-2)
 
         # Create pandas dataframe for easy violin plot
-        ratio_soccer = num_infections_alpha / (num_infections_base + num_infections_alpha)
-        male = np.stack((ratio_soccer[:, 0], np.zeros(ratio_soccer[:, 0].shape)), axis=1)
-        female = np.stack((ratio_soccer[:, 1], np.ones(ratio_soccer[:, 1].shape)), axis=1)
+        ratio_soccer = num_infections_alpha / (
+            num_infections_base + num_infections_alpha
+        )
+        male = np.stack(
+            (ratio_soccer[:, 0], np.zeros(ratio_soccer[:, 0].shape)), axis=1
+        )
+        female = np.stack(
+            (ratio_soccer[:, 1], np.ones(ratio_soccer[:, 1].shape)), axis=1
+        )
         temp = pd.DataFrame(
             np.concatenate((male, female)), columns=["percentage_soccer", "gender"]
         )
@@ -382,11 +396,11 @@ def soccer_related_cases_overview(
 
         percentage = pd.concat([percentage, temp])
     percentage["percentage_soccer"] = percentage["percentage_soccer"] * 100
-        
+
     # Colors
     color_male = rcParams.color_male if colors is None else colors[0]
     color_female = rcParams.color_female if colors is None else colors[1]
-    
+
     country_order = np.argsort(means)[::-1]
     g = sns.violinplot(
         data=percentage,
@@ -402,15 +416,15 @@ def soccer_related_cases_overview(
         linewidth=1,
         saturation=1,
         width=0.75,
-        order=np.array(countries)[country_order]
+        order=np.array(countries)[country_order],
     )
-    
-    for i,col in enumerate(ax.collections):
-        if i%2 == 0:
+
+    for i, col in enumerate(ax.collections):
+        if i % 2 == 0:
             ax.collections[i].set_edgecolor(color_male)  # Set outline colors
         else:
             ax.collections[i].set_edgecolor(color_female)  # Set outline colors
-            
+
     if plot_flags:
         iso2 = []
         for i, dl in enumerate(np.array(dls)[country_order]):
@@ -418,32 +432,39 @@ def soccer_related_cases_overview(
             img = plt.imread(get_flag(dl.countries_iso2[0].lower()))
             im = OffsetImage(img, zoom=0.03)
             im.image.axes = ax
-            ab = AnnotationBbox(im, (i, -15),  xybox=(0., -16.), frameon=False,
-                                xycoords='data',  boxcoords="offset points", pad=0)
+            ab = AnnotationBbox(
+                im,
+                (i, -15),
+                xybox=(0.0, -16.0),
+                frameon=False,
+                xycoords="data",
+                boxcoords="offset points",
+                pad=0,
+            )
             ax.add_artist(ab)
         ax.set_xticklabels(iso2)
-        ax.tick_params(axis='x', which='major', pad=16)
+        ax.tick_params(axis="x", which="major", pad=16)
     """ Markup
     """
     ax.set_ylabel("Percentage of soccer related\ninfections during the Championship")
     ax.set_xlabel("")
-    
+
     # Remove legend
     ax.legend([], [], frameon=False)
-    
+
     # Set y tick formats
     fmt = "%.0f%%"  # Format you want the ticks, e.g. '40%'
     xticks = mtick.FormatStrFormatter(fmt)
     ax.yaxis.set_major_formatter(xticks)
-    
+
     # Remove spines
     ax.spines["bottom"].set_visible(False)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
-    ax.axhline(0,color="tab:gray",ls="--",zorder=-10)
-    
+    ax.axhline(0, color="tab:gray", ls="--", zorder=-10)
+
     return ax
-        
+
 
 def legend(ax=None, prior=True, posterior=True, model=True, data=True, sex=True):
     """
@@ -487,9 +508,7 @@ def legend(ax=None, prior=True, posterior=True, model=True, data=True, sex=True)
         lines.append(Patch([0], [0], color=rcParams.color_female, lw=2.5,),)
         labels.append("Female")
 
-    ax.legend(
-        lines, labels, loc="center"
-    )
+    ax.legend(lines, labels, loc="center")
     ax.axis("off")
 
     return ax

@@ -25,7 +25,7 @@ args.id = args.id - 1
 log.info(f"ID: {args.id}")
 
 
-dir_traces = "/data.nst/jdehning/covid_uefa_traces10"
+dir_traces = "/data.nst/jdehning/covid_uefa_traces11"
 
 """ Create possible different combinations
 """
@@ -33,7 +33,7 @@ dir_traces = "/data.nst/jdehning/covid_uefa_traces10"
 
 # Countries with gender data
 countries = ["Scotland", "Germany", "France", "England"]
-"""
+
 countries = [
     "Scotland",
     "Germany",
@@ -48,20 +48,22 @@ countries = [
     "Slovakia",
     "Spain",
 ]
-"""
+
 
 # [tune,draw,treedepth]
 sampling = [
     [200, 300, 10],
-    [500, 1000, 12],
+    #    [500, 1000, 12],
     # [1000, 1500, 12],
 ]
 
 # True or false
+# beta = [0, 1]
 beta = [0, 1]
-# beta = [0]
+
 
 # Games offset i.e. effect if soccer games would be x days later
+# important offsets = [0, -35, -21, -14, -10, -7, -4, -2, 2, 4, 7, 10, 14, 21, 35]
 # offset = [0, -35, -15, -10, -8, -6, -5, -4, -2, -1, 1, 2, 3, 4, 5, 6, 8, 10, 15, 35]
 # offset = [-35, -28, -10, -8, -6, -4, -2, -1, 35]
 # offset = [0]
@@ -69,6 +71,11 @@ beta = [0, 1]
 # offset = [0, -3, -2, -1, 1, 2, 3, 4, 5]
 offset = [0]
 offset = [0, -35, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 35]
+offset = [-35, -3, 3, 35]
+offset = [-21, -14, -10, -7, 7, 10, 14, 21]
+offset = [-21, -14, -10, -7, -4, -2, 2, 4, 7, 10, 14, 21]
+offset = [0, -35, -21, -14, -10, -7, -4, -2, 2, 4, 7, 10, 14, 21, 35]
+
 
 # draw delay width i.e. true false
 draw_delay = [1]
@@ -77,19 +84,19 @@ draw_delay = [1]
 # weighted_alpha = [0, -1]
 weighted_alpha = [0]
 
-prior_delay = [-1, 2, 3, 4, 5, 6, 7, 8, 10, 12]
-# prior_delay = [-1]
+# prior_delay = [-1, 2, 3, 4, 5, 6, 7, 8, 10, 12]
+prior_delay = [-1]
 
 # prior width of the mean latent period
 sigma_incubation = [-1]
 
 width_delay_prior = [0.1]
 
-median_width_delay = [0.5, 1.0, 2.0]
-# median_width_delay = [1.0]
+# median_width_delay = [0.5, 1.0, 2.0]
+median_width_delay = [1.0]
 
-interval_cps = [10.0, 6.0, 20.0]
-# interval_cps = [10.0]
+# interval_cps = [10.0, 6.0, 20.0]
+interval_cps = [10.0]
 
 mapping = []
 
@@ -188,7 +195,7 @@ def exec(args_list):
         f"--dir {dir_traces} "
         f"--tune {tune} --draws {draws} --max_treedepth {max_treedepth} "
         f"--log ./log/ "
-        f"--offset_games {offset} "
+        f"--offset_data {offset} "
         f"--draw_delay {draw_delay} "
         f"--weighted_alpha {weighted_alpha} "
         f"--prior_delay {prior_delay} "

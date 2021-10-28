@@ -45,9 +45,14 @@ def single(
         fig = plt.figure(figsize=(7, 5))
         grid = fig.add_gridspec(3, 2, hspace=0.25, width_ratios=[1, 0.3])
     else:
-        grid = outer_grid.subgridspec(
-            3, 2, wspace=0.2, hspace=0.25, width_ratios=[1, 0.3]
-        )
+        if type_soccer_related_cases == "skip":
+            grid = outer_grid.subgridspec(
+            3, 1, hspace=0.25,
+            )
+        else:
+            grid = outer_grid.subgridspec(
+                3, 2, wspace=0.2, hspace=0.25, width_ratios=[1, 0.3]
+            )
         fig = outer_grid.get_gridspec().figure
 
     axes_ts = []
@@ -69,21 +74,21 @@ def single(
     axes_ts.append(ax)
 
     """ Distribution(s)
-    """
-    if plot_delay:
-        ax = fig.add_subplot(grid[0:-1, -1])
-    else:
-        ax = fig.add_subplot(grid[0:, -1])
-
-    soccer_related_cases(
-        ax,
-        trace,
-        model,
-        dl,
-        verbose=verbose,
-        add_beta=plot_beta,
-        type=type_soccer_related_cases,
-    )
+    """    
+    if type_soccer_related_cases != "skip":
+        if plot_delay:
+            ax = fig.add_subplot(grid[0:-1, -1])
+        else:
+            ax = fig.add_subplot(grid[0:, -1])
+        soccer_related_cases(
+            ax,
+            trace,
+            model,
+            dl,
+            verbose=verbose,
+            add_beta=plot_beta,
+            type=type_soccer_related_cases,
+        )
 
     if plot_delay:
         ax_delay = fig.add_subplot(grid[-1, -1])
@@ -340,86 +345,69 @@ def multi_v2(
     traces,
     models,
     dls,
+    selected_index=[0,1,2,3],
     nColumns=2,
     xlim=None,
     verbose=False,
     plot_delay=False,
     plot_beta=False,
     type_game_effects="violin",
-    type_soccer_related_cases="violin",
+    type_soccer_related_cases="skip",
 ):
-    """ Create overview plot for all countries.
+    """ Create outer layout
     """
-    fig = plt.figure(figsize=(7, 1.2 * 4 + 1.7))
+    nRows = ceil(len(selected_index) / nColumns)
 
-    outer_outer_grid = fig.add_gridspec(2, 1, hspace=0.2, height_ratios=(1.2 * 4, 1.7))
+    fig = plt.figure(figsize=(3.5 * nColumns, 2.5 * (nRows+1)))
 
+    outer_outer_grid = fig.add_gridspec(2, 1, hspace=0.1, height_ratios=(nRows,0.5))
+    
+    """ Create single overview plots for all selected countries
+    """
+    outer_grid = outer_outer_grid[0].subgridspec(nRows, nColumns, wspace=0.15, hspace=0.25,)
     axes = []
-    """ Plot example rows:
-    """
-    nRows = 4
-    outer_grid = outer_outer_grid[0].subgridspec(nRows, 1, hspace=0.1)
-    index_examples = [0, 1, 2, 3]
-    for row in range(nRows):
-        inner_grid = outer_grid[row].subgridspec(
-            1, 3, width_ratios=(1, 1, 1), wspace=0.35
+    sel_traces = [traces[i] for i in selected_index]
+    sel_models = [models[i] for i in selected_index]
+    sel_dls = [dls[i] for i in selected_index]
+    for i, (trace, model, dl) in enumerate(zip(sel_traces, sel_models, sel_dls)):
+        # Mapping to 2d index
+        x = i % nColumns
+        y = i // nColumns
+
+        axes_t = single(
+            trace,
+            model,
+            dl,
+            outer_grid=outer_grid[y, x],
+            xlim=xlim,
+            verbose=verbose,
+            plot_delay=plot_delay,
+            plot_beta=plot_beta,
+            type_game_effects=type_game_effects,
+            type_soccer_related_cases=type_soccer_related_cases,
         )
-        ax_row = []
-
-        # Plot incidence
-        ax = fig.add_subplot(inner_grid[0, 0])
-        incidence(
-            ax,
-            traces[index_examples[row]],
-            models[index_examples[row]],
-            dls[index_examples[row]],
-        )
-        ax_row.append(ax)
-
-        # Plot imbalance
-        ax = fig.add_subplot(inner_grid[0, 1])
-        fraction_male_female(
-            ax,
-            traces[index_examples[row]],
-            models[index_examples[row]],
-            dls[index_examples[row]],
-        )
-        ax_row.append(ax)
-
-        # Plot game effect
-        ax = fig.add_subplot(inner_grid[0, 2])
-        game_effects(
-            ax,
-            traces[index_examples[row]],
-            models[index_examples[row]],
-            dls[index_examples[row]],
-        )
-        ax_row.append(ax)
-
-        axes.append(ax_row)
-
-        # Markup timeseries
-        for ax in ax_row:
-            ax.set_xlim(xlim)
-
-            if row != nRows - 1:
-                ax.set_xticklabels([])
-
+        if x > 0:
+            for ax in axes_t:
+                ax.set_ylabel("")
+        axes_t[0].set_title(dl.countries[0])
+        axes.append(axes_t)
+        
     """ Last row: overview plot of all countries:
     """
-    inner_grid = outer_outer_grid[-1].subgridspec(1, 2, width_ratios=(12.0, 0.5))
+    inner_grid = outer_outer_grid[-1].subgridspec(1, 2, width_ratios=(12.,0.5))
     ax_row = []
-
+    
     # Plot percentage of soccer
     ax = fig.add_subplot(inner_grid[0, 0])
-    soccer_related_cases_overview(ax, traces, models, dls, plot_flags=True)
+    soccer_related_cases_overview(ax,traces,models,dls,plot_flags=True)
     ax_row.append(ax)
 
     # Plot legend into corner
     ax = fig.add_subplot(inner_grid[0, 1])
-    legend(ax=ax, posterior=False, prior=False)
+    legend(ax=ax,posterior=False,prior=False)
     ax_row.append(ax)
     ax_row.append(None)
     axes.append(ax_row)
-
-    return np.array(axes)
+    
+    
+    return axes

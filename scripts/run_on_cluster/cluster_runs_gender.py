@@ -32,8 +32,8 @@ dir_traces = "/data.nst/jdehning/covid_uefa_traces11"
 
 
 # Countries with gender data
-countries = ["Scotland", "Germany", "France", "England"]
-
+countries = ["Scotland", "Germany", "France", "England", "Spain", "Czechia", "Italy"]
+"""
 countries = [
     "Scotland",
     "Germany",
@@ -48,12 +48,13 @@ countries = [
     "Slovakia",
     "Spain",
 ]
+"""
 
 
 # [tune,draw,treedepth]
 sampling = [
     [200, 300, 10],
-    #    [500, 1000, 12],
+    [500, 1000, 12],
     # [1000, 1500, 12],
 ]
 
@@ -70,11 +71,11 @@ beta = [0, 1]
 # offset = [0, -5, -4, -2, -1, 1, 2, 3, 4, 5]
 # offset = [0, -3, -2, -1, 1, 2, 3, 4, 5]
 offset = [0]
-offset = [0, -35, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 35]
-offset = [-35, -3, 3, 35]
-offset = [-21, -14, -10, -7, 7, 10, 14, 21]
-offset = [-21, -14, -10, -7, -4, -2, 2, 4, 7, 10, 14, 21]
-offset = [0, -35, -21, -14, -10, -7, -4, -2, 2, 4, 7, 10, 14, 21, 35]
+# offset = [0, -35, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 35]
+# offset = [-35, -3, 3, 35]
+# offset = [-21, -14, -10, -7, 7, 10, 14, 21]
+# offset = [-21, -14, -10, -7, -4, -2, 2, 4, 7, 10, 14, 21]
+# offset = [0, -35, -21, -14, -10, -7, -4, -2, 2, 4, 7, 10, 14, 21, 35]
 
 
 # draw delay width i.e. true false
@@ -84,19 +85,19 @@ draw_delay = [1]
 # weighted_alpha = [0, -1]
 weighted_alpha = [0]
 
-# prior_delay = [-1, 2, 3, 4, 5, 6, 7, 8, 10, 12]
-prior_delay = [-1]
+prior_delay = [-1, 2, 3, 4, 5, 6, 7, 8, 10, 12]
+# prior_delay = [-1]
 
 # prior width of the mean latent period
 sigma_incubation = [-1]
 
 width_delay_prior = [0.1]
 
-# median_width_delay = [0.5, 1.0, 2.0]
-median_width_delay = [1.0]
+median_width_delay = [0.5, 1.0, 2.0]
+# median_width_delay = [1.0]
 
-# interval_cps = [10.0, 6.0, 20.0]
-interval_cps = [10.0]
+interval_cps = [10.0, 6.0, 20.0]
+# interval_cps = [10.0]
 
 mapping = []
 

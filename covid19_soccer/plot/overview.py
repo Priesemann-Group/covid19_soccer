@@ -46,9 +46,7 @@ def single(
         grid = fig.add_gridspec(3, 2, hspace=0.25, width_ratios=[1, 0.3])
     else:
         if type_soccer_related_cases == "skip":
-            grid = outer_grid.subgridspec(
-            3, 1, hspace=0.25,
-            )
+            grid = outer_grid.subgridspec(3, 1, hspace=0.25,)
         else:
             grid = outer_grid.subgridspec(
                 3, 2, wspace=0.2, hspace=0.25, width_ratios=[1, 0.3]
@@ -74,7 +72,7 @@ def single(
     axes_ts.append(ax)
 
     """ Distribution(s)
-    """    
+    """
     if type_soccer_related_cases != "skip":
         if plot_delay:
             ax = fig.add_subplot(grid[0:-1, -1])
@@ -345,7 +343,7 @@ def multi_v2(
     traces,
     models,
     dls,
-    selected_index=[0,1,2,3],
+    selected_index=[0, 1, 2, 3],
     nColumns=2,
     xlim=None,
     verbose=False,
@@ -353,18 +351,22 @@ def multi_v2(
     plot_beta=False,
     type_game_effects="violin",
     type_soccer_related_cases="skip",
+    fig=None,
 ):
     """ Create outer layout
     """
     nRows = ceil(len(selected_index) / nColumns)
 
-    fig = plt.figure(figsize=(3.5 * nColumns, 2.5 * (nRows+1)))
+    if fig is None:
+        fig = plt.figure(figsize=(3.5 * nColumns, 2.5 * (nRows + 1)))
 
-    outer_outer_grid = fig.add_gridspec(2, 1, hspace=0.1, height_ratios=(nRows,0.5))
-    
+    outer_outer_grid = fig.add_gridspec(2, 1, hspace=0.1, height_ratios=(nRows, 0.5))
+
     """ Create single overview plots for all selected countries
     """
-    outer_grid = outer_outer_grid[0].subgridspec(nRows, nColumns, wspace=0.15, hspace=0.25,)
+    outer_grid = outer_outer_grid[0].subgridspec(
+        nRows, nColumns, wspace=0.15, hspace=0.25,
+    )
     axes = []
     sel_traces = [traces[i] for i in selected_index]
     sel_models = [models[i] for i in selected_index]
@@ -391,23 +393,22 @@ def multi_v2(
                 ax.set_ylabel("")
         axes_t[0].set_title(dl.countries[0])
         axes.append(axes_t)
-        
+
     """ Last row: overview plot of all countries:
     """
-    inner_grid = outer_outer_grid[-1].subgridspec(1, 2, width_ratios=(12.,0.5))
+    inner_grid = outer_outer_grid[-1].subgridspec(1, 2, width_ratios=(12.0, 0.5))
     ax_row = []
-    
+
     # Plot percentage of soccer
     ax = fig.add_subplot(inner_grid[0, 0])
-    soccer_related_cases_overview(ax,traces,models,dls,plot_flags=True)
+    soccer_related_cases_overview(ax, traces, models, dls, plot_flags=True)
     ax_row.append(ax)
 
     # Plot legend into corner
     ax = fig.add_subplot(inner_grid[0, 1])
-    legend(ax=ax,posterior=False,prior=False)
+    legend(ax=ax, posterior=False, prior=False)
     ax_row.append(ax)
     ax_row.append(None)
     axes.append(ax_row)
-    
-    
+
     return axes

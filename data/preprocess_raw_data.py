@@ -15,8 +15,8 @@ import json
 
 raw_data_path = "./case_data_gender_raw/"
 processed_data_path = "./case_data_gender/"
-data_begin = datetime(2021, 5, 1)
-data_end = datetime(2021, 8, 1)
+data_begin = datetime(2021, 4, 1)
+data_end = datetime(2021, 10, 1)
 
 
 def Germany():
@@ -372,3 +372,15 @@ def Netherlands():
         to_replace={"Male": "male", "Female": "female"},
     )
     df.to_csv(path_or_buf=processed_data_path + "NL.csv", index=False)
+
+
+if __name__ == "__main__":
+    Germany()
+    France()
+    GB_ENG()
+    Scotland()
+    Portugal()
+    Austria()
+    Belgium()
+    Czech()
+    Netherlands()

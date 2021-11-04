@@ -360,8 +360,8 @@ def multi_v2(
     if fig is None:
         fig = plt.figure(figsize=(3.5 * nColumns, 2.5 * (nRows + 1)))
 
-    outer_outer_grid = fig.add_gridspec(2, 1, hspace=0.1, height_ratios=(nRows, 0.5))
-
+    outer_outer_grid = fig.add_gridspec(2, 1, hspace=0.15, height_ratios=(nRows,0.5))
+    
     """ Create single overview plots for all selected countries
     """
     outer_grid = outer_outer_grid[0].subgridspec(

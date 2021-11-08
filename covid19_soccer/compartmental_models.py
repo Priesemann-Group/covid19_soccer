@@ -212,7 +212,7 @@ def kernelized_spread_soccer(
     if name_S_t is not None:
         pm.Deterministic(name_S_t, S_t)
     if name_new_E_t is not None:
-        pm.Deterministic(name_new_E_t, new_E_t)
+        new_E_t = pm.Deterministic(name_new_E_t, new_E_t)
 
     if return_all:
         return new_I_t, new_E_t_m, new_E_t_f, S_t

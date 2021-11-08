@@ -321,6 +321,32 @@ def soccer_related_cases(
     return ax
 
 
+def get_alpha_infections(trace, model, dl):
+    S_t = get_from_trace("S_t", trace)
+    new_I_t = get_from_trace("new_I_t", trace)
+    R_t_base = get_from_trace("R_t_base", trace)
+    R_t_noise = get_from_trace("R_t_add_noise_fact", trace)[..., 0]
+    C_base = get_from_trace("C_base", trace)
+    C_soccer = get_from_trace("C_soccer", trace)
+    R_t_alpha = get_from_trace(f"alpha_R", trace)
+    R_t_alpha = _apply_delta(R_t_alpha.T, model, dl).T
+    pop = model.N_population
+
+    """ Calculate base effect without soccer
+    """
+    R_t_ij_base = np.einsum("dt,dij->dtij", R_t_base, C_base)
+    infections_base = S_t / pop * np.einsum("dti,dtij->dti", new_I_t, R_t_ij_base)
+    R_t_ij_noise = np.einsum("dt,dij->dtij", R_t_noise, C_soccer)
+    infections_base += S_t / pop * np.einsum("dti,dtij->dti", new_I_t, R_t_ij_noise)
+
+    """ Calculate soccer effect
+    """
+    R_t_ij_alpha = np.einsum("dt,dij->dtij", R_t_alpha, C_soccer)
+    infections_alpha = S_t / pop * np.einsum("dti,dtij->dtj", new_I_t, R_t_ij_alpha)
+
+    return infections_base, infections_alpha
+
+
 def soccer_related_cases_overview(
     ax,
     traces,
@@ -346,29 +372,11 @@ def soccer_related_cases_overview(
     means, countries = [], []
     for i, (trace, model, dl) in enumerate(zip(traces, models, dls)):
         # Get params from trace and dataloader
-        new_E_t = get_from_trace("new_E_t", trace)
-        S_t = get_from_trace("S_t", trace)
-        new_I_t = get_from_trace("new_I_t", trace)
-        R_t_base = get_from_trace("R_t_base", trace)
-        R_t_noise = get_from_trace("R_t_add_noise_fact", trace)[..., 0]
-        C_base = get_from_trace("C_base", trace)
-        C_soccer = get_from_trace("C_soccer", trace)
-        R_t_alpha = get_from_trace(f"alpha_R", trace)
-        R_t_alpha = _apply_delta(R_t_alpha.T, model, dl).T
-        pop = model.N_population
+
+        infections_base, infections_alpha = get_alpha_infections(trace, model, dl)
+
         i_begin = (begin - model.sim_begin).days
         i_end = (end - model.sim_begin).days + 1  # inclusiv last day
-        """ Calculate base effect without soccer
-        """
-        R_t_ij_base = np.einsum("dt,dij->dtij", R_t_base, C_base)
-        infections_base = S_t / pop * np.einsum("dti,dtij->dti", new_I_t, R_t_ij_base)
-        R_t_ij_noise = np.einsum("dt,dij->dtij", R_t_noise, C_soccer)
-        infections_base += S_t / pop * np.einsum("dti,dtij->dti", new_I_t, R_t_ij_noise)
-
-        """ Calculate soccer effect
-        """
-        R_t_ij_alpha = np.einsum("dt,dij->dtij", R_t_alpha, C_soccer)
-        infections_alpha = S_t / pop * np.einsum("dti,dtij->dtj", new_I_t, R_t_ij_alpha)
 
         # Sum over the choosen range (i.e. month of uefa championship)
         num_infections_base = np.sum(infections_base[..., i_begin:i_end, :], axis=-2)

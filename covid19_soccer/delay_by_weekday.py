@@ -30,7 +30,7 @@ def delay_cases_weekday(
             r_base_high,
             r_base_high,
             r_base_high,
-        ]  # Sunday @ zero
+        ]  # Monday @ zero
     )
     r_week = r_base + delta_r
 

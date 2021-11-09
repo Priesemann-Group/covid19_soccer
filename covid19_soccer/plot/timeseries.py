@@ -37,7 +37,7 @@ def incidence(
         * 1e6
     )
     _timeseries(
-        x=pd.date_range(model.data_begin, model.data_end),
+        x=pd.date_range(dl.data_begin, dl.data_end),
         y=data_points,
         what="data",
         ax=ax,
@@ -88,7 +88,7 @@ def fraction_male_female(
 
     # Plot data
     _timeseries(
-        x=pd.date_range(model.data_begin, model.data_end),
+        x=pd.date_range(dl.data_begin, dl.data_end),
         y=(dl.new_cases_obs[:, 0, 0] / dl.population[0, 0])
         / (dl.new_cases_obs[:, 1, 0] / dl.population[1, 0]),  # male/female
         what="data",
@@ -142,6 +142,7 @@ def R_soccer(ax, trace, model, dl, ylim=None, color=None, add_noise=False):
         ylabel += "+R_{noise}"
     ylabel += "$"
     ax.set_ylabel(ylabel)
+    format_date_axis(ax)
 
     return ax
 
@@ -167,6 +168,7 @@ def R_base(ax, trace, model, dl, ylim=None, color=None):
 
     # Markup
     ax.set_ylabel("$R_{base}$")
+    format_date_axis(ax)
 
     return ax
 
@@ -192,5 +194,6 @@ def R_noise(ax, trace, model, dl, ylim=None, color=None):
 
     # Markup
     ax.set_ylabel("$R_{noise}$")
+    format_date_axis(ax)
 
     return ax

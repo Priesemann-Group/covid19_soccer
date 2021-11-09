@@ -66,3 +66,6 @@ def get_flag(iso2):
         write_to=f"./figures/{iso2}.png",
     )
     return f"./figures/{iso2}.png"
+
+def sigmoid(z):
+    return 1/(1 + np.exp(-z))

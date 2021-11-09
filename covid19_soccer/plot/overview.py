@@ -3,10 +3,13 @@ import matplotlib.pyplot as plt
 from math import ceil
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
+import pymc3 as pm
+import string
 
 from .timeseries import *
-from .distributions import distribution
+from .distributions import distribution, _distribution
 from .other import *
+from .utils import get_from_trace, sigmoid
 
 
 def single(
@@ -169,12 +172,18 @@ def single_extended(trace, model, dl, xlim=None):
 
     """ distributions
     """
+    axes_dist = []
 
     # delay
     ax = fig.add_subplot(grid[0, 1])
+    if dl.countries[0] == "Germany":
+        ax.set_xlim(4.1,8)
+    else:
+        ax.set_xlim(3.1,7)
     distribution(
         model, trace, "delay", nSamples_prior=5000, title="", dist_math="D", ax=ax,
     )
+    axes_dist.append(ax)
     ax = fig.add_subplot(grid[0, 2])
     distribution(
         model,
@@ -185,9 +194,11 @@ def single_extended(trace, model, dl, xlim=None):
         dist_math="\sigma_{D}",
         ax=ax,
     )
+    axes_dist.append(ax)
 
     # gender interaction factors
     ax = fig.add_subplot(grid[1, 1])
+    ax.set_xlim(0.01,0.5)
     distribution(
         model,
         trace,
@@ -197,6 +208,7 @@ def single_extended(trace, model, dl, xlim=None):
         dist_math="\omega_{fem}",
         ax=ax,
     )
+    axes_dist.append(ax)    
     ax = fig.add_subplot(grid[1, 2])
     distribution(
         model,
@@ -207,19 +219,36 @@ def single_extended(trace, model, dl, xlim=None):
         dist_math="c_{off}",
         ax=ax,
     )
+    axes_dist.append(ax)
+
 
     # likelihood and week modulation
     ax = fig.add_subplot(grid[2, 1])
-    distribution(
-        model,
-        trace,
-        "sigma_obs",
-        nSamples_prior=5000,
-        title="",
-        dist_math="\sigma_{obs}",
+    posterior = get_from_trace("fraction_delayed_by_weekday",trace)
+    prior = pm.sample_prior_predictive(
+        samples=5000, model=model, var_names=["fraction_delayed_by_weekday"]
+    )["fraction_delayed_by_weekday"]
+    ax.set_xlim(0.1,1)
+    _distribution(
+        array_posterior=sigmoid(posterior[:,5]),
+        array_prior=sigmoid(prior[:,5]),
+        dist_name="",
+        dist_math="r_{\mathrm{Sat}}",
         ax=ax,
     )
+    axes_dist.append(ax)
+
     ax = fig.add_subplot(grid[2, 2])
+    _distribution(
+        array_posterior=sigmoid(posterior[:,6]),
+        array_prior=sigmoid(prior[:,6]),
+        dist_name="",
+        dist_math="r_{\mathrm{Sun}}",
+        ax=ax,
+    )
+    axes_dist.append(ax)
+
+    ax = fig.add_subplot(grid[3, 1])    
     distribution(
         model,
         trace,
@@ -229,17 +258,7 @@ def single_extended(trace, model, dl, xlim=None):
         dist_math="h_{w}",
         ax=ax,
     )
-
-    ax = fig.add_subplot(grid[3, 1])
-    distribution(
-        model,
-        trace,
-        "offset_modulation",
-        nSamples_prior=5000,
-        title="",
-        dist_math="\chi_{w}",
-        ax=ax,
-    )
+    axes_dist.append(ax)
 
     """ Legend
     """
@@ -271,9 +290,22 @@ def single_extended(trace, model, dl, xlim=None):
             ax.set_xlim(xlim)
 
         # Hack: Disable every second ticklabel
-        for label in ax.xaxis.get_ticklabels()[::2]:
-            label.set_visible(False)
+        #for label in ax.xaxis.get_ticklabels()[::2]:
+        #    label.set_visible(False)
 
+            
+    #Add axes annotations
+    alphabet_string = list(string.ascii_uppercase)
+    for i, ax in enumerate(axes_ts):
+        letter = alphabet_string[i]
+        ax.text(-0.05, 1.1, letter, transform=ax.transAxes,
+              fontsize=8, fontweight='bold', va='top', ha='right')
+        
+    for i, ax in enumerate(axes_dist):
+        letter = alphabet_string[i + len(axes_ts)]
+        ax.text(-0.05, 1.1, letter, transform=ax.transAxes,
+              fontsize=8, fontweight='bold', va='top', ha='right')
+    
     return fig
 
 

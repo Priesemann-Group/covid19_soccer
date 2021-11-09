@@ -248,11 +248,13 @@ def _plot_prior(x, ax=None, **kwargs):
         xlim = ax.get_xlim()
         reset_xlim = True
     try:
-        prior = stats.kde.gaussian_kde(x)
+        prior = stats.kde.gaussian_kde(x,)
     except Exception as e:  # Probably only one value of x
         log.warning(f"Could not plot prior! {x}")
         return ax
     x_for_ax = np.linspace(*xlim, num=1000)
+    
+        
     x_for_pr = x_for_ax
 
     ax.plot(

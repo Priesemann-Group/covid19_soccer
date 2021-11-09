@@ -25,7 +25,7 @@ log = logging.getLogger(__name__)
 
 
 def game_effects(
-    ax, trace, model, dl, color=None, type="violin", key="alpha", xlim=None
+    ax, trace, model, dl, color=None, type="violin", key="alpha", xlim=None, plot_dates=True
 ):
     """
     Plots the additional effect for each game onto a timeaxis, it is possible to
@@ -84,8 +84,8 @@ def game_effects(
             pc.set_facecolor(lighten_color(color, 0.8))
             pc.set_edgecolor(lighten_color(color, 0.8))
 
-        ax.scatter(dates, medians, marker=".", color=color, s=8, zorder=3, lw=1)
-        ax.vlines(dates, quartile1, quartile3, color=color, linestyle="-", lw=1)
+        ax.scatter(mpl.dates.date2num(dates), medians, marker=".", color=color, s=8, zorder=3, lw=1)
+        ax.vlines(mpl.dates.date2num(dates), quartile1, quartile3, color=color, linestyle="-", lw=1)
         # ax.scatter(dates, quartile1, color=color, marker="_", s=20, zorder=3, lw=1.5)
         # ax.scatter(dates, quartile3, color=color, marker="_", s=20, zorder=3, lw=1.5)
 
@@ -116,9 +116,20 @@ def game_effects(
     ax.set_ylabel("Game\neffects")
 
     # Format x axis
-    ax.set_xlim(xlim)
-    format_date_axis(ax)
-
+    if plot_dates: 
+        ax.set_xlim(xlim)
+        format_date_axis(ax)
+    else:
+        nums = mpl.dates.date2num(dates)
+        ax.set_xlim(nums[0]-2,nums[-1]+2)
+        if len(nums)<4:
+            ticks = np.arange(nums[0],nums[-1],4)
+        else:
+            ticks = np.linspace(nums[0],nums[-1]+2,4,endpoint=True)
+        ax.set_xticks(ticks)
+        
+        # FuncFormatter can be used as a decorator
+        ax.xaxis.set_major_formatter(lambda x, pos: f"{int(x-nums[0])}")
     return ax
 
 

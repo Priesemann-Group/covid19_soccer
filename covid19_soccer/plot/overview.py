@@ -384,6 +384,7 @@ def multi_v2(
     type_game_effects="violin",
     type_soccer_related_cases="skip",
     fig=None,
+    ypos_flags=-20,
 ):
     """ Create outer layout
     """
@@ -392,8 +393,7 @@ def multi_v2(
     if fig is None:
         fig = plt.figure(figsize=(3.5 * nColumns, 2.5 * (nRows + 1)))
 
-    outer_outer_grid = fig.add_gridspec(2, 1, hspace=0.15, height_ratios=(nRows,0.5))
-    
+    outer_outer_grid = fig.add_gridspec(2, 1, hspace=0.15, height_ratios=(nRows,0.8))
     """ Create single overview plots for all selected countries
     """
     outer_grid = outer_outer_grid[0].subgridspec(
@@ -433,7 +433,7 @@ def multi_v2(
 
     # Plot percentage of soccer
     ax = fig.add_subplot(inner_grid[0, 0])
-    soccer_related_cases_overview(ax, traces, models, dls, plot_flags=True)
+    soccer_related_cases_overview(ax, traces, models, dls, plot_flags=True,ypos_flags=ypos_flags)
     ax_row.append(ax)
 
     # Plot legend into corner

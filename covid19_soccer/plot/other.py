@@ -357,6 +357,32 @@ def get_alpha_infections(trace, model, dl):
 
     return infections_base, infections_alpha
 
+def get_beta_infections(trace, model, dl):
+    S_t = get_from_trace("S_t", trace)
+    new_I_t = get_from_trace("new_I_t", trace)
+    R_t_base = get_from_trace("R_t_base", trace)
+    R_t_noise = get_from_trace("R_t_add_noise_fact", trace)[..., 0]
+    C_base = get_from_trace("C_base", trace)
+    C_soccer = get_from_trace("C_soccer", trace)
+    R_t_beta = get_from_trace(f"beta_R", trace)
+    R_t_beta = _apply_delta(R_t_beta.T, model, dl).T
+    pop = model.N_population
+
+    """ Calculate base effect without soccer
+    """
+    R_t_ij_base = np.einsum("dt,dij->dtij", R_t_base, C_base)
+    infections_base = S_t / pop * np.einsum("dti,dtij->dti", new_I_t, R_t_ij_base)
+    R_t_ij_noise = np.einsum("dt,dij->dtij", R_t_noise, C_soccer)
+    infections_base += S_t / pop * np.einsum("dti,dtij->dti", new_I_t, R_t_ij_noise)
+
+    """ Calculate soccer effect
+    """
+    R_t_ij_beta = np.einsum("dt,dij->dtij", R_t_beta, C_soccer)
+    infections_beta = S_t / pop * np.einsum("dti,dtij->dtj", new_I_t, R_t_ij_beta)
+
+    return infections_base, infections_beta
+
+
 
 def soccer_related_cases_overview(
     ax,
@@ -369,6 +395,8 @@ def soccer_related_cases_overview(
     type="violin",
     plot_flags=False,
     offset=0,
+    ypos_flags=-10,
+    plot_betas=False,
 ):
     """
     Plots comparison of soccer related cases for multiple countries.
@@ -383,8 +411,13 @@ def soccer_related_cases_overview(
     means, countries = [], []
     for i, (trace, model, dl) in enumerate(zip(traces, models, dls)):
         # Get params from trace and dataloader
-
-        infections_base, infections_alpha = get_alpha_infections(trace, model, dl)
+        if plot_betas:
+            if "beta_R" in trace.posterior:
+                infections_base, infections_alpha = get_beta_infections(trace, model, dl)
+            else:
+                continue
+        else:
+            infections_base, infections_alpha = get_alpha_infections(trace, model, dl) 
 
         i_begin = (begin - model.sim_begin).days
         i_end = (end - model.sim_begin).days + 1  # inclusiv last day
@@ -453,8 +486,8 @@ def soccer_related_cases_overview(
             im.image.axes = ax
             ab = AnnotationBbox(
                 im,
-                (i, -15),
-                xybox=(0.0, -16.0),
+                (i, ypos_flags),
+                xybox=(0.0, -5.0),
                 frameon=False,
                 xycoords="data",
                 boxcoords="offset points",

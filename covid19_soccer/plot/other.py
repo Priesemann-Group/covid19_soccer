@@ -397,6 +397,7 @@ def soccer_related_cases_overview(
     offset=0,
     ypos_flags=-10,
     plot_betas=False,
+    country_order=None
 ):
     """
     Plots comparison of soccer related cases for multiple countries.
@@ -415,7 +416,8 @@ def soccer_related_cases_overview(
             if "beta_R" in trace.posterior:
                 infections_base, infections_alpha = get_beta_infections(trace, model, dl)
             else:
-                continue
+                infections_base = np.ones(get_alpha_infections(trace, model, dl)[0].shape)
+                infections_alpha = np.ones(get_alpha_infections(trace, model, dl)[1].shape)
         else:
             infections_base, infections_alpha = get_alpha_infections(trace, model, dl) 
 
@@ -453,7 +455,8 @@ def soccer_related_cases_overview(
     color_male = rcParams.color_male if colors is None else colors[0]
     color_female = rcParams.color_female if colors is None else colors[1]
 
-    country_order = np.argsort(means)[::-1]
+    if country_order is None:
+        country_order = np.argsort(means)[::-1]
     g = sns.violinplot(
         data=percentage,
         y="percentage_soccer",
@@ -518,7 +521,7 @@ def soccer_related_cases_overview(
     return ax
 
 
-def legend(ax=None, prior=True, posterior=True, model=True, data=True, sex=True):
+def legend(ax=None, prior=True, posterior=True, model=True, data=True, sex=True,disable_axis=True,loc="center"):
     """
     Plots a legend
     """
@@ -560,7 +563,9 @@ def legend(ax=None, prior=True, posterior=True, model=True, data=True, sex=True)
         lines.append(Patch([0], [0], color=rcParams.color_female, lw=2.5,),)
         labels.append("Female")
 
-    ax.legend(lines, labels, loc="center")
-    ax.axis("off")
+    if disable_axis:
+        ax.axis("off")
+
+    ax.legend(lines, labels, loc=loc)
 
     return ax

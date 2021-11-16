@@ -1,0 +1,12 @@
+numpy
+matplotlib
+pymc3==3.11.2
+arviz
+pandas
+pytest
+requests
+numpyro
+cairosvg
+filelock>=3.2.0
+tabulate
+

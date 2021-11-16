@@ -521,6 +521,109 @@ def soccer_related_cases_overview(
     return ax
 
 
+def soccer_related_cases_ax(
+    ax,
+    traces,
+    models,
+    dls,
+    ticks,
+    begin=None,
+    end=None,
+    colors=None,
+):
+    """
+    Plots comparison of soccer related cases for multiple countries.
+    Only works for alpha at the moment.
+    """
+    if begin is None:
+        begin = datetime.datetime(2021, 6, 11)
+    if end is None:
+        end = datetime.datetime(2021, 7, 11)
+
+    percentage = pd.DataFrame()
+    means, countries = [], []
+    for i, (trace, model, dl, tick) in enumerate(zip(traces, models, dls, ticks)):
+        # Get params from trace and dataloader
+
+        infections_base, infections_alpha = get_alpha_infections(trace, model, dl)
+
+        i_begin = (begin - model.sim_begin).days
+        i_end = (end - model.sim_begin).days + 1  # inclusiv last day
+
+        # Sum over the choosen range (i.e. month of uefa championship)
+        num_infections_base = np.sum(infections_base[..., i_begin:i_end, :], axis=-2)
+        num_infections_alpha = np.sum(infections_alpha[..., i_begin:i_end, :], axis=-2)
+
+        # Create pandas dataframe for easy violin plot
+        ratio_soccer = num_infections_alpha / (
+            num_infections_base + num_infections_alpha
+        )
+        male = np.stack(
+            (ratio_soccer[:, 0], np.zeros(ratio_soccer[:, 0].shape)), axis=1
+        )
+        female = np.stack(
+            (ratio_soccer[:, 1], np.ones(ratio_soccer[:, 1].shape)), axis=1
+        )
+        temp = pd.DataFrame(
+            np.concatenate((male, female)), columns=["percentage_soccer", "gender"]
+        )
+        temp["gender"] = pd.cut(
+            temp["gender"], bins=[-1, 0.5, 1], labels=["male", "female"]
+        )
+        temp["tick"] = tick
+
+        percentage = pd.concat([percentage, temp])
+    percentage["percentage_soccer"] = percentage["percentage_soccer"] * 100
+
+    # Colors
+    color_male = rcParams.color_male if colors is None else colors[0]
+    color_female = rcParams.color_female if colors is None else colors[1]
+
+    g = sns.violinplot(
+        data=percentage,
+        y="percentage_soccer",
+        x="tick",
+        hue="gender",
+        scale="count",
+        inner=None,
+        orient="v",
+        ax=ax,
+        split=True,
+        palette={"male": color_male, "female": color_female},
+        linewidth=1,
+        saturation=1,
+        width=0.75,
+    )
+
+    for i, col in enumerate(ax.collections):
+        if i % 2 == 0:
+            ax.collections[i].set_edgecolor(color_male)  # Set outline colors
+        else:
+            ax.collections[i].set_edgecolor(color_female)  # Set outline colors
+
+
+    """ Markup
+    """
+    ax.set_ylabel("Percentage of soccer related\ninfections during the Championship")
+    ax.set_xlabel("")
+
+    # Remove legend
+    ax.legend([], [], frameon=False)
+
+    # Set y tick formats
+    fmt = "%.0f%%"  # Format you want the ticks, e.g. '40%'
+    yticks = mtick.FormatStrFormatter(fmt)
+    ax.yaxis.set_major_formatter(yticks)
+
+    # Remove spines
+    ax.spines["bottom"].set_visible(False)
+    ax.spines["top"].set_visible(False)
+    ax.spines["right"].set_visible(False)
+    ax.axhline(0, color="tab:gray", ls="--", zorder=-10)
+
+    return ax
+
+
 def legend(ax=None, prior=True, posterior=True, model=True, data=True, sex=True,disable_axis=True,loc="center"):
     """
     Plots a legend

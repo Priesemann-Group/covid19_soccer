@@ -147,7 +147,7 @@ def R_soccer(ax, trace, model, dl, ylim=None, color=None, add_noise=False):
     return ax
 
 
-def R_base(ax, trace, model, dl, ylim=None, color=None):
+def R_base(ax, trace, model, dl, ylim=None, color=None,**kwargs):
     R_base = get_from_trace("R_t_base", trace)
 
     # Plot model fit
@@ -157,6 +157,7 @@ def R_base(ax, trace, model, dl, ylim=None, color=None):
         ax=ax,
         what="model",
         color=rcParams.color_model if color is None else color,
+        **kwargs
     )
 
     # Plot baseline

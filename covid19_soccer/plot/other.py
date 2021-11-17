@@ -397,7 +397,7 @@ def soccer_related_cases_overview(
     offset=0,
     ypos_flags=-10,
     plot_betas=False,
-    country_order=None
+    country_order=None,
 ):
     """
     Plots comparison of soccer related cases for multiple countries.
@@ -409,7 +409,7 @@ def soccer_related_cases_overview(
         end = datetime.datetime(2021, 7, 11)
 
     percentage = pd.DataFrame()
-    means, countries = [], []
+    means, countries, countries_raw = [], [],[]
     for i, (trace, model, dl) in enumerate(zip(traces, models, dls)):
         # Get params from trace and dataloader
         if plot_betas:
@@ -444,13 +444,14 @@ def soccer_related_cases_overview(
         temp["gender"] = pd.cut(
             temp["gender"], bins=[-1, 0.5, 1], labels=["male", "female"]
         )
-        temp["country"] = dl.countries[0]
-        countries.append(dl.countries[0])
+        # Append i in case of same countries
+        temp["country"] = dl.countries[0]+str(i)
+        countries.append(dl.countries[0]+str(i))
+        countries_raw.append(dl.countries[0])
         means.append(np.mean(temp["percentage_soccer"]))
 
         percentage = pd.concat([percentage, temp])
     percentage["percentage_soccer"] = percentage["percentage_soccer"] * 100
-
     # Colors
     color_male = rcParams.color_male if colors is None else colors[0]
     color_female = rcParams.color_female if colors is None else colors[1]
@@ -467,18 +468,30 @@ def soccer_related_cases_overview(
         orient="v",
         ax=ax,
         split=True,
-        palette={"male": color_male, "female": color_female},
+        #palette={"male": color_male, "female": color_female},
         linewidth=1,
         saturation=1,
         width=0.75,
         order=np.array(countries)[country_order],
     )
 
+    c = 0
     for i, col in enumerate(ax.collections):
+        # Update colors if they are set to force overwriting
+        if colors is not None:
+            if len(colors) != 2:
+                color_male = rcParams.color_male if colors is None else colors[i]
+                color_female = rcParams.color_female if colors is None else colors[i]
+
         if i % 2 == 0:
+            ax.collections[i].set_facecolor(color_male) 
             ax.collections[i].set_edgecolor(color_male)  # Set outline colors
         else:
+            ax.collections[i].set_facecolor(color_female) 
             ax.collections[i].set_edgecolor(color_female)  # Set outline colors
+
+
+
 
     if plot_flags:
         iso2 = []
@@ -503,7 +516,7 @@ def soccer_related_cases_overview(
     """
     ax.set_ylabel("Percentage of soccer related\ninfections during the Championship")
     ax.set_xlabel("")
-
+    ax.set_xticklabels(countries_raw)
     # Remove legend
     ax.legend([], [], frameon=False)
 

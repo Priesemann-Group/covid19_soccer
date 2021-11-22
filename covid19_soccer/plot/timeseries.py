@@ -108,7 +108,7 @@ def fraction_male_female(
     return ax
 
 
-def R_soccer(ax, trace, model, dl, ylim=None, color=None, add_noise=False):
+def R_soccer(ax, trace, model, dl, ylim=None, color=None, add_noise=False,**kwargs):
     """
     Plots soccer related reproduction number
     """
@@ -124,6 +124,7 @@ def R_soccer(ax, trace, model, dl, ylim=None, color=None, add_noise=False):
         ax=ax,
         what="model",
         color=rcParams.color_model if color is None else color,
+        **kwargs
     )
 
     # Plot baseline

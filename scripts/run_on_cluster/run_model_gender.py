@@ -97,6 +97,19 @@ parser.add_argument(
     default=10.0,
 )
 
+parser.add_argument(
+    "--f_fem",
+    type=float,
+    help="factor less participation of women at soccer reltated gatherings",
+    default=0.2,
+)
+
+parser.add_argument(
+    "--len",
+    type=str,
+    help="duration of the model",
+    default="normal",
+)
 
 parser.add_argument(
     "--tune", type=int, help="How many tuning steps?", default=1000,
@@ -187,10 +200,24 @@ if __name__ == "__main__":
     """
     cov19.data_retrieval.set_data_dir(fname="./data_covid19_inference")
 
+    if args.len == "normal":
+        data_begin = datetime.datetime(2021, 6, 1)
+        data_end = datetime.datetime(2021, 8, 15)
+        sim_begin = data_begin-datetime.timedelta(days=16)
+    elif args.len == "short":
+        data_begin = datetime.datetime(2021, 6, 4)
+        data_end = datetime.datetime(2021, 7, 18)
+        sim_begin = data_begin-datetime.timedelta(days=16)
+    else:
+        raise RuntimeError("argument value not known")
+
     dl = covid19_soccer.dataloader.Dataloader_gender(
         data_folder="../../data/",
         countries=[args.country],
         offset_data=args.offset_data,
+        data_begin=data_begin,
+        data_end=data_end,
+        sim_begin=sim_begin,
     )
     log.info(f"Data loaded for {dl.countries}")
 
@@ -205,6 +232,7 @@ if __name__ == "__main__":
         sigma_incubation=args.sigma_incubation,
         median_width_delay=args.median_width_delay,
         interval_cps=args.interval_cps,
+        f_female=args.f_fem,
     )
 
     """ MCMC sampling

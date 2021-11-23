@@ -269,6 +269,7 @@ def create_model_gender(
     sigma_incubation=-1,
     median_width_delay=1.0,
     interval_cps=10,
+    f_female=0.2,
 ):
     """
     High level function to create an abstract pymc3 model using different defined
@@ -420,7 +421,12 @@ def create_model_gender(
         pm.Deterministic("C_base", C_base)
 
         # Soccer gender interconnection matrix (i.e. for soccer matches)
-        f_female = pm.Beta("factor_female", alpha=15, beta=60)
+        if f_female == 0.2:
+            f_female = pm.Beta("factor_female", alpha=15, beta=60)
+        elif f_female== 0.5:
+            f_female = pm.Beta("factor_female", alpha=3, beta=3)
+        else:
+            raise RuntimeError("argument value not known")
         # Set theano tensor (maybe there is a better way to do that)
         C_0 = tt.stack([1.0 - f_female, f_female])
         C_1 = tt.stack([f_female, f_female * f_female])

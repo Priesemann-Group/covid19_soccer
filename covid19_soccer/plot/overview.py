@@ -397,7 +397,7 @@ def multi_v2(
     """ Create single overview plots for all selected countries
     """
     outer_grid = outer_outer_grid[0].subgridspec(
-        nRows, nColumns, wspace=0.15, hspace=0.25,
+        nRows, nColumns, wspace=0.25, hspace=0.25,
     )
     axes = []
     sel_traces = [traces[i] for i in selected_index]
@@ -433,12 +433,12 @@ def multi_v2(
 
     # Plot percentage of soccer
     ax = fig.add_subplot(inner_grid[0, 0])
-    soccer_related_cases_overview(ax, traces, models, dls, plot_flags=True,ypos_flags=ypos_flags)
+    soccer_related_cases_overview(ax, traces, models, dls, plot_flags=True,ypos_flags=ypos_flags,remove_outliers=True,bw=0.5)
     ax_row.append(ax)
 
     # Plot legend into corner
     ax = fig.add_subplot(inner_grid[0, 1])
-    legend(ax=ax, posterior=False, prior=False)
+    legend(ax=ax, posterior=False, prior=False,championship_range=True)
     ax_row.append(ax)
     ax_row.append(None)
     axes.append(ax_row)

@@ -49,7 +49,7 @@ def incidence(
     # Show time of uefa championship
     begin = datetime.datetime(2021, 6, 11)
     end = datetime.datetime(2021, 7, 11)
-    ax.fill_betweenx(np.arange(0, 10000), begin, end, alpha=0.1)
+    ax.fill_betweenx(np.arange(0, 10000), begin, end, color=rcParams.color_championship_range)
 
     # Adjust ylim
     if ylim is not None:

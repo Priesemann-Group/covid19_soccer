@@ -3,7 +3,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 from matplotlib.lines import Line2D
-from matplotlib.patches import Patch
+from matplotlib.patches import Patch, Rectangle
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
 import pandas as pd
@@ -398,6 +398,8 @@ def soccer_related_cases_overview(
     ypos_flags=-10,
     plot_betas=False,
     country_order=None,
+    remove_outliers=False,
+    **kwargs
 ):
     """
     Plots comparison of soccer related cases for multiple countries.
@@ -444,6 +446,13 @@ def soccer_related_cases_overview(
         temp["gender"] = pd.cut(
             temp["gender"], bins=[-1, 0.5, 1], labels=["male", "female"]
         )
+
+        # Remove outliers from bad sampling
+        if remove_outliers:
+            temp = temp[-0.4<temp["percentage_soccer"]]
+            temp = temp[temp["percentage_soccer"]<0.4]
+
+        # Remove outlier
         # Append i in case of same countries
         temp["country"] = dl.countries[0]+str(i)
         countries.append(dl.countries[0]+str(i))
@@ -458,13 +467,14 @@ def soccer_related_cases_overview(
 
     if country_order is None:
         country_order = np.argsort(means)[::-1]
+    
     g = sns.violinplot(
         data=percentage,
         y="percentage_soccer",
         x="country",
         hue="gender",
         scale="count",
-        inner="quartile",
+        inner=None,
         orient="v",
         ax=ax,
         split=True,
@@ -473,6 +483,7 @@ def soccer_related_cases_overview(
         saturation=1,
         width=0.75,
         order=np.array(countries)[country_order],
+        **kwargs
     )
 
     c = 0
@@ -490,9 +501,13 @@ def soccer_related_cases_overview(
             ax.collections[i].set_facecolor(color_female) 
             ax.collections[i].set_edgecolor(color_female)  # Set outline colors
 
+    """ Markup
+    """
+    ax.set_ylabel("Percentage of soccer related\ninfections during the Championship")
+    ax.set_xlabel("")
+    ax.set_xticklabels(countries_raw)
 
-
-
+    # plot flags if desired
     if plot_flags:
         iso2 = []
         for i, dl in enumerate(np.array(dls)[country_order]):
@@ -503,7 +518,7 @@ def soccer_related_cases_overview(
             ab = AnnotationBbox(
                 im,
                 (i, ypos_flags),
-                xybox=(0.0, -5.0),
+                xybox=(0.0, -10.0),
                 frameon=False,
                 xycoords="data",
                 boxcoords="offset points",
@@ -511,12 +526,9 @@ def soccer_related_cases_overview(
             )
             ax.add_artist(ab)
         ax.set_xticklabels(iso2)
-        ax.tick_params(axis="x", which="major", pad=16)
-    """ Markup
-    """
-    ax.set_ylabel("Percentage of soccer related\ninfections during the Championship")
-    ax.set_xlabel("")
-    ax.set_xticklabels(countries_raw)
+        ax.tick_params(axis="x", which="major", pad=21,length=0)
+
+    
     # Remove legend
     ax.legend([], [], frameon=False)
 
@@ -637,7 +649,7 @@ def soccer_related_cases_ax(
     return ax
 
 
-def legend(ax=None, prior=True, posterior=True, model=True, data=True, sex=True,disable_axis=True,loc="center"):
+def legend(ax=None, prior=True, posterior=True, model=True, data=True, sex=True,disable_axis=True,championship_range=False,loc="center"):
     """
     Plots a legend
     """
@@ -678,6 +690,12 @@ def legend(ax=None, prior=True, posterior=True, model=True, data=True, sex=True,
         # female
         lines.append(Patch([0], [0], color=rcParams.color_female, lw=2.5,),)
         labels.append("Female")
+
+    # championship region
+    if championship_range:
+        lines.append(Rectangle([0,0], width=1,height=20.7,lw=2.5, color=rcParams.color_championship_range))
+        labels.append("Time window of\nthe championship") 
+
 
     if disable_axis:
         ax.axis("off")

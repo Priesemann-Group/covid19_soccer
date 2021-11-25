@@ -31,6 +31,7 @@ def get_rcparams_default():
         color_annot="#646464",
         color_male="#EE7733",
         color_female="#EE3377",
+        color_championship_range="#E8F1F7",
         timeseries_xticklabel_rotation=0,  # In degree
     )
 

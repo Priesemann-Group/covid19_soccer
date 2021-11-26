@@ -262,25 +262,9 @@ def single_extended(trace, model, dl, xlim=None):
 
     """ Legend
     """
-    custom_lines = [
-        Line2D(
-            [0],
-            [0],
-            marker="d",
-            color=rcParams.color_data,
-            label="Scatter",
-            markersize=4,
-            lw=0,
-        ),
-        Line2D([0], [0], color=rcParams.color_model, lw=2),
-        Line2D([0], [0], color=rcParams.color_prior, lw=2),
-        Patch([0], [0], color=rcParams.color_posterior, lw=2.5,),
-    ]
     ax = fig.add_subplot(grid[3, 2])
-    ax.legend(
-        custom_lines, ["Data", "Model", "Prior", "Posterior",], loc="center",
-    )
-    ax.axis("off")
+    legend(ax,sex=False,championship_range=True)
+
 
     # Adjust xlim for timeseries plots
     for ax in axes_ts:
@@ -397,7 +381,7 @@ def multi_v2(
     """ Create single overview plots for all selected countries
     """
     outer_grid = outer_outer_grid[0].subgridspec(
-        nRows, nColumns, wspace=0.25, hspace=0.25,
+        nRows, nColumns, wspace=0.25, hspace=0.3,
     )
     axes = []
     sel_traces = [traces[i] for i in selected_index]

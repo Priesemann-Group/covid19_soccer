@@ -113,7 +113,7 @@ def game_effects(
 
     """ Markup
     """
-    ax.set_ylabel("Game\neffects")
+    ax.set_ylabel("Match\neffects")
 
     # Format x axis
     if plot_dates: 

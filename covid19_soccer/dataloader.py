@@ -104,8 +104,11 @@ class Dataloader:
                 "deaths"
             ]
 
+        # Load stringency data
+        self._load_OxCGRT()
+
         # Load wheather data
-        self.__load_wheather()
+        self._load_wheather()
 
     def _load_wheather(self):
         # Validate weather data
@@ -125,6 +128,39 @@ class Dataloader:
                     f"{self.new_cases_obs.shape[0]}!"
                 )
             self._wheather[c] = df
+
+    def _load_OxCGRT(self):
+        self._stringency = []
+        ox = cov19_data.OxCGRT(True)
+        for c in self.countries:
+            if c == "England":
+                c = "United Kingdom"
+                region = "England"
+                temp_data = ox.data[ox.data["country"] == c]
+                temp_data = temp_data[temp_data["RegionName"]==region]["StringencyIndex"]
+            elif c == "Scotland":
+                c = "United Kingdom"
+                region = "Scotland"
+                temp_data = ox.data[ox.data["country"] == c]
+                temp_data = temp_data[temp_data["RegionName"]==region]["StringencyIndex"]
+            else:
+                if c == "Czechia":
+                    c = "Czech Republic"
+                elif c== "Slovakia":
+                    c = "Slovak Republic"
+                temp_data = ox.data[ox.data["country"] == c]["StringencyIndex"]
+            self._stringency.append(temp_data)
+
+    @property
+    def stringency(self):
+        """
+        Returns the stringency index for each country
+        """
+        ret = []
+        for stringency in self._stringency:
+            ret.append(stringency.loc[self.data_begin:self.data_end].to_numpy())
+
+        return np.array(ret).T
 
     @property
     def countries(self):
@@ -532,6 +568,8 @@ class Dataloader_gender(Dataloader):
 
         # Load wheather data TODO:fix SCT
         # self._load_wheather()
+        
+        self._load_OxCGRT()
 
     def __load_cases(self):
 

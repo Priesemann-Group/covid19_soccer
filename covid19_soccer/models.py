@@ -301,7 +301,7 @@ def create_model_gender(
         dl = dataloader
 
     if prior_delay == -1:
-        if dl.countries[0] in ["Germany"]:
+        if dl.countries[0] in ["Germany", "Germany_alt"]:
             prior_delay = 7
         elif dl.countries[0] in ["Scotland", "France", "England", "Netherlands"]:
             prior_delay = 4

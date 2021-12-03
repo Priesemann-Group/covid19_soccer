@@ -414,7 +414,14 @@ def soccer_related_cases_overview(
     means, countries, countries_raw = [], [],[]
     for i, (trace, model, dl) in enumerate(zip(traces, models, dls)):
         # Get params from trace and dataloader
-        if plot_betas:
+        if plot_betas == "both":
+            if "beta_R" in trace.posterior:
+                infections_base, infections_alpha = get_beta_infections(trace, model, dl)
+                infections_alpha += get_alpha_infections(trace, model, dl)[1]
+            else:
+                infections_base, infections_alpha = get_alpha_infections(trace, model,
+                                                                         dl)
+        elif plot_betas == True:
             if "beta_R" in trace.posterior:
                 infections_base, infections_alpha = get_beta_infections(trace, model, dl)
             else:

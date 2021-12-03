@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.dates as mdates
 from cairosvg import svg2png
+import urllib
 
 from .rcParams import *
 from ..effect_gender import _delta
@@ -61,11 +62,16 @@ def _apply_delta(eff, model, dl):
 
 
 def get_flag(iso2):
-    svg2png(
-        url=f"https://hatscripts.github.io/circle-flags/flags/{iso2}.svg",
-        write_to=f"./figures/{iso2}.png",
-    )
-    return f"./figures/{iso2}.png"
+    if iso2 == "DE2": iso2="DE"
+    try:
+        svg2png(
+            url=f"https://hatscripts.github.io/circle-flags/flags/{iso2}.svg",
+            write_to=f"./figures/{iso2}.png",
+        )
+        return f"./figures/{iso2}.png"
+    except urllib.error.HTTPError:
+        return f"./figures/united_nations.png"
+
 
 def sigmoid(z):
     return 1/(1 + np.exp(-z))

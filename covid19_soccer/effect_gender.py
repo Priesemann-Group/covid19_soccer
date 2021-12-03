@@ -47,12 +47,12 @@ def R_t_soccer(alpha_prior, date_of_games, beta_prior=None, S=None, model=None):
 
     # Effect for each game
     alpha_raw = alpha(alpha_prior)
-    pm.Deterministic("alpha_R", alpha_raw)
+    alpha_raw = pm.Deterministic("alpha_R", alpha_raw)
     eff = alpha_raw
 
     if beta_prior is not None:
         beta_raw = beta(beta_prior, S)
-        pm.Deterministic("beta_R", beta_raw)
+        beta_raw = pm.Deterministic("beta_R", beta_raw)
         eff += beta_raw
 
     # Construct d = δ(t_g−t)

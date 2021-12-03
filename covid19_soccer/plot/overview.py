@@ -417,7 +417,7 @@ def multi_v2(
 
     # Plot percentage of soccer
     ax = fig.add_subplot(inner_grid[0, 0])
-    soccer_related_cases_overview(ax, traces, models, dls, plot_flags=True,ypos_flags=ypos_flags,remove_outliers=True,bw=0.5)
+    soccer_related_cases_overview(ax, traces, models, dls, plot_flags=True,ypos_flags=ypos_flags,remove_outliers=True,bw=0.2)
     ax_row.append(ax)
 
     # Plot legend into corner

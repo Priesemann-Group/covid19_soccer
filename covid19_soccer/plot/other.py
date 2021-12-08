@@ -5,6 +5,9 @@ import matplotlib.ticker as mtick
 from matplotlib.lines import Line2D
 from matplotlib.patches import Patch, Rectangle
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+from matplotlib.patches import Patch, Rectangle
+from matplotlib.collections import PatchCollection
+from matplotlib.legend_handler import HandlerPatch
 
 import pandas as pd
 import numpy as np
@@ -700,13 +703,55 @@ def legend(ax=None, prior=True, posterior=True, model=True, data=True, sex=True,
 
     # championship region
     if championship_range:
-        lines.append(Rectangle([0,0], width=1,height=20.7,lw=2.5, color=rcParams.color_championship_range))
+        lines.append(Rectangle([0,0],width=1, height=2.2, lw=0, color=rcParams.color_championship_range))
         labels.append("Time window of\nthe championship") 
 
 
     if disable_axis:
         ax.axis("off")
 
-    ax.legend(lines, labels, loc=loc)
+    ax.legend(lines, labels, loc=loc, handler_map={MulticolorPatch: MulticolorPatchHandler(), Rectangle: HandlerRect(),},)
 
     return ax
+
+
+# define an object that will be used by the legend
+class MulticolorPatch(object):
+    def __init__(self, colors):
+        self.colors = colors
+        
+# define a handler for the MulticolorPatch object
+class MulticolorPatchHandler(object):
+    def legend_artist(self, legend, orig_handle, fontsize, handlebox):
+        width, height = handlebox.width, handlebox.height
+        patches = []
+        for i, c in enumerate(orig_handle.colors):
+            patches.append(
+                plt.Rectangle(
+                    [- handlebox.xdescent, height/len(orig_handle.colors) * i - handlebox.ydescent],
+                           width ,
+                           height / len(orig_handle.colors), 
+                           facecolor=c, 
+                           edgecolor='none'))
+
+        patch = PatchCollection(patches,match_original=True)
+
+        handlebox.add_artist(patch)
+        return patch
+
+class HandlerRect(HandlerPatch):
+
+    def create_artists(self, legend, orig_handle,
+                       xdescent, ydescent, width, height,
+                       fontsize, trans):
+
+        # create
+        p = Rectangle(xy=(xdescent, ydescent-(height*orig_handle.get_height()-height)/2), width=width, height=height*orig_handle.get_height())
+
+        # update with data from oryginal object
+        self.update_prop(p, orig_handle, legend)
+
+        # move xy to legend
+        p.set_transform(trans)
+
+        return [p]

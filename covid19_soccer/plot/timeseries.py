@@ -199,3 +199,29 @@ def R_noise(ax, trace, model, dl, ylim=None, color=None):
     format_date_axis(ax)
 
     return ax
+
+
+def what_if(ax,traces,model,dl,ylim=None,colors=None,**kwargs):
+    
+    for i,trace in enumerate(traces):
+        # Check if it a real trace or one sampled with fast posterior predictive
+        if "posterior" in trace: 
+            new_cases = get_from_trace("new_cases",trace)
+        else:
+            new_cases = np.array(trace["new_cases"])
+            new_cases = new_cases.reshape((new_cases.shape[0] * new_cases.shape[1],) + new_cases.shape[2:])
+        color = None if colors is None else colors[i] 
+        # Plot model fit
+        _timeseries(
+            x=pd.date_range(model.sim_begin, model.sim_end),
+            y=(new_cases[:, :, 0] + new_cases[:, :, 1])
+            / (dl.population[0, 0] + dl.population[1, 0])
+            * 1e6,  # incidence
+            ax=ax,
+            what="model",
+            color=rcParams.color_model if color is None else color,
+            **kwargs
+        )
+    format_date_axis(ax)
+    return ax
+    

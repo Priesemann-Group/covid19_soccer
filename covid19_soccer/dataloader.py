@@ -273,6 +273,8 @@ class Dataloader:
             self.data_begin - timedelta(weeks=51) : self.data_end - timedelta(weeks=51)
         ]
 
+
+    
     @property
     def alpha_prior(self):
         """
@@ -295,8 +297,15 @@ class Dataloader:
                     temp_g.append(0)
             temp.append(temp_g)
 
+        if hasattr(self,"_alpha_prior"):
+            return self._alpha_prior
+            
         return np.array(temp).T
-
+    
+    @alpha_prior.setter
+    def alpha_prior(self,value):
+        self._alpha_prior = value
+        
     @property
     def weighted_alpha_prior(self):
         """

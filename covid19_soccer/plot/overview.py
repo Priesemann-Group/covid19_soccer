@@ -126,7 +126,7 @@ def single(
     return axes_ts
 
 
-def single_extended(trace, model, dl, xlim=None, ylim_imbalance=None):
+def single_extended(trace, model, dl, xlim=None, ylim_imbalance=None, ylim_rbase=None):
     """
     Create an extended overview plot for a single model run.
     This includes incidence, gender imbalance, R_base, R_soccer+R_noise,
@@ -158,6 +158,8 @@ def single_extended(trace, model, dl, xlim=None, ylim_imbalance=None):
     # R_base
     ax = fig.add_subplot(grid[2, 0])
     R_base(ax, trace, model, dl)
+    if ylim_rbase is not None:
+        ax.set_ylim(ylim_rbase)
     axes_ts.append(ax)
 
     # R_soccer

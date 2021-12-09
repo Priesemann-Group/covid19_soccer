@@ -56,6 +56,7 @@ sampling = [
 #    [500, 1000, 12],
     [1000, 1500, 12],
 #    [1000, 1000, 12],
+#     [1500, 3000, 12]
 ]
 
 # True or false
@@ -94,13 +95,13 @@ sigma_incubation = [-1]
 width_delay_prior = [0.1]
 
 median_width_delay = [0.5, 1.0, 2.0]
-# median_width_delay = [1.0]
+#median_width_delay = [1.0]
 
 interval_cps = [10.0, 6.0, 20.0]
-# interval_cps = [10.0]
+#interval_cps = [10.0]
 
 f_fem_list = [0.2, 0.5]
-# f_fem_list = [0.2]
+#f_fem_list = [0.2]
 
 # len_model_list = ["normal", "short"]
 len_model_list = ["normal"]

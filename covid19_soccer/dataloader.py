@@ -104,8 +104,8 @@ class Dataloader:
                 "deaths"
             ]
 
-        # Load stringency data
-        self._load_OxCGRT()
+        # Load stringency data (not necessary)
+        # self._load_OxCGRT()
 
         # Load wheather data
         self._load_wheather()
@@ -137,20 +137,23 @@ class Dataloader:
                 c = "United Kingdom"
                 region = "England"
                 temp_data = ox.data[ox.data["country"] == c]
-                temp_data = temp_data[temp_data["RegionName"]==region]["StringencyIndex"]
+                temp_data = temp_data[temp_data["RegionName"] == region][
+                    "StringencyIndex"
+                ]
             elif c == "Scotland":
                 c = "United Kingdom"
                 region = "Scotland"
                 temp_data = ox.data[ox.data["country"] == c]
-                temp_data = temp_data[temp_data["RegionName"]==region]["StringencyIndex"]
+                temp_data = temp_data[temp_data["RegionName"] == region][
+                    "StringencyIndex"
+                ]
             else:
                 if c == "Czechia":
                     c = "Czech Republic"
-                elif c== "Slovakia":
+                elif c == "Slovakia":
                     c = "Slovak Republic"
                 temp_data = ox.data[ox.data["country"] == c]["StringencyIndex"]
             self._stringency.append(temp_data)
-
 
     @property
     def countries(self):
@@ -263,8 +266,6 @@ class Dataloader:
             self.data_begin - timedelta(weeks=51) : self.data_end - timedelta(weeks=51)
         ]
 
-
-    
     @property
     def alpha_prior(self):
         """
@@ -287,15 +288,15 @@ class Dataloader:
                     temp_g.append(0)
             temp.append(temp_g)
 
-        if hasattr(self,"_alpha_prior"):
+        if hasattr(self, "_alpha_prior"):
             return self._alpha_prior
-            
+
         return np.array(temp).T
-    
+
     @alpha_prior.setter
-    def alpha_prior(self,value):
+    def alpha_prior(self, value):
         self._alpha_prior = value
-        
+
     @property
     def weighted_alpha_prior(self):
         """
@@ -349,15 +350,20 @@ class Dataloader:
         temp = []
         for g, game in self.timetable.iterrows():
             temp_g = []
-            country_of_stadium = locations["country"][
-                locations["name"] == game["location"]
-            ].values[0]
-            for c, country in enumerate(self.countries_iso2):
-                # country can also be a region, therefore take only 3 first letters
-                if country_of_stadium in country[:3] or country == country_of_stadium:
-                    temp_g.append(1)
-                else:
-                    temp_g.append(0)
+            location_id = locations["name"] == game["location"]
+            if np.any(location_id):
+                country_of_stadium = locations["country"][location_id].values[0]
+                for c, country in enumerate(self.countries_iso2):
+                    # country can also be a region, therefore take only 3 first letters
+                    if (
+                        country_of_stadium in country[:3]
+                        or country == country_of_stadium
+                    ):
+                        temp_g.append(1)
+                    else:
+                        temp_g.append(0)
+            else:
+                temp_g.append(0)
             temp.append(temp_g)
 
         return np.array(temp).T
@@ -468,7 +474,13 @@ class Dataloader:
         """
         ret = []
         for stringency in self._stringency:
-            ret.append(stringency.loc[self.data_begin + self.offset_data : self.data_end + self.offset_data].to_numpy())
+            ret.append(
+                stringency.loc[
+                    self.data_begin
+                    + self.offset_data : self.data_end
+                    + self.offset_data
+                ].to_numpy()
+            )
 
         return np.array(ret).T
 
@@ -578,8 +590,8 @@ class Dataloader_gender(Dataloader):
 
         # Load wheather data TODO:fix SCT
         # self._load_wheather()
-        
-        self._load_OxCGRT()
+
+        # self._load_OxCGRT() # not necessary
 
     def __load_cases(self):
 

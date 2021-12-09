@@ -32,37 +32,36 @@ dir_traces = "/data.nst/jdehning/covid_uefa_traces11"
 
 
 # Countries with gender data
-# countries = ["Scotland", "Germany", "France", "England", "Spain", "Czechia", "Italy"]
+#countries = ["Scotland", "Germany", "France", "England", "Spain", "Czechia", "Italy"]
 
 countries = [
     "Scotland",
     "Germany",
     "France",
     "England",
-    "Spain",
+    "Austria",
+    "Belgium",
     "Czechia",
     "Italy",
-    "Belgium",
     "Netherlands",
     "Portugal",
     "Slovakia",
-    "Austria",
+    "Spain",
 ]
 
 
 # [tune,draw,treedepth]
 sampling = [
-#    [200, 300, 10],
-#    [500, 1000, 12],
-    [1000, 1500, 12],
-#    [1000, 1000, 12],
-#     [1500, 3000, 12]
+    [200, 300, 10],
+    [500, 1000, 12],
+    # [1000, 1500, 12],
+#    [1000, 2000, 12]
 ]
 
 # True or false
 # beta = [0, 1]
-# beta = [0]
-beta = [0, 1]
+beta = [0]
+
 
 # Games offset i.e. effect if soccer games would be x days later
 # important offsets = [0, -35, -21, -14, -10, -7, -4, -2, 2, 4, 7, 10, 14, 21, 35]
@@ -71,13 +70,13 @@ beta = [0, 1]
 # offset = [0]
 # offset = [0, -5, -4, -2, -1, 1, 2, 3, 4, 5]
 # offset = [0, -3, -2, -1, 1, 2, 3, 4, 5]
-# offset = [0]
+offset = [0]
 # offset = [0, -35, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 35]
 # offset = [-35, -3, 3, 35]
 # offset = [-21, -14, -10, -7, 7, 10, 14, 21]
 # offset = [-21, -14, -10, -7, -4, -2, 2, 4, 7, 10, 14, 21]
 # offset = [0, -35, -21, -14, -10, -7, -4, -2, 2, 4, 7, 10, 14, 21, 35]
-offset = [0, -14, -10, -7, -4, -2, 2, 4, 7, 10, 14]
+
 
 # draw delay width i.e. true false
 draw_delay = [1]
@@ -94,17 +93,19 @@ sigma_incubation = [-1]
 
 width_delay_prior = [0.1]
 
-median_width_delay = [0.5, 1.0, 2.0]
-#median_width_delay = [1.0]
+# median_width_delay = [0.5, 1.0, 2.0]
+median_width_delay = [1.0]
 
-interval_cps = [10.0, 6.0, 20.0]
-#interval_cps = [10.0]
+# interval_cps = [10.0, 6.0, 20.0]
+interval_cps = [10.0]
 
 f_fem_list = [0.2, 0.5]
 #f_fem_list = [0.2]
 
-# len_model_list = ["normal", "short"]
-len_model_list = ["normal"]
+allow_uefa_cps_list= [True, False]
+
+len_model_list = ["normal", "short"]
+#len_model_list = ["normal"]
 
 mapping = []
 
@@ -121,71 +122,61 @@ for draw_args in sampling:
                                         for inter in interval_cps:
                                             for f_fem in f_fem_list:
                                                 for len_mod in len_model_list:
-                                                    default_vals = (
-                                                        True if b == 0 else False
-                                                    )
-                                                    if country in [
-                                                        "Belgium",
-                                                        "Netherlands",
-                                                        "Portugal",
-                                                        "Slovakia",
-                                                        "Austria",
-                                                    ]:
-                                                        if not default_vals:
-                                                            continue
-                                                        else:
-                                                            default_vals = False
-                                                    if not off == 0:
-                                                        if not default_vals:
-                                                            continue
-                                                        else:
-                                                            default_vals = False
-                                                    if not wa == 0:
-                                                        if not default_vals:
-                                                            continue
-                                                        else:
-                                                            default_vals = False
-                                                    if not pd == -1:
-                                                        if not default_vals:
-                                                            continue
-                                                        else:
-                                                            default_vals = False
-                                                    if not mwd == 1.0:
-                                                        if not default_vals:
-                                                            continue
-                                                        else:
-                                                            default_vals = False
-                                                    if not inter == 10.0:
-                                                        if not default_vals:
-                                                            continue
-                                                        else:
-                                                            default_vals = False
-                                                    if not f_fem == 0.2:
-                                                        if not default_vals:
-                                                            continue
-                                                        else:
-                                                            default_vals = False
-                                                    if not len_mod == "normal":
-                                                        if not default_vals:
-                                                            continue
-                                                        else:
-                                                            default_vals = False
+                                                    for allow_uefa_cps in allow_uefa_cps_list:
+                                                        default_vals = True if b == 0 else False
+                                                        if not off == 0:
+                                                            if not default_vals:
+                                                                continue
+                                                            else:
+                                                                default_vals = False
+                                                        if not wa == 0:
+                                                            if not default_vals:
+                                                                continue
+                                                            else:
+                                                                default_vals = False
+                                                        if not pd == -1:
+                                                            if not default_vals:
+                                                                continue
+                                                            else:
+                                                                default_vals = False
+                                                        if not mwd == 1.0:
+                                                            if not default_vals:
+                                                                continue
+                                                            else:
+                                                                default_vals = False
+                                                        if not inter == 10.0:
+                                                            if not default_vals:
+                                                                continue
+                                                            else:
+                                                                default_vals = False
+                                                        if not f_fem == 0.2:
+                                                            if not default_vals:
+                                                                continue
+                                                            else:
+                                                                default_vals = False
+                                                        if not len_mod == "normal":
+                                                            if not default_vals:
+                                                                continue
+                                                            else:
+                                                                default_vals = False
+                                                            
 
-                                                    ma = []
-                                                    ma.append(b)
-                                                    ma.append(country)
-                                                    ma += draw_args
-                                                    ma.append(off)
-                                                    ma.append(delay)
-                                                    ma.append(wa)
-                                                    ma.append(pd)
-                                                    ma.append(wdp)
-                                                    ma.append(si)
-                                                    ma.append(mwd)
-                                                    ma.append(inter)
-                                                    ma.append(f_fem)
-                                                    ma.append(len_mod)
-                                                    mapping.append(tuple(ma))
+                                                        ma = []
+                                                        ma.append(b)
+                                                        ma.append(country)
+                                                        ma += draw_args
+                                                        ma.append(off)
+                                                        ma.append(delay)
+                                                        ma.append(wa)
+                                                        ma.append(pd)
+                                                        ma.append(wdp)
+                                                        ma.append(si)
+                                                        ma.append(mwd)
+                                                        ma.append(inter)
+                                                        ma.append(f_fem)
+                                                        ma.append(len_mod)
+                                                        ma.append(allow_uefa_cps)
+                                                        mapping.append(tuple(ma))
 
 
 num_jobs_per_node = 3
@@ -225,12 +216,13 @@ def exec(args_list):
         interval_cps,
         f_fem,
         len_mod,
+        allow_uefa_cps,
     ) = args_list
     os.system(
         f"python run_model_gender.py "
         f"-b {beta} -c {country} "
         f"--dir {dir_traces} "
-        f"--tune {tune} --draws {draws} --max_treedepth {max_treedepth} "
+        f"--t {tune} --d {draws} --max_treedepth {max_treedepth} "
         f"--log ./log/ "
         f"--offset_data {offset} "
         f"--draw_delay {draw_delay} "
@@ -242,6 +234,7 @@ def exec(args_list):
         f"--interval_cps {interval_cps} "
         f"--f_fem {f_fem} "
         f"--len {len_mod} "
+        f"--uc {allow_uefa_cps} "
     )
 
 

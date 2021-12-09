@@ -1,12 +1,12 @@
 import logging
 import pandas as pd
 import numpy as np
-from datetime import timedelta
+from datetime import timedelta,datetime
 
 log = logging.getLogger(__name__)
 
 # Define changepoints (we define all vars to surpress the automatic prints)
-def get_cps(data_begin, data_end, interval=7, offset=0, **priors_dict):
+def get_cps(data_begin, data_end, interval=7, offset=0, allow_uefa_cps=True,**priors_dict):
     """
     Generates and returns change point array.
     
@@ -34,10 +34,15 @@ def get_cps(data_begin, data_end, interval=7, offset=0, **priors_dict):
     )
     set_missing_priors_with_default(priors_dict, default_params)
 
+    uefa_start = datetime(2021,6,11) - timedelta(days=np.ceil(priors_dict["pr_sigma_date_transient"] / 2))
+    
+    uefa_end = datetime(2021,7,11) + timedelta(days=np.ceil(priors_dict["pr_sigma_date_transient"] / 2))
+    
     for day in pd.date_range(start=data_begin, end=data_end):
+        if (uefa_start < day < uefa_end) and not allow_uefa_cps:
+            continue
         if count / interval >= 1.0:
-            # Add cp
-
+            # Add cp   
             change_points.append(
                 dict(  # one possible change point every sunday
                     pr_mean_date_transient=day, **priors_dict

@@ -270,6 +270,7 @@ def create_model_gender(
     median_width_delay=1.0,
     interval_cps=10,
     f_female=0.2,
+    allow_uefa_cps=True
 ):
     """
     High level function to create an abstract pymc3 model using different defined
@@ -329,6 +330,7 @@ def create_model_gender(
         dl.data_end,
         interval=interval_cps,
         offset=5,
+        allow_uefa_cps=allow_uefa_cps,
         **cps_dict,
     )
 

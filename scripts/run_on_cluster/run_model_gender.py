@@ -105,6 +105,13 @@ parser.add_argument(
 )
 
 parser.add_argument(
+    "--uc",
+    type=str2bool,
+    help="Wheather or not to allow change points during the uefa championship",
+    default=True,
+)
+
+parser.add_argument(
     "--len",
     type=str,
     help="duration of the model",
@@ -112,11 +119,11 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "--tune", type=int, help="How many tuning steps?", default=1000,
+    "--t", type=int, help="How many tuning steps?", default=1000,
 )
 
 parser.add_argument(
-    "--draws", type=int, help="How many draws?", default=1000,
+    "--d", type=int, help="How many draws?", default=1000,
 )
 
 parser.add_argument(
@@ -142,7 +149,7 @@ def dict_2_string(dictonary):
     Creates a string from a dictornary
     """
 
-    f_str = "UEFA"
+    f_str = ""
     for arg in dictonary:
         if arg in ["log", "dir"]:
             continue
@@ -236,7 +243,9 @@ if __name__ == "__main__":
                 sigma_incubation=args.sigma_incubation,
                 median_width_delay=args.median_width_delay,
                 interval_cps=args.interval_cps,
-                f_female=args.f_fem)
+                f_female=args.f_fem,
+                allow_uefa_cps=args.allow_uefa_cps
+            )
         except AssertionError as error:
             if i < 10:
                 i += 1

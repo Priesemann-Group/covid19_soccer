@@ -221,19 +221,29 @@ if __name__ == "__main__":
     )
     log.info(f"Data loaded for {dl.countries}")
 
-    model = covid19_soccer.models.create_model_gender(
-        dataloader=dl,
-        beta=args.beta,
-        use_gamma=True,
-        draw_width_delay=args.draw_delay,
-        use_weighted_alpha_prior=args.weighted_alpha_prior,
-        prior_delay=args.prior_delay,
-        width_delay_prior=args.width_delay_prior,
-        sigma_incubation=args.sigma_incubation,
-        median_width_delay=args.median_width_delay,
-        interval_cps=args.interval_cps,
-        f_female=args.f_fem,
-    )
+    i = 0
+    while i < 50:
+        # seems to be some multiprocessing error with c-backend, try again until success
+        try:
+            model = covid19_soccer.models.create_model_gender(
+                dataloader=dl,
+                beta=args.beta,
+                use_gamma=True,
+                draw_width_delay=args.draw_delay,
+                use_weighted_alpha_prior=args.weighted_alpha_prior,
+                prior_delay=args.prior_delay,
+                width_delay_prior=args.width_delay_prior,
+                sigma_incubation=args.sigma_incubation,
+                median_width_delay=args.median_width_delay,
+                interval_cps=args.interval_cps,
+                f_female=args.f_fem)
+        except AssertionError as error:
+            if i < 10:
+                i += 1
+                continue
+            else:
+                raise error
+        i = 1000
 
     """ MCMC sampling
     """

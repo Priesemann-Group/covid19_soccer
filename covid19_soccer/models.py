@@ -357,10 +357,11 @@ def create_model_gender(
         stadium_size = None
 
     # Construct model params dict
+    fcast_len = 16
     params = {
         "new_cases_obs": dl.new_cases_obs[:, :, 0],  # only select first country
         "data_begin": dl.data_begin,
-        "fcast_len": 16,
+        "fcast_len": fcast_len,
         "diff_data_sim": int((dl.data_begin - dl.sim_begin).days),
         "N_population": dl.population[:, 0],  # only select first country
     }
@@ -384,6 +385,7 @@ def create_model_gender(
             shape=1,
         )
         # Let's also add that to the trace since we may want to plot this variable
+
         R_t_base = pm.Deterministic("R_t_base", tt.exp(R_t_base_log[..., 0]))
 
         # We model the effect of the soccer games with a per game
@@ -423,7 +425,7 @@ def create_model_gender(
         # Soccer gender interconnection matrix (i.e. for soccer matches)
         if f_female == 0.2:
             f_female = pm.Beta("factor_female", alpha=15, beta=60)
-        elif f_female== 0.5:
+        elif f_female == 0.5:
             f_female = pm.Beta("factor_female", alpha=3, beta=3)
         else:
             raise RuntimeError("argument value not known")

@@ -151,16 +151,6 @@ class Dataloader:
                 temp_data = ox.data[ox.data["country"] == c]["StringencyIndex"]
             self._stringency.append(temp_data)
 
-    @property
-    def stringency(self):
-        """
-        Returns the stringency index for each country
-        """
-        ret = []
-        for stringency in self._stringency:
-            ret.append(stringency.loc[self.data_begin:self.data_end].to_numpy())
-
-        return np.array(ret).T
 
     @property
     def countries(self):
@@ -470,6 +460,17 @@ class Dataloader:
         temp_c = (np.array(temp) - 32) / 1.8
 
         return temp_c.T
+
+    @property
+    def stringency(self):
+        """
+        Returns the stringency index for each country
+        """
+        ret = []
+        for stringency in self._stringency:
+            ret.append(stringency.loc[self.data_begin + self.offset_data : self.data_end + self.offset_data].to_numpy())
+
+        return np.array(ret).T
 
     @property
     def nRegions(self):

@@ -11,3 +11,5 @@ import covid19_inference as cov19
 cov19.data_retrieval.retrieval.set_data_dir(fname="./data_covid19_inference")
 jhu = cov19.data_retrieval.JHU()
 jhu.download_all_available_data(force_download=True)
+oxford = cov19.data_retrieval.OxCGRT(True)
+

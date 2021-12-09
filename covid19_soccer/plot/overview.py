@@ -226,21 +226,22 @@ def single_extended(trace, model, dl, xlim=None, ylim_imbalance=None, ylim_rbase
 
     # likelihood and week modulation
     ax = fig.add_subplot(grid[2, 1])
-    posterior = get_from_trace("fraction_delayed_by_weekday",trace)
-    prior = pm.sample_prior_predictive(
-        samples=5000, model=model, var_names=["fraction_delayed_by_weekday"]
-    )["fraction_delayed_by_weekday"]
-    ax.set_xlim(0.1,1)
-    _distribution(
-        array_posterior=sigmoid(posterior[:,5]),
-        array_prior=sigmoid(prior[:,5]),
-        dist_name="",
-        dist_math="r_{\mathrm{Sat}}",
+    distribution(
+        model,
+        trace,
+        "factor_stringency",
+        nSamples_prior=5000,
+        title="",
+        dist_math="a",
         ax=ax,
     )
     axes_dist.append(ax)
 
     ax = fig.add_subplot(grid[2, 2])
+    posterior = get_from_trace("fraction_delayed_by_weekday",trace)
+    prior = pm.sample_prior_predictive(
+        samples=5000, model=model, var_names=["fraction_delayed_by_weekday"]
+    )["fraction_delayed_by_weekday"]
     _distribution(
         array_posterior=sigmoid(posterior[:,6]),
         array_prior=sigmoid(prior[:,6]),

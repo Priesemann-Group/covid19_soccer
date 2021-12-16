@@ -5,15 +5,23 @@ import datetime
 import numpy as np
 
 from covid19_inference.plot import _timeseries
-from .utils import get_from_trace, format_date_axis
+from .utils import get_from_trace, format_date_axis, lighten_color
 
 from .rcParams import *
 
 log = logging.getLogger(__name__)
 
 
+def _uefa_range(ax):
+    # Show time of uefa championship
+    begin = datetime.datetime(2021, 6, 11)
+    end = datetime.datetime(2021, 7, 11)
+    ylim = ax.get_ylim()
+    ax.fill_betweenx((-1000000,1000000), begin, end, edgecolor=rcParams.color_championship_range,hatch = "///",facecolor = 'none')
+    ax.set_ylim(ylim)
+
 def incidence(
-    ax, trace, model, dl, ylim=None, color=None, color_data=None,
+    ax, trace, model, dl, ylim=None, color=None, color_data=None, data_forecast=False
 ):
     """
     Plots incidence: modelfit and data
@@ -45,18 +53,34 @@ def incidence(
         ms=1.5,
         alpha=0.8,
     )
-
-    # Show time of uefa championship
-    begin = datetime.datetime(2021, 6, 11)
-    end = datetime.datetime(2021, 7, 11)
-    ax.fill_betweenx(np.arange(0, 10000), begin, end, color=rcParams.color_championship_range)
-
+    
+    if data_forecast:
+        dates = dl._cases.loc[dl.data_end:,"male","total",].index.get_level_values("date")
+        cases = np.stack(
+            (dl._cases.loc[dl.data_end:,"male","total",].to_numpy(),
+             dl._cases.loc[dl.data_end:,"female","total",].to_numpy()
+            ), axis=1)
+        incidence = cases.sum(axis=(1,2)) / (dl.population[0, 0] + dl.population[1, 0]) * 1e6
+        _timeseries(
+            x=dates,
+            y=incidence,
+            what="data",
+            ax=ax,
+            color="tab:red",
+            ms=1.5,
+            alpha=0.8,
+        )
+    
+    
     # Adjust ylim
     if ylim is not None:
         ax.set_ylim(ylim)
     else:
         ax.set_ylim(0, data_points.max() + data_points.max() / 8)
-
+        
+    # Plot shaded uefa
+    _uefa_range(ax)
+    
     # Markup
     ax.set_ylabel("Incidence")
     format_date_axis(ax)
@@ -65,7 +89,7 @@ def incidence(
 
 
 def fraction_male_female(
-    ax, trace, model, dl, ylim=None, color=None, color_data=None,
+    ax, trace, model, dl, ylim=None, color=None, color_data=None,data_forecast=True
 ):
     """
     Plot fraction between male and female cases normalized by population size
@@ -96,11 +120,31 @@ def fraction_male_female(
         color=rcParams.color_data if color_data is None else color_data,
         ms=1.5,
     )
-
+    
+    if data_forecast:
+        dates = dl._cases.loc[dl.data_end:,"male","total",].index.get_level_values("date")
+        cases = np.stack(
+            (dl._cases.loc[dl.data_end:,"male","total",].to_numpy(),
+             dl._cases.loc[dl.data_end:,"female","total",].to_numpy()
+            ), axis=1)
+        imbalance = (cases[:,0,0] / dl.population[0, 0]) / (cases[:,1,0] /dl.population[1, 0])
+        _timeseries(
+            x=dates,
+            y=imbalance,
+            what="data",
+            ax=ax,
+            color="tab:red",
+            ms=1.5,
+            alpha=0.8,
+        )
+    
     # Adjust ylim
     if ylim is not None:
         ax.set_ylim(ylim)
-
+        
+    # Plot shaded uefa
+    _uefa_range(ax)
+    
     # Markup
     ax.set_ylabel("Gender\nimbalance")
     format_date_axis(ax)
@@ -136,7 +180,7 @@ def R_soccer(ax, trace, model, dl, ylim=None, color=None, add_noise=False,**kwar
     # Adjust ylim
     if ylim is not None:
         ax.set_ylim(ylim)
-
+        
     # Markup
     ylabel = "$R_{soccer}"
     if add_noise:

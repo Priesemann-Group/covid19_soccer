@@ -147,12 +147,12 @@ def single_extended(trace, model, dl, xlim=None, ylim_imbalance=None, ylim_rbase
     """
     # Cases
     ax = fig.add_subplot(grid[0, 0])
-    incidence(ax, trace, model, dl)
+    incidence(ax, trace, model, dl, data_forecast=True)
     axes_ts.append(ax)
 
     # Gender imbalance
     ax = fig.add_subplot(grid[1, 0])
-    fraction_male_female(ax, trace, model, dl,ylim=ylim_imbalance)
+    fraction_male_female(ax, trace, model, dl,ylim=ylim_imbalance,data_forecast=True)
     axes_ts.append(ax)
 
     # R_base
@@ -226,22 +226,20 @@ def single_extended(trace, model, dl, xlim=None, ylim_imbalance=None, ylim_rbase
 
     # likelihood and week modulation
     ax = fig.add_subplot(grid[2, 1])
-    distribution(
-        model,
-        trace,
-        "factor_stringency",
-        nSamples_prior=5000,
-        title="",
-        dist_math="a",
-        ax=ax,
-    )
-    axes_dist.append(ax)
-
-    ax = fig.add_subplot(grid[2, 2])
     posterior = get_from_trace("fraction_delayed_by_weekday",trace)
     prior = pm.sample_prior_predictive(
         samples=5000, model=model, var_names=["fraction_delayed_by_weekday"]
     )["fraction_delayed_by_weekday"]
+    _distribution(
+        array_posterior=sigmoid(posterior[:,5]),
+        array_prior=sigmoid(prior[:,5]),
+        dist_name="",
+        dist_math="r_{\mathrm{Sat}}",
+        ax=ax,
+    )
+    axes_dist.append(ax)
+    
+    ax = fig.add_subplot(grid[2, 2])
     _distribution(
         array_posterior=sigmoid(posterior[:,6]),
         array_prior=sigmoid(prior[:,6]),
@@ -272,7 +270,7 @@ def single_extended(trace, model, dl, xlim=None, ylim_imbalance=None, ylim_rbase
     # Adjust xlim for timeseries plots
     for ax in axes_ts:
         if xlim is None:
-            ax.set_xlim(model.sim_begin, model.sim_end)
+            ax.set_xlim(model.data_begin, model.sim_end)
         else:
             ax.set_xlim(xlim)
 

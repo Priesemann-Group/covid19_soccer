@@ -689,21 +689,21 @@ def legend(ax=None, prior=True, posterior=True, model=True, data=True, sex=True,
 
     # Posterior
     if posterior:
-        lines.append(Patch([0], [0], color=rcParams.color_posterior, lw=2.5,),)
+        lines.append(Patch([0], [0], color=rcParams.color_posterior, lw=0,),)
         labels.append("Posterior")
 
     # male
     if sex:
-        lines.append(Patch([0], [0], color=rcParams.color_male, lw=2.5,),)
+        lines.append(Patch([0], [0], color=rcParams.color_male, lw=0,),)
         labels.append("Male")
 
         # female
-        lines.append(Patch([0], [0], color=rcParams.color_female, lw=2.5,),)
+        lines.append(Patch([0], [0], color=rcParams.color_female, lw=0,),)
         labels.append("Female")
 
     # championship region
     if championship_range:
-        lines.append(Rectangle([0,0],width=1, height=2.2, lw=0, color=rcParams.color_championship_range))
+        lines.append(Rectangle([0,0],width=1, height=2.2, lw=1, edgecolor=rcParams.color_championship_range,hatch="////",facecolor = 'none'))
         labels.append("Time window of\nthe championship") 
 
 

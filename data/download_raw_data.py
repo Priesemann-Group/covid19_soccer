@@ -1,4 +1,5 @@
 import requests
+from tqdm.auto import tqdm
 
 urls = {
     "DE.csv": "https://www.arcgis.com/sharing/rest/content/items/f10774f1c63e40168479a1feb6c7ca74/data",
@@ -25,7 +26,27 @@ urls = {
 }
 
 
-for key in urls.keys():
-    r = requests.get(urls[key])
-    with open("./case_data_gender_raw/" + key, "wb") as f:
-        f.write(r.content)
+def download_url(name, url, save_path, chunk_size=1024):
+    r = requests.get(url, stream=True)
+    pbar = tqdm(
+        desc=f"{name} download",
+        unit="B",
+        total=int(r.headers["Content-Length"],),
+        unit_scale=True,
+    )
+
+    with open(save_path, "wb") as fd:
+        for chunk in r.iter_content(chunk_size=chunk_size):
+            if chunk:  # filter out keep-alive new chunks
+                fd.write(chunk)
+                pbar.update(chunk_size)
+    pbar.close()
+
+
+if __name__ == "__main__":
+
+    for key in tqdm(
+        urls.keys(), desc="Countries", leave=False, colour="green", position=0
+    ):
+        filename = "./case_data_gender_raw/" + key
+        download_url(key, urls[key], filename)

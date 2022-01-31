@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 from datetime import datetime
 import json
+from tqdm.auto import tqdm
 
 raw_data_path = "./case_data_gender_raw/"
 processed_data_path = "./case_data_gender/"
@@ -351,7 +352,7 @@ def Netherlands():
             "Date_statistics_type",
             "Agegroup",
             "Province",
-            "Hospital_admission",
+            # "Hospital_admission",
             "Deceased",
             "Week_of_death",
             "Municipal_health_service",
@@ -375,12 +376,40 @@ def Netherlands():
 
 
 if __name__ == "__main__":
+    pbar = tqdm(desc="[Preprocess data]", total=9)
+
+    pbar.update(1)
+    pbar.set_description("[Preprocess data] GER")
     Germany()
+
+    pbar.update(1)
+    pbar.set_description("[Preprocess data] FR")
     France()
+
+    pbar.update(1)
+    pbar.set_description("[Preprocess data] ENG")
     GB_ENG()
+
+    pbar.update(1)
+    pbar.set_description("[Preprocess data] SCT")
     Scotland()
+
+    pbar.update(1)
+    pbar.set_description("[Preprocess data] PO")
     Portugal()
+
+    pbar.update(1)
+    pbar.set_description("[Preprocess data] AU")
     Austria()
+
+    pbar.update(1)
+    pbar.set_description("[Preprocess data] BG")
     Belgium()
+
+    pbar.update(1)
+    pbar.set_description("[Preprocess data] CZ")
     Czech()
+
+    pbar.update(1)
+    pbar.set_description("[Preprocess data] NL")
     Netherlands()

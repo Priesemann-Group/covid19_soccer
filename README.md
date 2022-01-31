@@ -33,4 +33,4 @@ Before you can use the code and rerun the analyses you have to:
 	```
 
 - You may want to download or update the raw data
-	[(see here)](./data/Readme.md)
+	[(see here)](./data/README.md)

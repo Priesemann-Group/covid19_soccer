@@ -76,3 +76,11 @@ def get_flag(iso2):
 
 def sigmoid(z):
     return 1 / (1 + np.exp(-z))
+
+
+def k_formatter(x, pos):
+    # converts tick to k notation\n",
+    if x >= 1e3:
+        return "{:.0f}k".format(x / 1e3)
+    else:
+        return "{:.0f}".format(x)

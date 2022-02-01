@@ -1,10 +1,11 @@
+from re import X
 import pandas as pd
 import matplotlib.pyplot as plt
 import logging
 import datetime
 import numpy as np
 
-from covid19_inference.plot import _timeseries
+from covid19_inference.plot import _timeseries, _format_date_xticks
 from .utils import get_from_trace, format_date_axis, lighten_color
 
 from .rcParams import *
@@ -64,13 +65,23 @@ def incidence(
     )
 
     if data_forecast:
-        dates = dl._cases.loc[dl.data_end :, "male", "total",].index.get_level_values(
-            "date"
-        )
+        dates = dl._cases.loc[
+            dl.data_end :,
+            "male",
+            "total",
+        ].index.get_level_values("date")
         cases = np.stack(
             (
-                dl._cases.loc[dl.data_end :, "male", "total",].to_numpy(),
-                dl._cases.loc[dl.data_end :, "female", "total",].to_numpy(),
+                dl._cases.loc[
+                    dl.data_end :,
+                    "male",
+                    "total",
+                ].to_numpy(),
+                dl._cases.loc[
+                    dl.data_end :,
+                    "female",
+                    "total",
+                ].to_numpy(),
             ),
             axis=1,
         )
@@ -137,13 +148,23 @@ def fraction_male_female(
     )
 
     if data_forecast:
-        dates = dl._cases.loc[dl.data_end :, "male", "total",].index.get_level_values(
-            "date"
-        )
+        dates = dl._cases.loc[
+            dl.data_end :,
+            "male",
+            "total",
+        ].index.get_level_values("date")
         cases = np.stack(
             (
-                dl._cases.loc[dl.data_end :, "male", "total",].to_numpy(),
-                dl._cases.loc[dl.data_end :, "female", "total",].to_numpy(),
+                dl._cases.loc[
+                    dl.data_end :,
+                    "male",
+                    "total",
+                ].to_numpy(),
+                dl._cases.loc[
+                    dl.data_end :,
+                    "female",
+                    "total",
+                ].to_numpy(),
             ),
             axis=1,
         )

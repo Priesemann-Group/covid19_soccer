@@ -269,3 +269,46 @@ def what_if(ax,traces,model,dl,ylim=None,colors=None,**kwargs):
     format_date_axis(ax)
     return ax
     
+
+def stacked_filled(x,y,ax=None,colors=None,date_format=True,**kwargs):
+    if ax is None:
+        figure, ax = plt.subplots(figsize=(6, 3))
+
+    if "linewidth" in kwargs:
+        del kwargs["linewidth"]
+    if "marker" in kwargs:
+        del kwargs["marker"]
+    kwargs["lw"] = 0
+
+    y = np.array(y)
+    for i, y_i in enumerate(y):
+        # Fill area between two bars
+        ax.fill_between(
+            x, 
+            np.zeros(y_i.shape) if i == 0 else np.sum(y[:i], axis=0),
+            np.sum(y[:i], axis=0) + y[i], 
+            color = colors[i] if colors is not None else None,
+            **kwargs
+        )
+
+    if date_format:
+        format_date_axis(ax)
+    return ax
+
+
+def stacked_bars(x,y,ax=None,colors=None,date_format=True,**kwargs):
+    if ax is None:
+        figure, ax = plt.subplots(figsize=(6, 3))
+
+    for i, y_i in enumerate(y):
+        ax.bar(
+            x, 
+            y_i, 
+            bottom = np.sum(y[:i], axis=0),
+            color = colors[i] if colors is not None else None,
+            **kwargs
+        )
+
+    if date_format:
+        format_date_axis(ax)
+    return ax

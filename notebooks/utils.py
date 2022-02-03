@@ -1,7 +1,8 @@
 import sys
+import os
 
-sys.path.append("../")
-sys.path.append("../covid19_inference")
+sys.path.append(os.path.join(os.path.dirname(__file__),"../"))
+sys.path.append(os.path.join(os.path.dirname(__file__),"../covid19_inference"))
 
 import theano.tensor as tt
 from covid19_soccer.dataloader import Dataloader_gender, Dataloader

@@ -48,8 +48,8 @@ def format_date_axis(ax):
     """
     Formats axis with dates
     """
-    ax.xaxis.set_major_locator(mdates.WeekdayLocator(interval=4))
-    ax.xaxis.set_minor_locator(mdates.WeekdayLocator(interval=1))
+    ax.xaxis.set_major_locator(mdates.WeekdayLocator(interval=4, byweekday=mdates.SU))
+    ax.xaxis.set_minor_locator(mdates.WeekdayLocator(interval=1, byweekday=mdates.SU))
     ax.xaxis.set_major_formatter(mdates.DateFormatter(rcParams.date_format))
 
 
@@ -62,7 +62,8 @@ def _apply_delta(eff, model, dl):
 
 
 def get_flag(iso2):
-    if iso2 == "DE2": iso2="DE"
+    if iso2 == "DE2":
+        iso2 = "DE"
     try:
         svg2png(
             url=f"https://hatscripts.github.io/circle-flags/flags/{iso2}.svg",
@@ -74,4 +75,4 @@ def get_flag(iso2):
 
 
 def sigmoid(z):
-    return 1/(1 + np.exp(-z))
+    return 1 / (1 + np.exp(-z))

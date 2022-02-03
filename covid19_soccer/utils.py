@@ -39,7 +39,7 @@ def get_cps(data_begin, data_end, interval=7, offset=0, allow_uefa_cps=True,**pr
     uefa_end = datetime(2021,7,11) + timedelta(days=np.ceil(priors_dict["pr_sigma_date_transient"] / 2))
     
     for day in pd.date_range(start=data_begin, end=data_end):
-        if (uefa_start < day < uefa_end) and not allow_uefa_cps:
+        if not allow_uefa_cps:
             continue
         if count / interval >= 1.0:
             # Add cp   

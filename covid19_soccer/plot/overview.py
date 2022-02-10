@@ -49,7 +49,11 @@ def single(
         grid = fig.add_gridspec(3, 2, hspace=0.25, width_ratios=[1, 0.3])
     else:
         if type_soccer_related_cases == "skip":
-            grid = outer_grid.subgridspec(3, 1, hspace=0.25,)
+            grid = outer_grid.subgridspec(
+                3,
+                1,
+                hspace=0.25,
+            )
         else:
             grid = outer_grid.subgridspec(
                 3, 2, wspace=0.2, hspace=0.25, width_ratios=[1, 0.3]
@@ -152,7 +156,7 @@ def single_extended(trace, model, dl, xlim=None, ylim_imbalance=None, ylim_rbase
 
     # Gender imbalance
     ax = fig.add_subplot(grid[1, 0])
-    fraction_male_female(ax, trace, model, dl,ylim=ylim_imbalance,data_forecast=True)
+    fraction_male_female(ax, trace, model, dl, ylim=ylim_imbalance, data_forecast=True)
     axes_ts.append(ax)
 
     # R_base
@@ -179,11 +183,17 @@ def single_extended(trace, model, dl, xlim=None, ylim_imbalance=None, ylim_rbase
     # delay
     ax = fig.add_subplot(grid[0, 1])
     if dl.countries[0] == "Germany":
-        ax.set_xlim(4.1,8)
+        ax.set_xlim(4.1, 8)
     else:
-        ax.set_xlim(3.1,7)
+        ax.set_xlim(3.1, 7)
     distribution(
-        model, trace, "delay", nSamples_prior=5000, title="", dist_math="D", ax=ax,
+        model,
+        trace,
+        "delay",
+        nSamples_prior=5000,
+        title="",
+        dist_math="D",
+        ax=ax,
     )
     axes_dist.append(ax)
     ax = fig.add_subplot(grid[0, 2])
@@ -200,7 +210,7 @@ def single_extended(trace, model, dl, xlim=None, ylim_imbalance=None, ylim_rbase
 
     # gender interaction factors
     ax = fig.add_subplot(grid[1, 1])
-    ax.set_xlim(0.01,0.5)
+    ax.set_xlim(0.01, 0.5)
     distribution(
         model,
         trace,
@@ -210,7 +220,7 @@ def single_extended(trace, model, dl, xlim=None, ylim_imbalance=None, ylim_rbase
         dist_math="\omega_{fem}",
         ax=ax,
     )
-    axes_dist.append(ax)    
+    axes_dist.append(ax)
     ax = fig.add_subplot(grid[1, 2])
     distribution(
         model,
@@ -223,33 +233,32 @@ def single_extended(trace, model, dl, xlim=None, ylim_imbalance=None, ylim_rbase
     )
     axes_dist.append(ax)
 
-
     # likelihood and week modulation
     ax = fig.add_subplot(grid[2, 1])
-    posterior = get_from_trace("fraction_delayed_by_weekday",trace)
+    posterior = get_from_trace("fraction_delayed_by_weekday", trace)
     prior = pm.sample_prior_predictive(
         samples=5000, model=model, var_names=["fraction_delayed_by_weekday"]
     )["fraction_delayed_by_weekday"]
     _distribution(
-        array_posterior=sigmoid(posterior[:,5]),
-        array_prior=sigmoid(prior[:,5]),
+        array_posterior=sigmoid(posterior[:, 5]),
+        array_prior=sigmoid(prior[:, 5]),
         dist_name="",
         dist_math="r_{\mathrm{Sat}}",
         ax=ax,
     )
     axes_dist.append(ax)
-    
+
     ax = fig.add_subplot(grid[2, 2])
     _distribution(
-        array_posterior=sigmoid(posterior[:,6]),
-        array_prior=sigmoid(prior[:,6]),
+        array_posterior=sigmoid(posterior[:, 6]),
+        array_prior=sigmoid(prior[:, 6]),
         dist_name="",
         dist_math="r_{\mathrm{Sun}}",
         ax=ax,
     )
     axes_dist.append(ax)
 
-    ax = fig.add_subplot(grid[3, 1])    
+    ax = fig.add_subplot(grid[3, 1])
     distribution(
         model,
         trace,
@@ -264,8 +273,7 @@ def single_extended(trace, model, dl, xlim=None, ylim_imbalance=None, ylim_rbase
     """ Legend
     """
     ax = fig.add_subplot(grid[3, 2])
-    legend(ax,sex=False,championship_range=True)
-
+    legend(ax, sex=False, championship_range=True)
 
     # Adjust xlim for timeseries plots
     for ax in axes_ts:
@@ -275,22 +283,37 @@ def single_extended(trace, model, dl, xlim=None, ylim_imbalance=None, ylim_rbase
             ax.set_xlim(xlim)
 
         # Hack: Disable every second ticklabel
-        #for label in ax.xaxis.get_ticklabels()[::2]:
+        # for label in ax.xaxis.get_ticklabels()[::2]:
         #    label.set_visible(False)
 
-            
-    #Add axes annotations
+    # Add axes annotations
     alphabet_string = list(string.ascii_uppercase)
     for i, ax in enumerate(axes_ts):
         letter = alphabet_string[i]
-        ax.text(-0.05, 1.1, letter, transform=ax.transAxes,
-              fontsize=8, fontweight='bold', va='top', ha='right')
-        
+        ax.text(
+            -0.05,
+            1.1,
+            letter,
+            transform=ax.transAxes,
+            fontsize=8,
+            fontweight="bold",
+            va="top",
+            ha="right",
+        )
+
     for i, ax in enumerate(axes_dist):
         letter = alphabet_string[i + len(axes_ts)]
-        ax.text(-0.05, 1.1, letter, transform=ax.transAxes,
-              fontsize=8, fontweight='bold', va='top', ha='right')
-    
+        ax.text(
+            -0.05,
+            1.1,
+            letter,
+            transform=ax.transAxes,
+            fontsize=8,
+            fontweight="bold",
+            va="top",
+            ha="right",
+        )
+
     return fig
 
 
@@ -327,7 +350,12 @@ def multi(
 
     fig = plt.figure(figsize=(3.5 * nColumns, 2.5 * nRows))
 
-    outer_grid = fig.add_gridspec(nRows, nColumns, wspace=0.4, hspace=0.35,)
+    outer_grid = fig.add_gridspec(
+        nRows,
+        nColumns,
+        wspace=0.4,
+        hspace=0.35,
+    )
     axes = []
     for i, (trace, model, dl) in enumerate(zip(traces, models, dls)):
         # Mapping to 2d index
@@ -371,18 +399,20 @@ def multi_v2(
     fig=None,
     ypos_flags=-20,
 ):
-    """ Create outer layout
-    """
+    """Create outer layout"""
     nRows = ceil(len(selected_index) / nColumns)
 
     if fig is None:
         fig = plt.figure(figsize=(3.5 * nColumns, 2.5 * (nRows + 1)))
 
-    outer_outer_grid = fig.add_gridspec(2, 1, hspace=0.15, height_ratios=(nRows,0.8))
+    outer_outer_grid = fig.add_gridspec(2, 1, hspace=0.15, height_ratios=(nRows, 0.8))
     """ Create single overview plots for all selected countries
     """
     outer_grid = outer_outer_grid[0].subgridspec(
-        nRows, nColumns, wspace=0.25, hspace=0.3,
+        nRows,
+        nColumns,
+        wspace=0.25,
+        hspace=0.3,
     )
     axes = []
     sel_traces = [traces[i] for i in selected_index]
@@ -418,12 +448,21 @@ def multi_v2(
 
     # Plot percentage of soccer
     ax = fig.add_subplot(inner_grid[0, 0])
-    soccer_related_cases_overview(ax, traces, models, dls, plot_flags=True,ypos_flags=ypos_flags,remove_outliers=True,bw=0.2)
+    soccer_related_cases_overview(
+        ax,
+        traces,
+        models,
+        dls,
+        plot_flags=True,
+        ypos_flags=ypos_flags,
+        remove_outliers=True,
+        bw=0.1,
+    )
     ax_row.append(ax)
 
     # Plot legend into corner
     ax = fig.add_subplot(inner_grid[0, 1])
-    legend(ax=ax, posterior=False, prior=False,championship_range=True)
+    legend(ax=ax, posterior=False, prior=False, championship_range=True)
     ax_row.append(ax)
     ax_row.append(None)
     axes.append(ax_row)

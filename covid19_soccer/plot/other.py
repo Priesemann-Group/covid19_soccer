@@ -28,7 +28,15 @@ log = logging.getLogger(__name__)
 
 
 def game_effects(
-    ax, trace, model, dl, color=None, type="violin", key="alpha", xlim=None, plot_dates=True
+    ax,
+    trace,
+    model,
+    dl,
+    color=None,
+    type="violin",
+    key="alpha",
+    xlim=None,
+    plot_dates=True,
 ):
     """
     Plots the additional effect for each game onto a timeaxis, it is possible to
@@ -87,8 +95,23 @@ def game_effects(
             pc.set_facecolor(lighten_color(color, 0.8))
             pc.set_edgecolor(lighten_color(color, 0.8))
 
-        ax.scatter(mpl.dates.date2num(dates), medians, marker=".", color=color, s=8, zorder=3, lw=1)
-        ax.vlines(mpl.dates.date2num(dates), quartile1, quartile3, color=color, linestyle="-", lw=1)
+        ax.scatter(
+            mpl.dates.date2num(dates),
+            medians,
+            marker=".",
+            color=color,
+            s=8,
+            zorder=3,
+            lw=1,
+        )
+        ax.vlines(
+            mpl.dates.date2num(dates),
+            quartile1,
+            quartile3,
+            color=color,
+            linestyle="-",
+            lw=1,
+        )
         # ax.scatter(dates, quartile1, color=color, marker="_", s=20, zorder=3, lw=1.5)
         # ax.scatter(dates, quartile3, color=color, marker="_", s=20, zorder=3, lw=1.5)
 
@@ -119,18 +142,18 @@ def game_effects(
     ax.set_ylabel("Match\neffects")
 
     # Format x axis
-    if plot_dates: 
+    if plot_dates:
         ax.set_xlim(xlim)
         format_date_axis(ax)
     else:
         nums = mpl.dates.date2num(dates)
-        ax.set_xlim(nums[0]-2,nums[-1]+2)
-        if len(nums)<4:
-            ticks = np.arange(nums[0],nums[-1],4)
+        ax.set_xlim(nums[0] - 2, nums[-1] + 2)
+        if len(nums) < 4:
+            ticks = np.arange(nums[0], nums[-1], 4)
         else:
-            ticks = np.linspace(nums[0],nums[-1]+2,4,endpoint=True)
+            ticks = np.linspace(nums[0], nums[-1] + 2, 4, endpoint=True)
         ax.set_xticks(ticks)
-        
+
         # FuncFormatter can be used as a decorator
         ax.xaxis.set_major_formatter(lambda x, pos: f"{int(x-nums[0])}")
     return ax
@@ -360,6 +383,7 @@ def get_alpha_infections(trace, model, dl):
 
     return infections_base, infections_alpha
 
+
 def get_beta_infections(trace, model, dl):
     S_t = get_from_trace("S_t", trace)
     new_I_t = get_from_trace("new_I_t", trace)
@@ -386,7 +410,6 @@ def get_beta_infections(trace, model, dl):
     return infections_base, infections_beta
 
 
-
 def soccer_related_cases_overview(
     ax,
     traces,
@@ -402,7 +425,7 @@ def soccer_related_cases_overview(
     plot_betas=False,
     country_order=None,
     remove_outliers=False,
-    **kwargs
+    **kwargs,
 ):
     """
     Plots comparison of soccer related cases for multiple countries.
@@ -414,24 +437,33 @@ def soccer_related_cases_overview(
         end = datetime.datetime(2021, 7, 11)
 
     percentage = pd.DataFrame()
-    means, countries, countries_raw = [], [],[]
+    means, countries, countries_raw = [], [], []
     for i, (trace, model, dl) in enumerate(zip(traces, models, dls)):
         # Get params from trace and dataloader
         if plot_betas == "both":
             if "beta_R" in trace.posterior:
-                infections_base, infections_alpha = get_beta_infections(trace, model, dl)
+                infections_base, infections_alpha = get_beta_infections(
+                    trace, model, dl
+                )
                 infections_alpha += get_alpha_infections(trace, model, dl)[1]
             else:
-                infections_base, infections_alpha = get_alpha_infections(trace, model,
-                                                                         dl)
+                infections_base, infections_alpha = get_alpha_infections(
+                    trace, model, dl
+                )
         elif plot_betas == True:
             if "beta_R" in trace.posterior:
-                infections_base, infections_alpha = get_beta_infections(trace, model, dl)
+                infections_base, infections_alpha = get_beta_infections(
+                    trace, model, dl
+                )
             else:
-                infections_base = np.ones(get_alpha_infections(trace, model, dl)[0].shape)
-                infections_alpha = np.ones(get_alpha_infections(trace, model, dl)[1].shape)
+                infections_base = np.ones(
+                    get_alpha_infections(trace, model, dl)[0].shape
+                )
+                infections_alpha = np.ones(
+                    get_alpha_infections(trace, model, dl)[1].shape
+                )
         else:
-            infections_base, infections_alpha = get_alpha_infections(trace, model, dl) 
+            infections_base, infections_alpha = get_alpha_infections(trace, model, dl)
 
         i_begin = (begin - model.sim_begin).days
         i_end = (end - model.sim_begin).days + 1  # inclusiv last day
@@ -459,13 +491,13 @@ def soccer_related_cases_overview(
 
         # Remove outliers from bad sampling
         if remove_outliers:
-            temp = temp[-0.4<temp["percentage_soccer"]]
-            temp = temp[temp["percentage_soccer"]<0.4]
+            temp = temp[-0.4 < temp["percentage_soccer"]]
+            temp = temp[temp["percentage_soccer"] < 0.4]
 
         # Remove outlier
         # Append i in case of same countries
-        temp["country"] = dl.countries[0]+str(i)
-        countries.append(dl.countries[0]+str(i))
+        temp["country"] = dl.countries[0] + str(i)
+        countries.append(dl.countries[0] + str(i))
         countries_raw.append(dl.countries[0])
         means.append(np.mean(temp["percentage_soccer"]))
 
@@ -477,7 +509,7 @@ def soccer_related_cases_overview(
 
     if country_order is None:
         country_order = np.argsort(means)[::-1]
-    
+
     g = sns.violinplot(
         data=percentage,
         y="percentage_soccer",
@@ -488,12 +520,12 @@ def soccer_related_cases_overview(
         orient="v",
         ax=ax,
         split=True,
-        #palette={"male": color_male, "female": color_female},
+        # palette={"male": color_male, "female": color_female},
         linewidth=1,
         saturation=1,
         width=0.75,
         order=np.array(countries)[country_order],
-        **kwargs
+        **kwargs,
     )
 
     c = 0
@@ -505,10 +537,10 @@ def soccer_related_cases_overview(
                 color_female = rcParams.color_female if colors is None else colors[i]
 
         if i % 2 == 0:
-            ax.collections[i].set_facecolor(color_male) 
+            ax.collections[i].set_facecolor(color_male)
             ax.collections[i].set_edgecolor(color_male)  # Set outline colors
         else:
-            ax.collections[i].set_facecolor(color_female) 
+            ax.collections[i].set_facecolor(color_female)
             ax.collections[i].set_edgecolor(color_female)  # Set outline colors
 
     """ Markup
@@ -536,9 +568,8 @@ def soccer_related_cases_overview(
             )
             ax.add_artist(ab)
         ax.set_xticklabels(iso2)
-        ax.tick_params(axis="x", which="major", pad=21,length=0)
+        ax.tick_params(axis="x", which="major", pad=21, length=0)
 
-    
     # Remove legend
     ax.legend([], [], frameon=False)
 
@@ -636,7 +667,6 @@ def soccer_related_cases_ax(
         else:
             ax.collections[i].set_edgecolor(color_female)  # Set outline colors
 
-
     """ Markup
     """
     ax.set_ylabel("Percentage of soccer related\ninfections during the Championship")
@@ -659,7 +689,17 @@ def soccer_related_cases_ax(
     return ax
 
 
-def legend(ax=None, prior=True, posterior=True, model=True, data=True, sex=True,disable_axis=True,championship_range=False,loc="center"):
+def legend(
+    ax=None,
+    prior=True,
+    posterior=True,
+    model=True,
+    data=True,
+    sex=True,
+    disable_axis=True,
+    championship_range=False,
+    loc="center",
+):
     """
     Plots a legend
     """
@@ -673,44 +713,104 @@ def legend(ax=None, prior=True, posterior=True, model=True, data=True, sex=True,
     # Data
     if data:
         lines.append(
-            Line2D([0], [0], marker="d", color=rcParams.color_data, markersize=4, lw=0,)
+            Line2D(
+                [0],
+                [0],
+                marker="d",
+                color=rcParams.color_data,
+                markersize=4,
+                lw=0,
+            )
         )
         labels.append("Data")
 
     # Model
     if model:
-        lines.append(Line2D([0], [0], color=rcParams.color_model, lw=2,))
+        lines.append(
+            Line2D(
+                [0],
+                [0],
+                color=rcParams.color_model,
+                lw=2,
+            )
+        )
         labels.append("Model")
 
     # Prior
     if prior:
-        lines.append(Line2D([0], [0], color=rcParams.color_prior, lw=2,))
+        lines.append(
+            Line2D(
+                [0],
+                [0],
+                color=rcParams.color_prior,
+                lw=2,
+            )
+        )
         labels.append("Prior")
 
     # Posterior
     if posterior:
-        lines.append(Patch([0], [0], color=rcParams.color_posterior, lw=0,),)
+        lines.append(
+            Patch(
+                [0],
+                [0],
+                color=rcParams.color_posterior,
+                lw=0,
+            ),
+        )
         labels.append("Posterior")
 
     # male
     if sex:
-        lines.append(Patch([0], [0], color=rcParams.color_male, lw=0,),)
+        lines.append(
+            Patch(
+                [0],
+                [0],
+                color=rcParams.color_male,
+                lw=0,
+            ),
+        )
         labels.append("Male")
 
         # female
-        lines.append(Patch([0], [0], color=rcParams.color_female, lw=0,),)
+        lines.append(
+            Patch(
+                [0],
+                [0],
+                color=rcParams.color_female,
+                lw=0,
+            ),
+        )
         labels.append("Female")
 
     # championship region
     if championship_range:
-        lines.append(Rectangle([0,0],width=1, height=2.2, lw=1, edgecolor=rcParams.color_championship_range,hatch="////",facecolor = 'none'))
-        labels.append("Time window of\nthe championship") 
-
+        lines.append(
+            Rectangle(
+                [0, 0],
+                width=1,
+                height=2.2,
+                lw=1,
+                edgecolor=rcParams.color_championship_range,
+                hatch="////",
+                facecolor="none",
+            )
+        )
+        labels.append("Time window of\nthe championship")
 
     if disable_axis:
         ax.axis("off")
 
-    ax.legend(lines, labels, loc=loc, handler_map={MulticolorPatch: MulticolorPatchHandler(), Rectangle: HandlerRect(),},)
+    ax.legend(
+        lines,
+        labels,
+        loc=loc,
+        handler_map={
+            MulticolorPatch: MulticolorPatchHandler(),
+            Rectangle: HandlerRect(),
+        },
+        fontsize=6,
+    )
 
     return ax
 
@@ -719,7 +819,8 @@ def legend(ax=None, prior=True, posterior=True, model=True, data=True, sex=True,
 class MulticolorPatch(object):
     def __init__(self, colors):
         self.colors = colors
-        
+
+
 # define a handler for the MulticolorPatch object
 class MulticolorPatchHandler(object):
     def legend_artist(self, legend, orig_handle, fontsize, handlebox):
@@ -728,25 +829,34 @@ class MulticolorPatchHandler(object):
         for i, c in enumerate(orig_handle.colors):
             patches.append(
                 plt.Rectangle(
-                    [- handlebox.xdescent, height/len(orig_handle.colors) * i - handlebox.ydescent],
-                           width ,
-                           height / len(orig_handle.colors), 
-                           facecolor=c, 
-                           edgecolor='none'))
+                    [
+                        -handlebox.xdescent,
+                        height / len(orig_handle.colors) * i - handlebox.ydescent,
+                    ],
+                    width,
+                    height / len(orig_handle.colors),
+                    facecolor=c,
+                    edgecolor="none",
+                )
+            )
 
-        patch = PatchCollection(patches,match_original=True)
+        patch = PatchCollection(patches, match_original=True)
 
         handlebox.add_artist(patch)
         return patch
 
-class HandlerRect(HandlerPatch):
 
-    def create_artists(self, legend, orig_handle,
-                       xdescent, ydescent, width, height,
-                       fontsize, trans):
+class HandlerRect(HandlerPatch):
+    def create_artists(
+        self, legend, orig_handle, xdescent, ydescent, width, height, fontsize, trans
+    ):
 
         # create
-        p = Rectangle(xy=(xdescent, ydescent-(height*orig_handle.get_height()-height)/2), width=width, height=height*orig_handle.get_height())
+        p = Rectangle(
+            xy=(xdescent, ydescent - (height * orig_handle.get_height() - height) / 2),
+            width=width,
+            height=height * orig_handle.get_height(),
+        )
 
         # update with data from oryginal object
         self.update_prop(p, orig_handle, legend)

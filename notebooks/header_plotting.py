@@ -15,7 +15,7 @@ mpl.rcParams["xtick.labelsize"] = 8
 mpl.rcParams["ytick.labelsize"] = 8
 mpl.rcParams["axes.labelsize"] = 9
 mpl.rcParams["axes.titlesize"] = 12
-mpl.rcParams["legend.fontsize"] = 8
+mpl.rcParams["legend.fontsize"] = 6
 
 # Save figure as pdf and png
 save_kwargs = {"transparent": True, "dpi": 300, "bbox_inches": "tight"}

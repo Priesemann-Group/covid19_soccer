@@ -1,13 +1,14 @@
 import sys
+import os
 
-sys.path.append("../")
-sys.path.append("../covid19_inference")
+sys.path.append(os.path.join(os.path.dirname(__file__),"../"))
+sys.path.append(os.path.join(os.path.dirname(__file__),"../covid19_inference"))
 
 import theano.tensor as tt
 from covid19_soccer.dataloader import Dataloader_gender, Dataloader
 from covid19_soccer import delay_by_weekday
 from covid19_soccer.utils import get_cps
-
+import datetime
 
 from covid19_inference.model import (
     lambda_t_with_sigmoids,
@@ -128,7 +129,7 @@ def create_model_delay_only(
         "N_population": dl.population[:, 0],  # only select first country
     }
     with Cov19Model(**params) as this_model:
-        new_cases = pm.Normal("new_E_t", 100, 1, shape=model.sim_shape)
+        new_cases = pm.Normal("new_E_t", 100, 1, shape=this_model.sim_shape)
 
         # Delay the cases by a log-normal reporting delay and add them as a trace variable
         new_cases = delay_cases(
@@ -150,7 +151,9 @@ def create_model_delay_only(
         # Modulate the inferred cases by a abs(sin(x)) function, to account for weekend effects
         # Also adds the "new_cases" variable to the trace that has all model features.
         weekend_factor_log = pm.Normal(
-            name="weekend_factor_log", mu=tt.log(0.3), sigma=0.5,
+            name="weekend_factor_log",
+            mu=tt.log(0.3),
+            sigma=0.5,
         )
         weekend_factor = tt.exp(weekend_factor_log)
         new_cases = week_modulation(
@@ -162,3 +165,113 @@ def create_model_delay_only(
         # Define the likelihood, uses the new_cases_obs set as model parameter
         student_t_likelihood(cases=new_cases, sigma_shape=1)
     return this_model
+
+
+import pymc3 as pm
+import arviz as az
+
+
+def getNoSoccer(initital_trace, model):
+    """Get trace containing only primary infections i.e.
+
+    Parameters
+    ----------
+    initial_trace: az.trace
+        Trace containing all model features
+    model: pymc3.Model
+        Model containing all model features
+
+    Returns
+    -------
+    az.trace
+        Trace containing only primary infections
+    """
+    trace_without_effect = initital_trace.copy()
+    trace_without_effect.posterior["Delta_alpha_g_sparse"] = (
+        trace_without_effect.posterior["Delta_alpha_g_sparse"] * 0
+    )
+    trace_without_effect.posterior["alpha_mean"] = (
+        trace_without_effect.posterior["alpha_mean"] * 0
+    )
+    cases_without_effect = pm.fast_sample_posterior_predictive(
+        trace_without_effect,
+        model=model,
+        var_names=["new_E_t", "new_cases"],
+        keep_size=True,
+    )
+    return az.from_pymc3_predictions(cases_without_effect)
+
+
+from covid19_soccer.plot.other import get_alpha_infections
+
+
+def getPrimary(initial_trace, noSoccertrace, model, dl):
+    """Get trace containing secondary infections
+
+    Parameters
+    ----------
+    initial_trace: az.trace
+        Trace containing all model features
+    model: pymc3.Model
+    dl: Cov19SoccerDataLoader
+        DataLoader containing all data
+
+    Returns
+    -------
+    az.trace
+        Trace containing only secondary infections
+    """
+    new_E_base, new_E_alpha = get_alpha_infections(initial_trace, model, dl)
+    trace_primary_soccer = initial_trace.copy()
+
+    # Summing the infectiouns without any soccer effect and the primary soccer infections
+    trace_primary_soccer.posterior["new_E_t"].values = (
+        noSoccertrace.predictions["new_E_t"]
+        + new_E_alpha.reshape(noSoccertrace.predictions["new_E_t"].shape)
+    )[0, ...]
+
+    # We need to create another model for the primary infections
+    model_new = create_model_delay_only(
+        dataloader=dl,
+        beta=False,
+        use_gamma=True,
+        draw_width_delay=True,
+        use_weighted_alpha_prior=0,
+        prior_delay=-1,
+        width_delay_prior=0.1,
+        sigma_incubation=-1.0,
+        median_width_delay=1.0,
+        interval_cps=10.0,
+    )
+    cases_primary_soccer = pm.fast_sample_posterior_predictive(
+        trace_primary_soccer,
+        model=model_new,
+        var_names=["new_E_t", "new_cases"],
+        keep_size=True,
+    )
+    return az.from_pymc3_predictions(cases_primary_soccer)
+
+
+import threading
+
+
+class ThreadWithResult(threading.Thread):
+    def __init__(
+        self, group=None, target=None, name=None, args=(), kwargs={}, *, daemon=None
+    ):
+        def function():
+            self.result = target(*args, **kwargs)
+
+        super().__init__(group=group, target=function, name=name, daemon=daemon)
+
+
+"""
+thread1 = ThreadWithResult(target=getPrimary,args=(trace,model))
+thread2 = ThreadWithResult(target=getSecondary,args=(trace,model))
+thread1.start()
+thread2.start()
+thread1.join()
+thread2.join()
+print(thread1.result)
+print(thread2.result)
+"""

@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append("../")
 sys.path.append("../covid19_inference")
 
@@ -19,6 +20,7 @@ from covid19_inference.model import (
     kernelized_spread,
     SIR,
 )
+
 
 def create_model_delay_only(
     dataloader=None,
@@ -127,7 +129,7 @@ def create_model_delay_only(
     }
     with Cov19Model(**params) as this_model:
         new_cases = pm.Normal("new_E_t", 100, 1, shape=model.sim_shape)
-        
+
         # Delay the cases by a log-normal reporting delay and add them as a trace variable
         new_cases = delay_cases(
             cases=new_cases,

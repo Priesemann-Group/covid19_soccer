@@ -553,7 +553,7 @@ def soccer_related_cases_overview(
     if plot_flags:
         iso2 = []
         for i, dl in enumerate(np.array(dls)[country_order]):
-            iso2.append(dl.countries_iso2[0])
+            iso2.append(dl.countries_iso2[0].replace("GB-", ""))
             img = plt.imread(get_flag(dl.countries_iso2[0].lower()))
             im = OffsetImage(img, zoom=0.03)
             im.image.axes = ax

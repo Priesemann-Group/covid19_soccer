@@ -1,8 +1,8 @@
 import sys
 import os
 
-sys.path.append(os.path.join(os.path.dirname(__file__),"../"))
-sys.path.append(os.path.join(os.path.dirname(__file__),"../covid19_inference"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "../"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "../covid19_inference"))
 
 import theano.tensor as tt
 from covid19_soccer.dataloader import Dataloader_gender, Dataloader
@@ -151,9 +151,7 @@ def create_model_delay_only(
         # Modulate the inferred cases by a abs(sin(x)) function, to account for weekend effects
         # Also adds the "new_cases" variable to the trace that has all model features.
         weekend_factor_log = pm.Normal(
-            name="weekend_factor_log",
-            mu=tt.log(0.3),
-            sigma=0.5,
+            name="weekend_factor_log", mu=tt.log(0.3), sigma=0.5,
         )
         weekend_factor = tt.exp(weekend_factor_log)
         new_cases = week_modulation(

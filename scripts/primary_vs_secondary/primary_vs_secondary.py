@@ -44,24 +44,25 @@ def computeTraces(country, save_fpath="primary_vs_secondary.pkl"):
 
     """
 
-
     # Load trace
     model = None
-    fstr=lambda tune, draws, max_treedepth: (f"/data.nst/jdehning/covid_uefa_traces11/"+
-        f"-beta=False"+
-        f"-country={country}"+
-        f"-offset_data=0"+
-        f"-prior_delay=-1"+
-        f"-width_delay_prior=0.1"+
-        f"-sigma_incubation=-1.0"+
-        f"-median_width_delay=1.0"+
-        f"-interval_cps=10.0"+
-        f"-f_fem=0.2"+
-        f"-uc=True"
-        f"-len=normal"+                    
-        f"-t={tune}"+
-        f"-d={draws}"+
-        f"-max_treedepth={max_treedepth}.pkl")
+    fstr = lambda tune, draws, max_treedepth: (
+        f"/data.nst/smohr/covid19_soccer_publication_traces/"
+        + f"-beta=False"
+        + f"-country={country}"
+        + f"-offset_data=0"
+        + f"-prior_delay=-1"
+        + f"-width_delay_prior=0.1"
+        + f"-sigma_incubation=-1.0"
+        + f"-median_width_delay=1.0"
+        + f"-interval_cps=10.0"
+        + f"-f_fem=0.2"
+        + f"-uc=True"
+        + f"-len=normal"
+        + f"-t={tune}"
+        + f"-d={draws}"
+        + f"-max_treedepth={max_treedepth}.pkl"
+    )
     if os.path.exists(fstr(4000, 8000, 12)):
         try:
             model, initial_trace = load(fstr(4000, 8000, 12))
@@ -75,18 +76,22 @@ def computeTraces(country, save_fpath="primary_vs_secondary.pkl"):
         except:
             pass
     if model is None and os.path.exists(fstr(1000, 1500, 12)):
-        try: 
+        try:
             model, initial_trace = load(fstr(1000, 1500, 12))
             print(f"Use 1500 sample runs for {country}")
         except:
             pass
-    if model is None: 
+    if model is None:
         print(fstr(tune, draws, max_treedepth), " not found")
         return
     # Remove chains with likelihood larger than -200, should only be the case for 2 chains in France
-    mask = (np.mean(initial_trace.sample_stats.lp, axis=1)>-200)
-    initial_trace.posterior = initial_trace.posterior.sel(chain=~mask)
-    
+    mask = np.mean(initial_trace.sample_stats.lp, axis=1) > -200
+    initial_trace.posterior = initial_trace.posterior.sel(chain=~mask.to_numpy())
+
+    initial_trace.posterior = initial_trace.posterior.assign_coords(
+        {"chain": list(range((~mask.to_numpy()).sum()))}
+    )
+
     dl = covid19_soccer.dataloader.Dataloader_gender(countries=[country])
     dl = covid19_soccer.dataloader.Dataloader_gender(countries=[country])
     print(f"{country} loaded")
@@ -99,12 +104,9 @@ def computeTraces(country, save_fpath="primary_vs_secondary.pkl"):
 
 if __name__ == "__main__":
 
-
     processes = []
     for country in countries:
-        save_fstr = (
-            f"/data.nst/smohr/covid19_soccer_publication_traces/primary_vs_secondary/{country}.pkl"
-        )
+        save_fstr = f"/data.nst/smohr/covid19_soccer_publication_traces/primary_vs_secondary/{country}.pkl"
         t = Process(target=computeTraces, args=(country, save_fstr))
         processes.append(t)
 

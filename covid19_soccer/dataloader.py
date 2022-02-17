@@ -530,6 +530,7 @@ class Dataloader_gender(Dataloader):
         data_folder=f"{os.path.dirname(__file__)}/../data/",
         offset_games=0,
         offset_data=0,
+        old_timetable=False,
     ):
         """
         Parameters
@@ -577,6 +578,10 @@ class Dataloader_gender(Dataloader):
             header=2,
             skipinitialspace=True,
         )
+        if old_timetable:
+            self.timetable = self.timetable.iloc[:-7]
+
+
         self.timetable["date"] = pd.to_datetime(
             self.timetable["date"], format="%Y-%m-%d"
         )

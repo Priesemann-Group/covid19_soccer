@@ -130,7 +130,7 @@ def single(
     return axes_ts
 
 
-def single_extended(trace, model, dl, xlim=None, ylim_imbalance=None, ylim_rbase=None):
+def single_extended(trace, model, dl, xlim=None, ylim_imbalance=None, ylim_rbase=None, ylim_incidence=None):
     """
     Create an extended overview plot for a single model run.
     This includes incidence, gender imbalance, R_base, R_soccer+R_noise,
@@ -151,7 +151,7 @@ def single_extended(trace, model, dl, xlim=None, ylim_imbalance=None, ylim_rbase
     """
     # Cases
     ax = fig.add_subplot(grid[0, 0])
-    incidence(ax, trace, model, dl, data_forecast=True)
+    incidence(ax, trace, model, dl, data_forecast=True, ylim=ylim_incidence)
     axes_ts.append(ax)
 
     # Gender imbalance
@@ -398,6 +398,7 @@ def multi_v2(
     type_soccer_related_cases="skip",
     fig=None,
     ypos_flags=-20,
+    country_order=None
 ):
     """Create outer layout"""
     nRows = ceil(len(selected_index) / nColumns)
@@ -457,6 +458,7 @@ def multi_v2(
         ypos_flags=ypos_flags,
         remove_outliers=True,
         bw=0.1,
+        country_order=country_order,
     )
     ax_row.append(ax)
 

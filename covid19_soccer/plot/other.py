@@ -54,6 +54,7 @@ def game_effects(
     # Extract games
     selector = eff.sum(axis=0) != 0
     eff = eff[:, selector]
+
     dates = pd.to_datetime(dl.date_of_games[selector].values)
     df = pd.DataFrame(data=eff.T, index=dates)
 
@@ -91,9 +92,18 @@ def game_effects(
             vp.set_edgecolor(color)
             vp.set_linewidth(1)
 
-        for pc in violin_parts["bodies"]:
+        for i, pc in enumerate(violin_parts["bodies"]):
             pc.set_facecolor(lighten_color(color, 0.8))
             pc.set_edgecolor(lighten_color(color, 0.8))
+
+            if (dl.countries[0] == "Scotland") and (i in [3, 4]):
+                pc.set_facecolor(lighten_color("#696969", 0.8))
+                pc.set_edgecolor("#696969")
+
+        if dl.countries[0] == "Scotland":
+            color = [color] * len(medians)
+            color[-1] = "#696969"
+            color[-2] = "#696969"
 
         ax.scatter(
             mpl.dates.date2num(dates),
@@ -126,12 +136,22 @@ def game_effects(
             conf_intervals=[[0.025, 0.975]] * len(dates),
         )
 
-        for box in box_parts["boxes"]:
+        for i, box in enumerate(box_parts["boxes"]):
             box.set_facecolor(lighten_color(color, 0.2))
             box.set_edgecolor(color)
+
+            if (dl.countries[0] == "Scotland") and (i in [3, 4]):
+                box.set_facecolor(lighten_color("#696969", 0.2))
+                box.set_edgecolor("#696969")
+
         for parts in ["medians", "whiskers", "caps"]:
-            for bp in box_parts[parts]:
+            for i, bp in enumerate(box_parts[parts]):
                 bp.set_color(color)
+
+                if (dl.countries[0] == "Scotland") and (i in [3, 4]):
+                    box.set_facecolor(lighten_color("#696969", 0.2))
+                    box.set_edgecolor("#696969")
+
     else:
         log.error("Type not possible!")
 

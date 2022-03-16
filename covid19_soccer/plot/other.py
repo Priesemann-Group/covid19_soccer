@@ -7,7 +7,9 @@ from matplotlib.patches import Patch, Rectangle
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from matplotlib.patches import Patch, Rectangle
 from matplotlib.collections import PatchCollection
-from matplotlib.legend_handler import HandlerPatch
+from matplotlib.legend_handler import HandlerPatch,HandlerBase
+from matplotlib.transforms import Bbox, TransformedBbox
+from matplotlib.image import BboxImage
 
 import pandas as pd
 import numpy as np
@@ -885,3 +887,43 @@ class HandlerRect(HandlerPatch):
         p.set_transform(trans)
 
         return [p]
+
+    
+class PatchImage(object):
+    def __init__(self, path, color,space=15, offset = 10 ):
+        self.image_data = plt.imread(path)
+        self.color = color
+        self.space = space
+        self.offset= offset
+    
+class HandlerPatchImage(object):
+    def legend_artist(self, legend, orig_handle, fontsize, handlebox):
+        width, height = handlebox.width, handlebox.height
+        
+        # Patch
+        patch = plt.Rectangle(
+            [
+                 - handlebox.xdescent,
+                 - handlebox.ydescent,
+            ],
+            width,
+            height,
+            facecolor=orig_handle.color,
+            edgecolor="none",
+        )
+        
+        
+        # Image
+        image = plt.imshow(
+            orig_handle.image_data,
+            extent= [
+                -handlebox.xdescent,
+                -handlebox.xdescent+10,
+                -handlebox.ydescent,
+                -handlebox.ydescent+10
+            ]
+        )
+
+        handlebox.add_artist(patch)
+        handlebox.add_artist(image)
+        return image

@@ -124,9 +124,7 @@ def fraction_male_female(
 
     new_cases = get_from_trace("new_cases", trace)
 
-    model_points = (new_cases[:, :, 0] / dl.population[0, 0]) / (
-        new_cases[:, :, 1] / dl.population[1, 0]
-    )
+    model_points = (new_cases[:, :, 0] - new_cases[:, :, 1])/(new_cases[:, :, 1] + new_cases[:, :, 0])
     # Plot model fit
     _timeseries(
         x=pd.date_range(model.sim_begin, model.sim_end),
@@ -139,8 +137,7 @@ def fraction_male_female(
     # Plot data
     _timeseries(
         x=pd.date_range(dl.data_begin, dl.data_end),
-        y=(dl.new_cases_obs[:, 0, 0] / dl.population[0, 0])
-        / (dl.new_cases_obs[:, 1, 0] / dl.population[1, 0]),  # male/female
+        y=(dl.new_cases_obs[:, 0, 0]-dl.new_cases_obs[:, 1, 0])/(dl.new_cases_obs[:, 1, 0] + dl.new_cases_obs[:, 0, 0]),
         what="data",
         ax=ax,
         color=rcParams.color_data if color_data is None else color_data,
@@ -168,9 +165,7 @@ def fraction_male_female(
             ),
             axis=1,
         )
-        imbalance = (cases[:, 0, 0] / dl.population[0, 0]) / (
-            cases[:, 1, 0] / dl.population[1, 0]
-        )
+        imbalance = (cases[:, 0, 0] - cases[:, 1, 0])/(cases[:, 0, 0] + cases[:, 1, 0])
         _timeseries(
             x=dates,
             y=imbalance,

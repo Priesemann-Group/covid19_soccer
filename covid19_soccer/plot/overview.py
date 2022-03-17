@@ -398,7 +398,8 @@ def multi_v2(
     type_soccer_related_cases="skip",
     fig=None,
     ypos_flags=-20,
-    country_order=None
+    country_order=None,
+    overall_effect_trace=None
 ):
     """Create outer layout"""
     nRows = ceil(len(selected_index) / nColumns)
@@ -459,6 +460,7 @@ def multi_v2(
         remove_outliers=True,
         bw=0.1,
         country_order=country_order,
+        overall_effect_trace=overall_effect_trace
     )
     ax_row.append(ax)
 

@@ -55,10 +55,16 @@ def format_date_axis(ax):
 
 def _apply_delta(eff, model, dl):
     t = np.arange(model.sim_len)
-    t_g = [(game - model.sim_begin).days for game in dl.date_of_games]
-    d = _delta(np.subtract.outer(t, t_g)).eval()
+    try:
+        t_g = [(game - model.sim_begin).days for game in dl.date_of_games]
+        d = _delta(np.subtract.outer(t, t_g)).eval()
 
-    return np.dot(d, eff)
+        return np.dot(d, eff)
+    except:
+        t_g = [(game - model.sim_begin).days for game in dl.date_of_games[:53]]
+        d = _delta(np.subtract.outer(t, t_g)).eval()
+
+        return np.dot(d, eff)   
 
 
 def get_flag(iso2,path="./figures/"):

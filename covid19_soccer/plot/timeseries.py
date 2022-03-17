@@ -189,7 +189,7 @@ def fraction_male_female(
     _uefa_range(ax)
 
     # Markup
-    ax.set_ylabel("Gender\nimbalance")
+    ax.set_ylabel("Gender\nbalance")
     format_date_axis(ax)
 
     return ax

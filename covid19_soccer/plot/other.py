@@ -56,8 +56,11 @@ def game_effects(
     # Extract games
     selector = eff.sum(axis=0) != 0
     eff = eff[:, selector]
-
-    dates = pd.to_datetime(dl.date_of_games[selector].values)
+    
+    try:
+        dates = pd.to_datetime(dl.date_of_games[selector].values)
+    except:
+        dates = pd.to_datetime(dl.date_of_games[:53][selector].values)
     df = pd.DataFrame(data=eff.T, index=dates)
 
     # Positions for violin plots
@@ -447,6 +450,7 @@ def soccer_related_cases_overview(
     plot_betas=False,
     country_order=None,
     remove_outliers=False,
+    overall_effect_trace=None,
     **kwargs,
 ):
     """
@@ -529,9 +533,31 @@ def soccer_related_cases_overview(
     color_male = rcParams.color_male if colors is None else colors[0]
     color_female = rcParams.color_female if colors is None else colors[1]
 
+
+
+        
+    # Add overall effect
+    if not overall_effect_trace is None:
+        overall_effect = overall_effect_trace.posterior["overall_effect"].to_numpy()
+        overall_effect = overall_effect.reshape(overall_effect.shape[0]*overall_effect.shape[1],overall_effect.shape[2])
+        male = np.stack([overall_effect[:,0], np.zeros(overall_effect[:, 0].shape)], axis=1)
+        female = np.stack([overall_effect[:,1],np.ones(overall_effect[:, 1].shape)], axis=1)
+        temp = pd.DataFrame(
+            np.concatenate((male, female)), columns=["percentage_soccer", "gender"]
+        )        
+        temp["gender"] = pd.cut(
+            temp["gender"], bins=[-1, 0.5, 1], labels=["male", "female"]
+        )
+        temp["country"] = "overall"
+        percentage = pd.concat([percentage, temp])
+        
+        means.append(-999)
+        countries.append("overall")
+        countries_raw.append("overall")
+
     if country_order is None:
         country_order = np.argsort(means)[::-1]
-
+        
     g = sns.violinplot(
         data=percentage,
         y="percentage_soccer",
@@ -574,7 +600,11 @@ def soccer_related_cases_overview(
     # plot flags if desired
     if plot_flags:
         iso2 = []
-        for i, dl in enumerate(np.array(dls)[country_order]):
+        if not overall_effect_trace is None:
+            dls_orderd = np.array(dls)[country_order[:-1]]
+        else:
+            dls_orderd = np.array(dls)[country_order]
+        for i, dl in enumerate(dls_orderd):
             iso2.append(dl.countries_iso2[0].replace("GB-", ""))
             img = plt.imread(get_flag(dl.countries_iso2[0].lower()))
             im = OffsetImage(img, zoom=0.03)
@@ -589,6 +619,8 @@ def soccer_related_cases_overview(
                 pad=0,
             )
             ax.add_artist(ab)
+        if not overall_effect_trace is None:
+            iso2.append("Joint\neffect")
         ax.set_xticklabels(iso2)
         ax.tick_params(axis="x", which="major", pad=21, length=0)
 

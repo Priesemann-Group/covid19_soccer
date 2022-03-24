@@ -112,10 +112,7 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    "--len",
-    type=str,
-    help="duration of the model",
-    default="normal",
+    "--len", type=str, help="duration of the model", default="normal",
 )
 
 parser.add_argument(
@@ -193,7 +190,11 @@ if __name__ == "__main__":
 
     # Parse input arguments
     args = parser.parse_args()
-    input_args_dict = args.__dict__
+    input_args_dict = dict(**args.__dict__)
+
+    # make filename shorter
+    del input_args_dict["weighted_alpha_prior"]
+    del input_args_dict["draw_delay"]
 
     # Setup logging to file
     log_to_file(args.log, dict_2_string(input_args_dict))
@@ -210,11 +211,11 @@ if __name__ == "__main__":
     if args.len == "normal":
         data_begin = datetime.datetime(2021, 6, 1)
         data_end = datetime.datetime(2021, 8, 15)
-        sim_begin = data_begin-datetime.timedelta(days=16)
+        sim_begin = data_begin - datetime.timedelta(days=16)
     elif args.len == "short":
         data_begin = datetime.datetime(2021, 6, 4)
         data_end = datetime.datetime(2021, 7, 18)
-        sim_begin = data_begin-datetime.timedelta(days=16)
+        sim_begin = data_begin - datetime.timedelta(days=16)
     else:
         raise RuntimeError("argument value not known")
 
@@ -244,7 +245,7 @@ if __name__ == "__main__":
                 median_width_delay=args.median_width_delay,
                 interval_cps=args.interval_cps,
                 f_female=args.f_fem,
-                allow_uefa_cps=args.allow_uefa_cps
+                allow_uefa_cps=args.uc,
             )
         except AssertionError as error:
             if i < 10:
@@ -256,23 +257,27 @@ if __name__ == "__main__":
 
     """ MCMC sampling
     """
+    save_name = f"{dict_2_string(input_args_dict)}"
+    save_file = os.path.join(args.dir, save_name)
+    callback = cov19.sampling.Callback(path=args.dir, name="backup_" + save_name, n=500)
 
-    multitrace, trace, multitrace_tuning, trace_tuning = cov19.robust_sample(
+    multitrace, trace = cov19.robust_sample(
         model,
-        tune=args.tune,
-        draws=args.draws,
-        tuning_chains=30,
+        tune=args.t,
+        draws=args.d,
+        burnin_draws=args.d // 4,
+        burnin_draws_2nd=args.d // 2,
+        burnin_chains=50,
+        burnin_chains_2nd=20,
         final_chains=8,
-        cores=11,
-        return_tuning=True,
+        sample_kwargs={"cores": 11},
         max_treedepth=args.max_treedepth,
         target_accept=0.95,
+        callback=callback,
     )
 
     # Save trace/model so we dont have to rerun sampling every time we change some plotting routines
-    with open(
-        os.path.join(args.dir, f"{dict_2_string(input_args_dict)}.pickled"), "wb"
-    ) as f:
+    with open(save_file + ".pkl", "wb") as f:
         pickle.dump((model, trace), f)
 
     log.info(f"Script finished: {datetime.datetime.now()}")

@@ -49,11 +49,7 @@ def single(
         grid = fig.add_gridspec(3, 2, hspace=0.25, width_ratios=[1, 0.3])
     else:
         if type_soccer_related_cases == "skip":
-            grid = outer_grid.subgridspec(
-                3,
-                1,
-                hspace=0.25,
-            )
+            grid = outer_grid.subgridspec(3, 1, hspace=0.25,)
         else:
             grid = outer_grid.subgridspec(
                 3, 2, wspace=0.2, hspace=0.25, width_ratios=[1, 0.3]
@@ -130,7 +126,15 @@ def single(
     return axes_ts
 
 
-def single_extended(trace, model, dl, xlim=None, ylim_imbalance=None, ylim_rbase=None, ylim_incidence=None):
+def single_extended(
+    trace,
+    model,
+    dl,
+    xlim=None,
+    ylim_imbalance=None,
+    ylim_rbase=None,
+    ylim_incidence=None,
+):
     """
     Create an extended overview plot for a single model run.
     This includes incidence, gender imbalance, R_base, R_soccer+R_noise,
@@ -187,13 +191,7 @@ def single_extended(trace, model, dl, xlim=None, ylim_imbalance=None, ylim_rbase
     else:
         ax.set_xlim(3.1, 7)
     distribution(
-        model,
-        trace,
-        "delay",
-        nSamples_prior=5000,
-        title="",
-        dist_math="D",
-        ax=ax,
+        model, trace, "delay", nSamples_prior=5000, title="", dist_math="D", ax=ax,
     )
     axes_dist.append(ax)
     ax = fig.add_subplot(grid[0, 2])
@@ -350,12 +348,7 @@ def multi(
 
     fig = plt.figure(figsize=(3.5 * nColumns, 2.5 * nRows))
 
-    outer_grid = fig.add_gridspec(
-        nRows,
-        nColumns,
-        wspace=0.4,
-        hspace=0.35,
-    )
+    outer_grid = fig.add_gridspec(nRows, nColumns, wspace=0.4, hspace=0.35,)
     axes = []
     for i, (trace, model, dl) in enumerate(zip(traces, models, dls)):
         # Mapping to 2d index
@@ -399,7 +392,7 @@ def multi_v2(
     fig=None,
     ypos_flags=-20,
     country_order=None,
-    overall_effect_trace=None
+    overall_effect_trace=None,
 ):
     """Create outer layout"""
     nRows = ceil(len(selected_index) / nColumns)
@@ -411,10 +404,7 @@ def multi_v2(
     """ Create single overview plots for all selected countries
     """
     outer_grid = outer_outer_grid[0].subgridspec(
-        nRows,
-        nColumns,
-        wspace=0.25,
-        hspace=0.3,
+        nRows, nColumns, wspace=0.25, hspace=0.3,
     )
     axes = []
     sel_traces = [traces[i] for i in selected_index]
@@ -460,7 +450,7 @@ def multi_v2(
         remove_outliers=True,
         bw=0.1,
         country_order=country_order,
-        overall_effect_trace=overall_effect_trace
+        overall_effect_trace=overall_effect_trace,
     )
     ax_row.append(ax)
 

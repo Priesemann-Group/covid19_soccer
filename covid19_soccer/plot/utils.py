@@ -64,17 +64,17 @@ def _apply_delta(eff, model, dl):
         t_g = [(game - model.sim_begin).days for game in dl.date_of_games[:53]]
         d = _delta(np.subtract.outer(t, t_g)).eval()
 
-        return np.dot(d, eff)   
+        return np.dot(d, eff)
 
 
-def get_flag(iso2,path="./figures/"):
+def get_flag(iso2, path="./figures/"):
     if iso2 == "DE2":
         iso2 = "DE"
     try:
         png = svg2png(
             url=f"https://hatscripts.github.io/circle-flags/flags/{iso2}.svg",
         )
-        with open(f"{path}{iso2}.png","wb") as bin_file:
+        with open(f"{path}{iso2}.png", "wb") as bin_file:
             bin_file.write(png)
         return f"{path}{iso2}.png"
     except urllib.error.HTTPError:
@@ -87,7 +87,7 @@ def sigmoid(z):
 
 def k_formatter(x, pos):
     # converts tick to k notation\n",
-    if x >= 1e3 or x <=-1e3 :
+    if x >= 1e3 or x <= -1e3:
         return "{:.0f}k".format(x / 1e3)
     else:
         return "{:.0f}".format(x)

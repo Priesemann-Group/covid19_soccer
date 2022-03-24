@@ -581,7 +581,6 @@ class Dataloader_gender(Dataloader):
         if old_timetable:
             self.timetable = self.timetable.iloc[:-7]
 
-
         self.timetable["date"] = pd.to_datetime(
             self.timetable["date"], format="%Y-%m-%d"
         )

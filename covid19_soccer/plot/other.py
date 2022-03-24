@@ -7,7 +7,7 @@ from matplotlib.patches import Patch, Rectangle
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from matplotlib.patches import Patch, Rectangle
 from matplotlib.collections import PatchCollection
-from matplotlib.legend_handler import HandlerPatch,HandlerBase
+from matplotlib.legend_handler import HandlerPatch, HandlerBase
 from matplotlib.transforms import Bbox, TransformedBbox
 from matplotlib.image import BboxImage
 
@@ -56,7 +56,7 @@ def game_effects(
     # Extract games
     selector = eff.sum(axis=0) != 0
     eff = eff[:, selector]
-    
+
     try:
         dates = pd.to_datetime(dl.date_of_games[selector].values)
     except:
@@ -533,31 +533,34 @@ def soccer_related_cases_overview(
     color_male = rcParams.color_male if colors is None else colors[0]
     color_female = rcParams.color_female if colors is None else colors[1]
 
-
-
-        
     # Add overall effect
     if not overall_effect_trace is None:
         overall_effect = overall_effect_trace.posterior["overall_effect"].to_numpy()
-        overall_effect = overall_effect.reshape(overall_effect.shape[0]*overall_effect.shape[1],overall_effect.shape[2])
-        male = np.stack([overall_effect[:,0], np.zeros(overall_effect[:, 0].shape)], axis=1)
-        female = np.stack([overall_effect[:,1],np.ones(overall_effect[:, 1].shape)], axis=1)
+        overall_effect = overall_effect.reshape(
+            overall_effect.shape[0] * overall_effect.shape[1], overall_effect.shape[2]
+        )
+        male = np.stack(
+            [overall_effect[:, 0], np.zeros(overall_effect[:, 0].shape)], axis=1
+        )
+        female = np.stack(
+            [overall_effect[:, 1], np.ones(overall_effect[:, 1].shape)], axis=1
+        )
         temp = pd.DataFrame(
             np.concatenate((male, female)), columns=["percentage_soccer", "gender"]
-        )        
+        )
         temp["gender"] = pd.cut(
             temp["gender"], bins=[-1, 0.5, 1], labels=["male", "female"]
         )
         temp["country"] = "overall"
         percentage = pd.concat([percentage, temp])
-        
+
         means.append(-999)
         countries.append("overall")
         countries_raw.append("overall")
 
     if country_order is None:
         country_order = np.argsort(means)[::-1]
-        
+
     g = sns.violinplot(
         data=percentage,
         y="percentage_soccer",
@@ -642,14 +645,7 @@ def soccer_related_cases_overview(
 
 
 def soccer_related_cases_ax(
-    ax,
-    traces,
-    models,
-    dls,
-    ticks,
-    begin=None,
-    end=None,
-    colors=None,
+    ax, traces, models, dls, ticks, begin=None, end=None, colors=None,
 ):
     """
     Plots comparison of soccer related cases for multiple countries.
@@ -767,74 +763,32 @@ def legend(
     # Data
     if data:
         lines.append(
-            Line2D(
-                [0],
-                [0],
-                marker="d",
-                color=rcParams.color_data,
-                markersize=4,
-                lw=0,
-            )
+            Line2D([0], [0], marker="d", color=rcParams.color_data, markersize=4, lw=0,)
         )
         labels.append("Data")
 
     # Model
     if model:
-        lines.append(
-            Line2D(
-                [0],
-                [0],
-                color=rcParams.color_model,
-                lw=2,
-            )
-        )
+        lines.append(Line2D([0], [0], color=rcParams.color_model, lw=2,))
         labels.append("Model")
 
     # Prior
     if prior:
-        lines.append(
-            Line2D(
-                [0],
-                [0],
-                color=rcParams.color_prior,
-                lw=2,
-            )
-        )
+        lines.append(Line2D([0], [0], color=rcParams.color_prior, lw=2,))
         labels.append("Prior")
 
     # Posterior
     if posterior:
-        lines.append(
-            Patch(
-                [0],
-                [0],
-                color=rcParams.color_posterior,
-                lw=0,
-            ),
-        )
+        lines.append(Patch([0], [0], color=rcParams.color_posterior, lw=0,),)
         labels.append("Posterior")
 
     # male
     if sex:
-        lines.append(
-            Patch(
-                [0],
-                [0],
-                color=rcParams.color_male,
-                lw=0,
-            ),
-        )
+        lines.append(Patch([0], [0], color=rcParams.color_male, lw=0,),)
         labels.append("Male")
 
         # female
-        lines.append(
-            Patch(
-                [0],
-                [0],
-                color=rcParams.color_female,
-                lw=0,
-            ),
-        )
+        lines.append(Patch([0], [0], color=rcParams.color_female, lw=0,),)
         labels.append("Female")
 
     # championship region
@@ -920,40 +874,37 @@ class HandlerRect(HandlerPatch):
 
         return [p]
 
-    
+
 class PatchImage(object):
-    def __init__(self, path, color,space=15, offset = 10 ):
+    def __init__(self, path, color, space=15, offset=10):
         self.image_data = plt.imread(path)
         self.color = color
         self.space = space
-        self.offset= offset
-    
+        self.offset = offset
+
+
 class HandlerPatchImage(object):
     def legend_artist(self, legend, orig_handle, fontsize, handlebox):
         width, height = handlebox.width, handlebox.height
-        
+
         # Patch
         patch = plt.Rectangle(
-            [
-                 - handlebox.xdescent,
-                 - handlebox.ydescent,
-            ],
+            [-handlebox.xdescent, -handlebox.ydescent,],
             width,
             height,
             facecolor=orig_handle.color,
             edgecolor="none",
         )
-        
-        
+
         # Image
         image = plt.imshow(
             orig_handle.image_data,
-            extent= [
+            extent=[
                 -handlebox.xdescent,
-                -handlebox.xdescent+10,
+                -handlebox.xdescent + 10,
                 -handlebox.ydescent,
-                -handlebox.ydescent+10
-            ]
+                -handlebox.ydescent + 10,
+            ],
         )
 
         handlebox.add_artist(patch)

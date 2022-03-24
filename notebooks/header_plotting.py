@@ -13,8 +13,8 @@ mpl.rcParams["axes.spines.right"] = False
 mpl.rcParams["axes.spines.top"] = False
 mpl.rcParams["xtick.labelsize"] = 8
 mpl.rcParams["ytick.labelsize"] = 8
-mpl.rcParams["axes.labelsize"] = 9
-mpl.rcParams["axes.titlesize"] = 12
+mpl.rcParams["axes.labelsize"] = 8
+mpl.rcParams["axes.titlesize"] = 8
 mpl.rcParams["legend.fontsize"] = 6
 
 # Save figure as pdf and png

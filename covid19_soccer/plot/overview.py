@@ -400,11 +400,14 @@ def multi_v2(
     if fig is None:
         fig = plt.figure(figsize=(3.5 * nColumns, 2.5 * (nRows + 1)))
 
-    outer_outer_grid = fig.add_gridspec(2, 1, hspace=0.15, height_ratios=(nRows, 0.8))
+    outer_outer_grid = fig.add_gridspec(2, 1, hspace=0.15, height_ratios=(nRows, 1.2))
     """ Create single overview plots for all selected countries
     """
     outer_grid = outer_outer_grid[0].subgridspec(
-        nRows, nColumns, wspace=0.25, hspace=0.3,
+        nRows,
+        nColumns,
+        wspace=0.3,
+        hspace=0.3,
     )
     axes = []
     sel_traces = [traces[i] for i in selected_index]

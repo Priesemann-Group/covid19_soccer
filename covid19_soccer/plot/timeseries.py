@@ -23,15 +23,15 @@ def _uefa_range(ax):
         begin,
         end,
         edgecolor=rcParams.color_championship_range,
-        hatch="///",
-        facecolor="none",
+        facecolor=rcParams.color_championship_range,
         zorder=-5,
+        alpha=0.2,
     )
     ax.set_ylim(ylim)
 
 
 def incidence(
-    ax, trace, model, dl, ylim=None, color=None, color_data=None, data_forecast=False
+    ax, trace, model, dl, ylim=None, color=None, color_data=None, data_forecast=False, lw=2,
 ):
     """
     Plots incidence: modelfit and data
@@ -45,6 +45,7 @@ def incidence(
         * 1e6,  # incidence
         what="model",
         ax=ax,
+        lw=lw,
         color=rcParams.color_model if color is None else color,
     )
 
@@ -96,6 +97,8 @@ def incidence(
 
     # Plot shaded uefa
     _uefa_range(ax)
+    
+
 
     # Markup
     ax.set_ylabel("Incidence")
@@ -114,9 +117,8 @@ def fraction_male_female(
 
     new_cases = get_from_trace("new_cases", trace)
 
-    model_points = (new_cases[:, :, 0] - new_cases[:, :, 1]) / (
-        new_cases[:, :, 1] + new_cases[:, :, 0]
-    )
+    model_points = (new_cases[:, :, 0] / dl.population[0,0] - new_cases[:, :, 1] / dl.population[1,0]) / (new_cases[:, :, 1] / dl.population[1,0] + new_cases[:, :, 0]/ dl.population[0,0])
+
     # Plot model fit
     _timeseries(
         x=pd.date_range(model.sim_begin, model.sim_end),
@@ -129,8 +131,8 @@ def fraction_male_female(
     # Plot data
     _timeseries(
         x=pd.date_range(dl.data_begin, dl.data_end),
-        y=(dl.new_cases_obs[:, 0, 0] - dl.new_cases_obs[:, 1, 0])
-        / (dl.new_cases_obs[:, 1, 0] + dl.new_cases_obs[:, 0, 0]),
+
+        y=(dl.new_cases_obs[:, 0, 0]/dl.population[0,0]-dl.new_cases_obs[:, 1, 0]/dl.population[1,0])/(dl.new_cases_obs[:, 1, 0]/dl.population[1,0] + dl.new_cases_obs[:, 0, 0]/dl.population[0,0]),
         what="data",
         ax=ax,
         color=rcParams.color_data if color_data is None else color_data,
@@ -148,9 +150,7 @@ def fraction_male_female(
             ),
             axis=1,
         )
-        imbalance = (cases[:, 0, 0] - cases[:, 1, 0]) / (
-            cases[:, 0, 0] + cases[:, 1, 0]
-        )
+        imbalance = (cases[:, 0, 0]/dl.population[0,0] - cases[:, 1, 0]/dl.population[1,0])/(cases[:, 0, 0]/dl.population[0,0] + cases[:, 1, 0]/dl.population[1,0])
         _timeseries(
             x=dates,
             y=imbalance,
@@ -167,9 +167,12 @@ def fraction_male_female(
 
     # Plot shaded uefa
     _uefa_range(ax)
+    
+    # Dotted line at 0
+    ax.axhline(0, ls="--", color="tab:gray", zorder=-100)
 
     # Markup
-    ax.set_ylabel("Gender\nbalance")
+    ax.set_ylabel("Gender\nimbalance")
     format_date_axis(ax)
 
     return ax

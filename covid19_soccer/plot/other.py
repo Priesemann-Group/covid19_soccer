@@ -451,6 +451,8 @@ def soccer_related_cases_overview(
     country_order=None,
     remove_outliers=False,
     overall_effect_trace=None,
+    vertical=False,
+    draw_inner_errors=True,
     **kwargs,
 ):
     """
@@ -502,6 +504,12 @@ def soccer_related_cases_overview(
         ratio_soccer = num_infections_alpha / (
             num_infections_base + num_infections_alpha
         )
+        
+        # Remove outliers from bad sampling
+        if remove_outliers:
+            ratio_soccer = ratio_soccer[(ratio_soccer<0.4).all(axis=1),:]
+            ratio_soccer = ratio_soccer[(ratio_soccer>-0.4).all(axis=1),:]
+
         male = np.stack(
             (ratio_soccer[:, 0], np.zeros(ratio_soccer[:, 0].shape)), axis=1
         )
@@ -515,10 +523,6 @@ def soccer_related_cases_overview(
             temp["gender"], bins=[-1, 0.5, 1], labels=["male", "female"]
         )
 
-        # Remove outliers from bad sampling
-        if remove_outliers:
-            temp = temp[-0.4 < temp["percentage_soccer"]]
-            temp = temp[temp["percentage_soccer"] < 0.4]
 
         # Remove outlier
         # Append i in case of same countries
@@ -553,22 +557,31 @@ def soccer_related_cases_overview(
         )
         temp["country"] = "overall"
         percentage = pd.concat([percentage, temp])
-
-        means.append(-999)
+        
+        means.append(999)
         countries.append("overall")
         countries_raw.append("overall")
+        
+        # Plot vertical line
+        #ax.axvline(len(countries)-1.5,ls="-",color="tab:gray",zorder=-100,lw=0.5)
 
     if country_order is None:
         country_order = np.argsort(means)[::-1]
-
+        
+    to_y = "percentage_soccer"
+    to_x = "country"
+    if vertical:
+        to_x = "percentage_soccer"
+        to_y = "country"
+        
     g = sns.violinplot(
         data=percentage,
-        y="percentage_soccer",
-        x="country",
+        y=to_y,
+        x=to_x,
         hue="gender",
         scale="count",
         inner=None,
-        orient="v",
+        orient="h" if vertical else "v",
         ax=ax,
         split=True,
         # palette={"male": color_male, "female": color_female},
@@ -594,38 +607,127 @@ def soccer_related_cases_overview(
             ax.collections[i].set_facecolor(color_female)
             ax.collections[i].set_edgecolor(color_female)  # Set outline colors
 
+    """ Draw error whiskers
+    """
+    if draw_inner_errors:
+        for i, country in enumerate(np.array(countries)[country_order]):
+            temp = np.array(percentage[percentage["country"] == country]["percentage_soccer"]).reshape((2,-1)).mean(axis=0)
+            
+            l, mean, u = np.percentile(temp,q=(2.5,50,97.5))
+            
+            
+            if vertical:
+                ax.scatter(
+                    x=mean,
+                    y=i,
+                    marker="o",
+                    s=10,
+                    zorder=10,
+                    c="white",
+                    edgecolor="#060434",
+                )
+                lines = ax.hlines(
+                    y=i,
+                    xmin=l,
+                    xmax=u,
+                    lw=1.5,
+                    zorder=9,
+                    color="#060434",
+                )
+                lines.set_capstyle("round")
+            else:
+                ax.scatter(
+                    x=i,
+                    y=mean,
+                    marker="o",
+                    s=10,
+                    zorder=10,
+                    c="white",
+                    edgecolor="#060434",
+                )
+                lines = ax.vlines(
+                    x=i,
+                    ymin=l,
+                    ymax=u,
+                    lw=1.5,
+                    zorder=9,
+                    color="#060434",
+                )
+                lines.set_capstyle("round")
+            
     """ Markup
     """
-    ax.set_ylabel("Percentage of soccer related\ninfections during the Championship")
-    ax.set_xlabel("")
-    ax.set_xticklabels(countries_raw)
+
+    if vertical:
+        ax.set_xlabel("Fraction of primary cases\nrelated to the Euro 2020")
+        ax.set_ylabel("")
+        ax.set_yticklabels(countries_raw)
+    else:
+        ax.set_ylabel("Fraction of primary cases\nrelated to the Euro 2020")
+        ax.set_xlabel("")
+        ax.set_xticklabels(countries_raw)
+    
 
     # plot flags if desired
     if plot_flags:
         iso2 = []
         if not overall_effect_trace is None:
-            dls_orderd = np.array(dls)[country_order[:-1]]
-        else:
-            dls_orderd = np.array(dls)[country_order]
-        for i, dl in enumerate(dls_orderd):
-            iso2.append(dl.countries_iso2[0].replace("GB-", ""))
-            img = plt.imread(get_flag(dl.countries_iso2[0].lower()))
-            im = OffsetImage(img, zoom=0.03)
-            im.image.axes = ax
+            dls_orderd = np.array(dls)[country_order[1:]]
+            img = plt.imread(get_flag("football"))
+            im = OffsetImage(img, zoom=0.019)
+            iso2.append("Avg.")
+            
+            if vertical:
+                pos=(ypos_flags,0)
+                xybox=(-10, 0)
+            else:
+                pos=(0, ypos_flags)
+                xybox=(0,-10)
+            
             ab = AnnotationBbox(
                 im,
-                (i, ypos_flags),
-                xybox=(0.0, -10.0),
+                pos,
+                xybox=xybox,
                 frameon=False,
                 xycoords="data",
                 boxcoords="offset points",
                 pad=0,
             )
             ax.add_artist(ab)
-        if not overall_effect_trace is None:
-            iso2.append("Joint\neffect")
-        ax.set_xticklabels(iso2)
-        ax.tick_params(axis="x", which="major", pad=21, length=0)
+            offset = 1
+        else:
+            dls_orderd = np.array(dls)[country_order]
+            offset = 0
+        for i, dl in enumerate(dls_orderd):
+            iso2.append(dl.countries_iso2[0].replace("GB-", ""))
+            img = plt.imread(get_flag(dl.countries_iso2[0].lower()))
+            im = OffsetImage(img, zoom=0.019)
+            im.image.axes = ax
+            
+            if vertical:
+                pos=(ypos_flags,i+offset)
+                xybox=(-10, 0)
+            else:
+                pos=(i+offset, ypos_flags)
+                xybox=(0,-10)
+                
+            ab = AnnotationBbox(
+                im,
+                pos,
+                xybox=xybox,
+                frameon=False,
+                xycoords="data",
+                boxcoords="offset points",
+                pad=0,
+            )
+            ax.add_artist(ab)
+    
+        if vertical:
+            ax.set_yticklabels(iso2)
+            ax.tick_params(axis="y", which="major", pad=21, length=0)
+        else:
+            ax.set_xticklabels(iso2)
+            ax.tick_params(axis="x", which="major", pad=21, length=0)
 
     # Remove legend
     ax.legend([], [], frameon=False)
@@ -633,15 +735,53 @@ def soccer_related_cases_overview(
     # Set y tick formats
     fmt = "%.0f%%"  # Format you want the ticks, e.g. '40%'
     xticks = mtick.FormatStrFormatter(fmt)
-    ax.yaxis.set_major_formatter(xticks)
+    if vertical:
+        ax.xaxis.set_major_formatter(xticks)
+    else:
+        ax.yaxis.set_major_formatter(xticks)
 
-    # Remove spines
-    ax.spines["bottom"].set_visible(False)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    ax.axhline(0, color="tab:gray", ls="--", zorder=-10)
+       
+    if vertical:
+        ax.axvline(0, color="tab:gray", ls="--", zorder=-10)
+        ax.spines["bottom"].set_visible(True)
+        ax.spines["top"].set_visible(False)
+        ax.spines["left"].set_visible(False)
+        ax.spines["right"].set_visible(False)
+    else:
+        ax.axhline(0, color="tab:gray", ls="--", zorder=-10)
+        # Remove spines  
+        ax.spines["bottom"].set_visible(False)
+        ax.spines["top"].set_visible(False)
+        ax.spines["right"].set_visible(False)
 
     return ax
+
+def plot_flags(ax, countries, ypos_flags=-10):
+    """
+    Parameters
+    ----------
+    ax
+    countries: array
+        List of country iso2 codes
+    """
+    iso2 = []
+    
+    for i, country in enumerate(countries):
+        img = plt.imread(get_flag(country.lower()))
+        im = OffsetImage(img, zoom=0.03)
+        ab = AnnotationBbox(
+            im,
+            (i, ypos_flags),
+            xybox=(0.0, -10.0),
+            frameon=False,
+            xycoords="data",
+            boxcoords="offset points",
+            pad=0,
+        )
+        ax.add_artist(ab)
+
+    ax.set_xticklabels([c.replace("GB-","") for c in countries])
+    ax.tick_params(axis="x", which="major", pad=21, length=0)
 
 
 def soccer_related_cases_ax(

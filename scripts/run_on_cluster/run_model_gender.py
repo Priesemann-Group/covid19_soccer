@@ -58,30 +58,11 @@ parser.add_argument(
 parser.add_argument(
     "--offset_data", type=int, help="Offset of the data in days", default=0
 )
-parser.add_argument(
-    "--draw_delay",
-    type=str2bool,
-    help="Use distribution to draw width of delay",
-    default=False,
-)
-parser.add_argument(
-    "--weighted_alpha_prior", type=int, help="Use weighted alpha prior", default=0,
-)
 
 parser.add_argument(
     "--prior_delay", type=int, help="prior_delay", default=5,
 )
 
-parser.add_argument(
-    "--width_delay_prior", type=float, help="width of the delay prior", default=0.2,
-)
-
-parser.add_argument(
-    "--sigma_incubation",
-    type=float,
-    help="prior width of the mean latent period",
-    default=1.0,
-)
 
 parser.add_argument(
     "--median_width_delay",
@@ -99,20 +80,21 @@ parser.add_argument(
 
 parser.add_argument(
     "--f_fem",
-    type=float,
+    type=str,
     help="factor less participation of women at soccer reltated gatherings",
-    default=0.2,
+    default="0.33",
 )
 
-parser.add_argument(
-    "--uc",
-    type=str2bool,
-    help="Wheather or not to allow change points during the uefa championship",
-    default=True,
-)
 
 parser.add_argument(
     "--len", type=str, help="duration of the model", default="normal",
+)
+
+parser.add_argument(
+    "--abs_sine",
+    type=str2bool,
+    help="Whether to use the absolute sine weekly modulation",
+    default=False,
 )
 
 parser.add_argument(
@@ -192,10 +174,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
     input_args_dict = dict(**args.__dict__)
 
-    # make filename shorter
-    del input_args_dict["weighted_alpha_prior"]
-    del input_args_dict["draw_delay"]
-
     # Setup logging to file
     log_to_file(args.log, dict_2_string(input_args_dict))
 
@@ -236,16 +214,11 @@ if __name__ == "__main__":
             model = covid19_soccer.models.create_model_gender(
                 dataloader=dl,
                 beta=args.beta,
-                use_gamma=True,
-                draw_width_delay=args.draw_delay,
-                use_weighted_alpha_prior=args.weighted_alpha_prior,
                 prior_delay=args.prior_delay,
-                width_delay_prior=args.width_delay_prior,
-                sigma_incubation=args.sigma_incubation,
                 median_width_delay=args.median_width_delay,
                 interval_cps=args.interval_cps,
                 f_female=args.f_fem,
-                allow_uefa_cps=args.uc,
+                use_abs_sine_weekly_modulation=args.abs_sine,
             )
         except AssertionError as error:
             if i < 10:
@@ -257,18 +230,18 @@ if __name__ == "__main__":
 
     """ MCMC sampling
     """
-    save_name = f"{dict_2_string(input_args_dict)}"
+    save_name = f"run{dict_2_string(input_args_dict)}"
     save_file = os.path.join(args.dir, save_name)
-    callback = cov19.sampling.Callback(path=args.dir, name="backup_" + save_name, n=500)
+    callback = cov19.sampling.Callback(path=args.dir, name="backup" + save_name, n=500)
 
     multitrace, trace = cov19.robust_sample(
         model,
         tune=args.t,
         draws=args.d,
-        burnin_draws=args.d // 4,
-        burnin_draws_2nd=args.d // 2,
-        burnin_chains=50,
-        burnin_chains_2nd=20,
+        burnin_draws=args.d // 6,
+        burnin_draws_2nd=args.d // 3,
+        burnin_chains=30,
+        burnin_chains_2nd=15,
         final_chains=8,
         sample_kwargs={"cores": 11},
         max_treedepth=args.max_treedepth,

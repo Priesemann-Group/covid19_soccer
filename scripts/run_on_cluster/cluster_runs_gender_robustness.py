@@ -54,7 +54,7 @@ countries = [
 # [tune,draw,treedepth]
 sampling = [
     #    [200, 300, 10],
-    [500, 1000, 12],
+    # [500, 1000, 12],
     #    [1000, 1500, 12],
     #    [1000, 1000, 12],
     #     [1500, 3000, 12]
@@ -63,15 +63,15 @@ sampling = [
 ]
 
 # True or false
-beta = [0, 1]
+# beta = [0, 1]
 # beta = [1]  # , 1]
-
+beta = [0]
 
 # Games offset i.e. effect if soccer games would be x days later
 # important offsets = [0, -35, -21, -14, -10, -7, -4, -2, 2, 4, 7, 10, 14, 21, 35]
 # offset = [0, -35, -15, -10, -8, -6, -5, -4, -2, -1, 1, 2, 3, 4, 5, 6, 8, 10, 15, 35]
 # offset = [-35, -28, -10, -8, -6, -4, -2, -1, 35]
-offset = [0]
+# offset = [0]
 # offset = [0, -5, -4, -2, -1, 1, 2, 3, 4, 5]
 # offset = [0, -3, -2, -1, 1, 2, 3, 4, 5]
 # offset = [0]
@@ -80,25 +80,27 @@ offset = [0]
 # offset = [-21, -14, -10, -7, 7, 10, 14, 21]
 # offset = [-21, -14, -10, -7, -4, -2, 2, 4, 7, 10, 14, 21]
 # offset = [0, -35, -21, -14, -10, -7, -4, -2, 2, 4, 7, 10, 14, 21, 35]
-# offset = [0, -14, -10, -7, -4, -2, -1, 1, 2, 4, 7, 10, 14]
+offset = [0, -14, -10, -7, -4, -2, -1, 1, 2, 4, 7, 10, 14]
 
 # prior_delay = [-1, 2, 3, 4, 5, 6, 7, 8, 10, 12]
 prior_delay = [-1]
 
-# median_width_delay = [0.5, 1.0, 2.0]
-median_width_delay = [1.0]
+median_width_delay = [0.5, 1.0, 2.0]
+# median_width_delay = [1.0]
 
-# interval_cps = [10.0, 6.0, 20.0]
-interval_cps = [10.0]
+interval_cps = [10.0, 6.0, 20.0]
+# interval_cps = [10.0]
 
 # f_fem_list = [0.2, 0.5]
-f_fem_list = ["0.2", "0.33", "0.5", "bounded"]
+# f_fem_list = ["0.2", "0.33", "0.5", "bounded"]
+f_fem_list = ["0.33"]
 
 # len_model_list = ["normal", "short"]
-# len_model_list = ["normal"]
-len_model_list = ["normal", "short"]
+len_model_list = ["normal"]
+# len_model_list = ["normal", "short"]
 
-abs_sine = [0, 1]
+# abs_sine = [0, 1]
+abs_sine = [0]
 
 
 mapping = []
@@ -114,7 +116,7 @@ for draw_args in sampling:
                                 for len_mod in len_model_list:
                                     for abs_s in abs_sine:
                                         default_vals = True if b == 0 else False
-                                        """
+
                                         if country in [
                                             "Belgium",
                                             "Netherlands",
@@ -126,7 +128,7 @@ for draw_args in sampling:
                                                 continue
                                             else:
                                                 default_vals = False
-                                        """
+
                                         if not off == 0:
                                             if not default_vals:
                                                 continue
@@ -176,7 +178,7 @@ for draw_args in sampling:
                                         mapping.append(tuple(ma))
 
 
-num_jobs_per_node = 3
+num_jobs_per_node = 4
 mapping_clustered = []
 ended = False
 for i in range(len(mapping)):

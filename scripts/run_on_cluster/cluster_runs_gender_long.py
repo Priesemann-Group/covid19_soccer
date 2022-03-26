@@ -54,12 +54,12 @@ countries = [
 # [tune,draw,treedepth]
 sampling = [
     #    [200, 300, 10],
-    [500, 1000, 12],
+    # [500, 1000, 12],
     #    [1000, 1500, 12],
     #    [1000, 1000, 12],
     #     [1500, 3000, 12]
-    [2000, 4000, 12],
-    # [4000, 8000, 12],
+    # [2000, 4000, 12],
+    [4000, 8000, 12],
 ]
 
 # True or false
@@ -92,14 +92,15 @@ median_width_delay = [1.0]
 interval_cps = [10.0]
 
 # f_fem_list = [0.2, 0.5]
-f_fem_list = ["0.2", "0.33", "0.5", "bounded"]
+# f_fem_list = ["0.2", "0.33", "0.5", "bounded"]
+f_fem_list = ["0.33"]
 
 # len_model_list = ["normal", "short"]
-# len_model_list = ["normal"]
-len_model_list = ["normal", "short"]
+len_model_list = ["normal"]
+# len_model_list = ["normal", "short"]
 
-abs_sine = [0, 1]
-
+# abs_sine = [0, 1]
+abs_sine = [0]
 
 mapping = []
 
@@ -176,7 +177,7 @@ for draw_args in sampling:
                                         mapping.append(tuple(ma))
 
 
-num_jobs_per_node = 3
+num_jobs_per_node = 4
 mapping_clustered = []
 ended = False
 for i in range(len(mapping)):

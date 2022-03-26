@@ -25,7 +25,7 @@ args.id = args.id - 1
 log.info(f"ID: {args.id}")
 
 
-dir_traces = "/data.nst/share/soccer_project/covid_uefa_traces13"
+dir_traces = "/data.nst/share/soccer_project/covid_uefa_traces13_robustness"
 
 """ Create possible different combinations
 """

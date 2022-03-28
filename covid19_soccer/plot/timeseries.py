@@ -66,13 +66,13 @@ def incidence(
     )
 
     if data_forecast:
-        dates = dl._cases.loc[dl.data_end :, "male", "total",].index.get_level_values(
+        dates = dl._cases.loc[model.data_end :, "male", "total",].index.get_level_values(
             "date"
         )
         cases = np.stack(
             (
-                dl._cases.loc[dl.data_end :, "male", "total",].to_numpy(),
-                dl._cases.loc[dl.data_end :, "female", "total",].to_numpy(),
+                dl._cases.loc[model.data_end :, "male", "total",].to_numpy(),
+                dl._cases.loc[model.data_end :, "female", "total",].to_numpy(),
             ),
             axis=1,
         )
@@ -140,13 +140,13 @@ def fraction_male_female(
     )
 
     if data_forecast:
-        dates = dl._cases.loc[dl.data_end :, "male", "total",].index.get_level_values(
+        dates = dl._cases.loc[model.data_end :, "male", "total",].index.get_level_values(
             "date"
         )
         cases = np.stack(
             (
-                dl._cases.loc[dl.data_end :, "male", "total",].to_numpy(),
-                dl._cases.loc[dl.data_end :, "female", "total",].to_numpy(),
+                dl._cases.loc[model.data_end :, "male", "total",].to_numpy(),
+                dl._cases.loc[model.data_end :, "female", "total",].to_numpy(),
             ),
             axis=1,
         )

@@ -61,7 +61,7 @@ def _apply_delta(eff, model, dl):
 
         return np.dot(d, eff)
     except:
-        t_g = [(game - model.sim_begin).days for game in dl.date_of_games[:53]]
+        t_g = [(game - model.sim_begin).days for game in dl.timetable[~dl.timetable["id"].str.contains("a")]["date"]]
         d = _delta(np.subtract.outer(t, t_g)).eval()
 
         return np.dot(d, eff)

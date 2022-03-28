@@ -255,18 +255,30 @@ def single_extended(
         ax=ax,
     )
     axes_dist.append(ax)
-
-    ax = fig.add_subplot(grid[3, 1])
-    distribution(
-        model,
-        trace,
-        "weekend_factor",
-        nSamples_prior=5000,
-        title="",
-        dist_math="h_{w}",
-        ax=ax,
-    )
-    axes_dist.append(ax)
+    
+    # Check if weekedn_factor is in trace
+    if "weekend_factor" in trace.posterior:
+        ax = fig.add_subplot(grid[3, 1])
+        distribution(
+            model,
+            trace,
+            "weekend_factor",
+            nSamples_prior=5000,
+            title="",
+            dist_math="h_{w}",
+            ax=ax,
+        )
+        axes_dist.append(ax)
+    else:
+        ax = fig.add_subplot(grid[3, 1])
+        _distribution(
+            array_posterior=sigmoid(posterior[:, 4]),
+            array_prior=sigmoid(prior[:, 4]),
+            dist_name="",
+            dist_math="r_{\mathrm{Fr}}",
+            ax=ax,
+        )
+        axes_dist.append(ax) 
 
     """ Legend
     """

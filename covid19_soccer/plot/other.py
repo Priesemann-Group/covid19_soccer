@@ -610,11 +610,18 @@ def soccer_related_cases_overview(
     """ Draw error whiskers
     """
     if draw_inner_errors:
+        print(f"Country\t2.5\t50.0\t97.5\t>0")
         for i, country in enumerate(np.array(countries)[country_order]):
+                
+            if country == "overall":
+                t = np.array(percentage[percentage["country"] == country]["percentage_soccer"]).reshape((2,-1))
+                print((t[0,:]>0).sum()/t[0,:].shape[0])
+                print((t[1,:]>0).sum()/t[1,:].shape[0])
+                
             temp = np.array(percentage[percentage["country"] == country]["percentage_soccer"]).reshape((2,-1)).mean(axis=0)
             
             l, mean, u = np.percentile(temp,q=(2.5,50,97.5))
-            
+            print(country,l,mean,u,(temp>0).sum()/temp.shape[0],sep="\t")
             
             if vertical:
                 ax.scatter(

@@ -25,7 +25,7 @@ args.id = args.id - 1
 log.info(f"ID: {args.id}")
 
 
-dir_traces = "/data.nst/share/soccer_project/covid_uefa_traces13_robustness"
+dir_traces = "/data.nst/share/soccer_project/covid_uefa_traces14_robustness"
 
 """ Create possible different combinations
 """
@@ -101,7 +101,6 @@ len_model_list = ["normal"]
 
 # abs_sine = [0, 1]
 abs_sine = [0]
-
 
 mapping = []
 

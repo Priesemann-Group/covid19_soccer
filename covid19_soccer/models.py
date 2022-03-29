@@ -169,8 +169,7 @@ def create_model_gender(
             hierarchical=False,
         )[:, 0]
 
-        R_t_add += R_t_add_noise
-        pm.Deterministic("R_t_add_fact", R_t_add)
+        pm.Deterministic("R_t_noise", R_t_add_noise)
 
         # Default gender interconnection matrix
         c_off = pm.Beta("c_off", alpha=8, beta=8)
@@ -203,6 +202,10 @@ def create_model_gender(
             tt.sum((tt.dot(C_soccer, np.array([0.5, 0.5]) ** 2)))
         )
 
+        C_0_g = tt.stack([1, 0])
+        C_1_g = tt.stack([0, -1])
+        C_gender_noise = tt.stack([C_0_g, C_1_g])
+
         # Let's also add that to the trace since we may want to plot this variable
         pm.Deterministic("C_soccer", C_soccer)
 
@@ -215,8 +218,10 @@ def create_model_gender(
         new_cases = kernelized_spread_soccer(
             R_t_base=R_t_base,
             R_t_soccer=R_t_add,
+            R_t_noise=R_t_add_noise,
             C_base=C_base,
             C_soccer=C_soccer,
+            C_noise=C_gender_noise,
             pr_new_E_begin=new_E_begin,
             use_gamma=True,
             pr_sigma_median_incubation=None,

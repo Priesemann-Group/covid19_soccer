@@ -14,8 +14,10 @@ log = logging.getLogger(__name__)
 def kernelized_spread_soccer(
     R_t_base,
     R_t_soccer,
+    R_t_noise,
     C_base,
     C_soccer,
+    C_noise,
     name_new_I_t="new_I_t",
     name_new_E_t="new_E_t",
     name_S_t="S_t",
@@ -44,12 +46,20 @@ def kernelized_spread_soccer(
         Soccer reproduction number is applied additively 
         shape: (time)
 
+    R_t_noise : :class:`~theano.tensor.TensorVariable`
+        Gender noise reproduction number is applied additively
+        shape: (time)
+
     C_base : :class:`~theano.tensor.TensorVariable`
         Base gender interaction matrix i.e. while no soccer games are in progress.
         shape: (gender, gender)
 
     C_soccer : :class:`~theano.tensor.TensorVariable`
         Gender interaction for soccer games.
+        shape: (gender, gender)
+
+    C_noise : :class:`~theano.tensor.TensorVariable`
+        Interaction for gender noise
         shape: (gender, gender)
 
     pr_new_E_begin : :class:`~theano.tensor.TensorVariable`, float or array_like, optional
@@ -115,6 +125,7 @@ def kernelized_spread_soccer(
     def next_day(
         R_base,
         R_soccer,
+        R_noise,
         S_t,
         nE1_m,
         nE2_m,
@@ -141,6 +152,7 @@ def kernelized_spread_soccer(
         N,
         C_base,
         C_soccer,
+        C_noise,
     ):
         new_I_t_m = (
             beta[0] * nE1_m
@@ -173,7 +185,11 @@ def kernelized_spread_soccer(
         new_E_t = (
             S_t
             / N
-            * tt.tensordot(R_base * C_base + R_soccer * C_soccer, new_I_t, axes=1)
+            * tt.tensordot(
+                R_base * C_base + R_soccer * C_soccer + R_noise * C_noise,
+                new_I_t,
+                axes=1,
+            )
         )
 
         new_E_t = tt.clip(new_E_t, 0, N)
@@ -188,7 +204,7 @@ def kernelized_spread_soccer(
     new_I_0 = tt.zeros(N.shape[0])
     outputs, _ = theano.scan(
         fn=next_day,
-        sequences=[R_t_base, R_t_soccer],
+        sequences=[R_t_base, R_t_soccer, R_t_noise],
         outputs_info=[
             S_begin,  # shape: gender
             dict(
@@ -201,7 +217,7 @@ def kernelized_spread_soccer(
             ),  # shape time, gender,
             new_I_0,  # shape gender,
         ],
-        non_sequences=[beta, N, C_base, C_soccer],
+        non_sequences=[beta, N, C_base, C_soccer, C_noise],
     )
 
     S_t, new_E_t_m, new_E_t_f, new_I_t = outputs

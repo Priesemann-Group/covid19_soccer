@@ -31,7 +31,15 @@ def _uefa_range(ax):
 
 
 def incidence(
-    ax, trace, model, dl, ylim=None, color=None, color_data=None, data_forecast=False, lw=2,
+    ax,
+    trace,
+    model,
+    dl,
+    ylim=None,
+    color=None,
+    color_data=None,
+    data_forecast=False,
+    lw=2,
 ):
     """
     Plots incidence: modelfit and data
@@ -66,9 +74,9 @@ def incidence(
     )
 
     if data_forecast:
-        dates = dl._cases.loc[model.data_end :, "male", "total",].index.get_level_values(
-            "date"
-        )
+        dates = dl._cases.loc[
+            model.data_end :, "male", "total",
+        ].index.get_level_values("date")
         cases = np.stack(
             (
                 dl._cases.loc[model.data_end :, "male", "total",].to_numpy(),
@@ -97,8 +105,6 @@ def incidence(
 
     # Plot shaded uefa
     _uefa_range(ax)
-    
-
 
     # Markup
     ax.set_ylabel("Incidence")
@@ -117,7 +123,13 @@ def fraction_male_female(
 
     new_cases = get_from_trace("new_cases", trace)
 
-    model_points = (new_cases[:, :, 0] / dl.population[0,0] - new_cases[:, :, 1] / dl.population[1,0]) / (new_cases[:, :, 1] / dl.population[1,0] + new_cases[:, :, 0]/ dl.population[0,0])
+    model_points = (
+        new_cases[:, :, 0] / dl.population[0, 0]
+        - new_cases[:, :, 1] / dl.population[1, 0]
+    ) / (
+        new_cases[:, :, 1] / dl.population[1, 0]
+        + new_cases[:, :, 0] / dl.population[0, 0]
+    )
 
     # Plot model fit
     _timeseries(
@@ -131,8 +143,14 @@ def fraction_male_female(
     # Plot data
     _timeseries(
         x=pd.date_range(dl.data_begin, dl.data_end),
-
-        y=(dl.new_cases_obs[:, 0, 0]/dl.population[0,0]-dl.new_cases_obs[:, 1, 0]/dl.population[1,0])/(dl.new_cases_obs[:, 1, 0]/dl.population[1,0] + dl.new_cases_obs[:, 0, 0]/dl.population[0,0]),
+        y=(
+            dl.new_cases_obs[:, 0, 0] / dl.population[0, 0]
+            - dl.new_cases_obs[:, 1, 0] / dl.population[1, 0]
+        )
+        / (
+            dl.new_cases_obs[:, 1, 0] / dl.population[1, 0]
+            + dl.new_cases_obs[:, 0, 0] / dl.population[0, 0]
+        ),
         what="data",
         ax=ax,
         color=rcParams.color_data if color_data is None else color_data,
@@ -140,9 +158,9 @@ def fraction_male_female(
     )
 
     if data_forecast:
-        dates = dl._cases.loc[model.data_end :, "male", "total",].index.get_level_values(
-            "date"
-        )
+        dates = dl._cases.loc[
+            model.data_end :, "male", "total",
+        ].index.get_level_values("date")
         cases = np.stack(
             (
                 dl._cases.loc[model.data_end :, "male", "total",].to_numpy(),
@@ -150,7 +168,11 @@ def fraction_male_female(
             ),
             axis=1,
         )
-        imbalance = (cases[:, 0, 0]/dl.population[0,0] - cases[:, 1, 0]/dl.population[1,0])/(cases[:, 0, 0]/dl.population[0,0] + cases[:, 1, 0]/dl.population[1,0])
+        imbalance = (
+            cases[:, 0, 0] / dl.population[0, 0] - cases[:, 1, 0] / dl.population[1, 0]
+        ) / (
+            cases[:, 0, 0] / dl.population[0, 0] + cases[:, 1, 0] / dl.population[1, 0]
+        )
         _timeseries(
             x=dates,
             y=imbalance,
@@ -167,7 +189,7 @@ def fraction_male_female(
 
     # Plot shaded uefa
     _uefa_range(ax)
-    
+
     # Dotted line at 0
     ax.axhline(0, ls="--", color="tab:gray", zorder=-100)
 
@@ -265,7 +287,7 @@ def R_noise(ax, trace, model, dl, ylim=None, color=None):
         ax.set_ylim(ylim)
 
     # Markup
-    ax.set_ylabel("$R_{noise}$")
+    ax.set_ylabel("$R_{noise, gender}$")
     format_date_axis(ax)
 
     return ax

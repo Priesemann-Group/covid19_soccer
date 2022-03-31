@@ -255,7 +255,7 @@ def single_extended(
         ax=ax,
     )
     axes_dist.append(ax)
-    
+
     # Check if weekedn_factor is in trace
     if "weekend_factor" in trace.posterior:
         ax = fig.add_subplot(grid[3, 1])
@@ -278,7 +278,7 @@ def single_extended(
             dist_math="r_{\mathrm{Fr}}",
             ax=ax,
         )
-        axes_dist.append(ax) 
+        axes_dist.append(ax)
 
     """ Legend
     """
@@ -316,6 +316,235 @@ def single_extended(
         ax.text(
             -0.05,
             1.1,
+            letter,
+            transform=ax.transAxes,
+            fontsize=8,
+            fontweight="bold",
+            va="top",
+            ha="right",
+        )
+
+    return fig
+
+
+def single_extended_v2(
+    trace,
+    model,
+    dl,
+    xlim=None,
+    ylim_imbalance=None,
+    ylim_rbase=None,
+    ylim_incidence=None,
+):
+    """
+    Create an extended overview plot for a single model run.
+    This includes incidence, gender imbalance, R_base, R_soccer+R_noise,
+    delay, delay-width, factor_female, c_off, sigma_obs
+    and the weekend factors.
+
+    Adjust colors with rcParams
+    """
+
+    fig = plt.figure(figsize=(7, 1.35 * 4))
+    axes_ts = []
+
+    grid = fig.add_gridspec(5, 3, wspace=0.2, hspace=0.4, width_ratios=[1, 0.25, 0.25])
+
+    """ timeseries plots
+    """
+    # Cases
+    ax = fig.add_subplot(grid[0, 0])
+    incidence(ax, trace, model, dl, data_forecast=True, ylim=ylim_incidence)
+    axes_ts.append(ax)
+
+    # Gender imbalance
+    ax = fig.add_subplot(grid[1, 0])
+    fraction_male_female(ax, trace, model, dl, ylim=ylim_imbalance, data_forecast=True)
+    axes_ts.append(ax)
+
+    # R_base
+    ax = fig.add_subplot(grid[2, 0])
+    R_base(ax, trace, model, dl)
+    if ylim_rbase is not None:
+        ax.set_ylim(ylim_rbase)
+    axes_ts.append(ax)
+
+    # R_soccer
+    ax = fig.add_subplot(grid[3, 0])
+    R_soccer(ax, trace, model, dl, add_noise=False)
+    axes_ts.append(ax)
+
+    # R_soccer
+    ax = fig.add_subplot(grid[4, 0])
+    R_noise(ax, trace, model, dl)
+    axes_ts.append(ax)
+
+    # R_noise
+    # ax = fig.add_subplot(grid[4, 0])
+    # R_noise(ax, trace, model, dl)
+    # axes_ts.append(ax)
+
+    """ distributions
+    """
+    axes_dist = []
+
+    # delay
+    ax = fig.add_subplot(grid[0, 1])
+    if dl.countries[0] == "Germany":
+        ax.set_xlim(4.1, 8)
+    else:
+        ax.set_xlim(3.1, 7)
+    distribution(
+        model, trace, "delay", nSamples_prior=5000, title="", dist_math="D", ax=ax,
+    )
+    axes_dist.append(ax)
+    ax = fig.add_subplot(grid[0, 2])
+    distribution(
+        model,
+        trace,
+        "delay-width",
+        nSamples_prior=5000,
+        title="",
+        dist_math="\sigma_{D}",
+        ax=ax,
+    )
+    axes_dist.append(ax)
+
+    # gender interaction factors
+    ax = fig.add_subplot(grid[1, 1])
+    ax.set_xlim(0.01, 0.5)
+    distribution(
+        model,
+        trace,
+        "factor_female",
+        nSamples_prior=5000,
+        title="",
+        dist_math="\omega_{fem}",
+        ax=ax,
+    )
+    axes_dist.append(ax)
+    ax = fig.add_subplot(grid[1, 2])
+    distribution(
+        model,
+        trace,
+        "c_off",
+        nSamples_prior=5000,
+        title="",
+        dist_math="c_{off}",
+        ax=ax,
+    )
+    axes_dist.append(ax)
+
+    # likelihood and week modulation
+    ax = fig.add_subplot(grid[2, 1])
+    posterior = get_from_trace("fraction_delayed_by_weekday", trace)
+    prior = pm.sample_prior_predictive(
+        samples=5000, model=model, var_names=["fraction_delayed_by_weekday"]
+    )["fraction_delayed_by_weekday"]
+    ax.set_xlim(0, 1)
+    _distribution(
+        array_posterior=sigmoid(posterior[:, 5]),
+        array_prior=sigmoid(prior[:, 5]),
+        dist_name="",
+        dist_math="r_{\mathrm{Sat}}",
+        ax=ax,
+    )
+    axes_dist.append(ax)
+
+    ax = fig.add_subplot(grid[2, 2])
+    ax.set_xlim(0, 1)
+    _distribution(
+        array_posterior=sigmoid(posterior[:, 6]),
+        array_prior=sigmoid(prior[:, 1]),
+        dist_name="",
+        dist_math="r_{\mathrm{Sun}}",
+        ax=ax,
+    )
+    axes_dist.append(ax)
+
+    ax = fig.add_subplot(grid[3, 1])
+    ax.set_xlim(0, 1)
+    _distribution(
+        array_posterior=sigmoid(posterior[:, 0]),
+        array_prior=sigmoid(prior[:, 1]),
+        dist_name="",
+        dist_math="r_{\mathrm{Mon}}",
+        ax=ax,
+    )
+    axes_dist.append(ax)
+
+    ax = fig.add_subplot(grid[3, 2])
+    ax.set_xlim(0, 1)
+    _distribution(
+        array_posterior=sigmoid(posterior[:, 1]),
+        array_prior=sigmoid(prior[:, 1]),
+        dist_name="",
+        dist_math="r_{\mathrm{Tue}}",
+        ax=ax,
+    )
+    axes_dist.append(ax)
+
+    # Check if weekedn_factor is in trace
+    if "weekend_factor" in trace.posterior:
+        ax = fig.add_subplot(grid[4, 1])
+        distribution(
+            model,
+            trace,
+            "weekend_factor",
+            nSamples_prior=5000,
+            title="",
+            dist_math="h_{w}",
+            ax=ax,
+        )
+        axes_dist.append(ax)
+    else:
+        ax = fig.add_subplot(grid[4, 1])
+        ax.set_xlim(0, 1)
+        _distribution(
+            array_posterior=sigmoid(posterior[:, 4]),
+            array_prior=sigmoid(prior[:, 4]),
+            dist_name="",
+            dist_math="r_{\mathrm{Fr}}",
+            ax=ax,
+        )
+        axes_dist.append(ax)
+
+    """ Legend
+    """
+    ax = fig.add_subplot(grid[4, 2])
+    legend(ax, sex=False, championship_range=True)
+
+    # Adjust xlim for timeseries plots
+    for ax in axes_ts:
+        if xlim is None:
+            ax.set_xlim(model.data_begin, model.sim_end)
+        else:
+            ax.set_xlim(xlim)
+
+        # Hack: Disable every second ticklabel
+        # for label in ax.xaxis.get_ticklabels()[::2]:
+        #    label.set_visible(False)
+
+    # Add axes annotations
+    alphabet_string = list(string.ascii_uppercase)
+    for i, ax in enumerate(axes_ts):
+        letter = alphabet_string[i]
+        ax.text(
+            -0.05,
+            1.1,
+            letter,
+            transform=ax.transAxes,
+            fontsize=8,
+            fontweight="bold",
+            va="top",
+            ha="right",
+        )
+
+    for i, ax in enumerate(axes_dist):
+        letter = alphabet_string[i + len(axes_ts)]
+        ax.text(
+            -0.05,
+            1.2,
             letter,
             transform=ax.transAxes,
             fontsize=8,
@@ -416,10 +645,7 @@ def multi_v2(
     """ Create single overview plots for all selected countries
     """
     outer_grid = outer_outer_grid[0].subgridspec(
-        nRows,
-        nColumns,
-        wspace=0.3,
-        hspace=0.3,
+        nRows, nColumns, wspace=0.3, hspace=0.3,
     )
     axes = []
     sel_traces = [traces[i] for i in selected_index]

@@ -61,7 +61,10 @@ def _apply_delta(eff, model, dl):
 
         return np.dot(d, eff)
     except:
-        t_g = [(game - model.sim_begin).days for game in dl.timetable[~dl.timetable["id"].str.contains("a")]["date"]]
+        t_g = [
+            (game - model.sim_begin).days
+            for game in dl.timetable[~dl.timetable["id"].str.contains("a")]["date"]
+        ]
         d = _delta(np.subtract.outer(t, t_g)).eval()
 
         return np.dot(d, eff)
@@ -91,16 +94,19 @@ def k_formatter(x, pos):
         return "{:.0f}k".format(x / 1e3)
     else:
         return "{:.0f}".format(x)
-    
+
+
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import Locator
+
 
 class MinorSymLogLocator(Locator):
     """
     Dynamically find minor tick positions based on the positions of
     major ticks for a symlog scaling.
     """
+
     def __init__(self, linthresh):
         """
         Ticks will be placed between the major ticks.
@@ -110,7 +116,7 @@ class MinorSymLogLocator(Locator):
         self.linthresh = linthresh
 
     def __call__(self):
-        'Return the locations of the ticks'
+        "Return the locations of the ticks"
         majorlocs = self.axis.get_majorticklocs()
 
         # iterate through minor locs
@@ -118,18 +124,18 @@ class MinorSymLogLocator(Locator):
 
         # handle the lowest part
         for i in range(1, len(majorlocs)):
-            majorstep = majorlocs[i] - majorlocs[i-1]
-            if abs(majorlocs[i-1] + majorstep/2) < self.linthresh:
+            majorstep = majorlocs[i] - majorlocs[i - 1]
+            if abs(majorlocs[i - 1] + majorstep / 2) < self.linthresh:
                 ndivs = 5
             else:
                 ndivs = 4
             minorstep = majorstep / ndivs
-            locs = np.arange(majorlocs[i-1], majorlocs[i], minorstep)[1:]
+            locs = np.arange(majorlocs[i - 1], majorlocs[i], minorstep)[1:]
             minorlocs.extend(locs)
 
         return self.raise_if_exceeds(np.array(minorlocs))
 
     def tick_values(self, vmin, vmax):
-        raise NotImplementedError('Cannot get tick locations for a '
-                                  '%s type.' % type(self))
-
+        raise NotImplementedError(
+            "Cannot get tick locations for a " "%s type." % type(self)
+        )

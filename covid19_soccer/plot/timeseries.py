@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import logging
 import datetime
 import numpy as np
+import os
+import matplotlib.transforms as transforms
 
 from covid19_inference.plot import _timeseries, _format_date_xticks
 from .utils import get_from_trace, format_date_axis, lighten_color
@@ -199,7 +201,39 @@ def fraction_male_female(
 
     return ax
 
-
+def stringency(ax,trace,model,dl,ylim=None, color=None,legend=True,**kwargs):
+    # Plot data
+    _timeseries(
+        x=dl._stringencyOxCGRT[0][model.sim_begin:model.sim_end].index,
+        y=dl._stringencyOxCGRT[0][model.sim_begin:model.sim_end],
+        ax=ax,
+        what="model",
+        color="black" if color is None else color,
+        label="OxCGRT",
+        **kwargs
+    )       
+    _timeseries(
+        x=dl._stringencyPHSM[0][model.sim_begin:model.sim_end].index,
+        y=dl._stringencyPHSM[0][model.sim_begin:model.sim_end],
+        ax=ax,
+        what="model",
+        color="black" if color is None else color,
+        ls="--",
+        label="PHSM",
+        **kwargs
+    )  
+    
+    # Adjust ylim
+    if ylim is not None:
+        ax.set_ylim(ylim)
+        
+    # Markup
+    ylabel = "Stringency\nindex"
+    ax.set_ylabel(ylabel)
+    format_date_axis(ax)
+    ax.legend()
+    return ax
+    
 def R_soccer(ax, trace, model, dl, ylim=None, color=None, add_noise=False, **kwargs):
     """
     Plots soccer related reproduction number
@@ -230,10 +264,10 @@ def R_soccer(ax, trace, model, dl, ylim=None, color=None, add_noise=False, **kwa
         ax.set_ylim(ylim)
 
     # Markup
-    ylabel = "$R_{soccer}"
+    ylabel = r"$\Delta R_{\mathrm{soccer}}"
     if add_noise:
         ylabel += "+R_{noise}"
-    ylabel += "$"
+    ylabel += r"$"
     ax.set_ylabel(ylabel)
     format_date_axis(ax)
 
@@ -261,7 +295,7 @@ def R_base(ax, trace, model, dl, ylim=None, color=None, **kwargs):
         ax.set_ylim(ylim)
 
     # Markup
-    ax.set_ylabel("$R_{base}$")
+    ax.set_ylabel("$R_\mathrm{base}$")
     format_date_axis(ax)
 
     return ax
@@ -287,7 +321,7 @@ def R_noise(ax, trace, model, dl, ylim=None, color=None):
         ax.set_ylim(ylim)
 
     # Markup
-    ax.set_ylabel("$R_{noise, gender}$")
+    ax.set_ylabel("$\Delta R_\mathrm{noise}$")
     format_date_axis(ax)
 
     return ax
@@ -361,4 +395,84 @@ def stacked_bars(x, y, ax=None, colors=None, date_format=True, **kwargs):
 
     if date_format:
         format_date_axis(ax)
+    return ax
+
+
+def mark_days(ax, traces, model, dl, date_format=True, hosted=False, **kwargs):
+    if ax is None:
+        figure, ax = plt.subplots(figsize=(6, 3))
+    
+    iso2 = dl.countries_iso2[0]
+    temp = dl.timetable[~dl.timetable["id"].str.contains("a")]
+    
+    # location
+    locations = pd.read_csv(
+        os.path.join(dl.data_folder, "em_locations.csv"), header=7
+    )
+    stad_loc = locations[locations["country"] == iso2]["name"]
+    if len(stad_loc) > 0:
+        stad_loc = stad_loc.values[0]
+    else:
+        stad_loc = "well no stadium location found"
+    
+    selector_played = np.any([temp["team1"]==iso2,temp["team2"]==iso2],axis=0)
+    selector_hosted = temp["location"]==stad_loc
+    selector_union = np.any([selector_played,selector_hosted],axis=0)
+    if hosted:
+        games_played = temp[np.all([selector_played,~selector_hosted],axis=0)]
+        games_hosted = temp[np.all([~selector_played,selector_hosted],axis=0)]
+        games_both = temp[np.all([selector_played,selector_hosted],axis=0)]
+    else:
+        games_played = temp[selector_played]
+        games_hosted = pd.DataFrame()
+        games_both = pd.DataFrame()
+    
+    # Plot only played
+    color_played = "tab:gray"
+    color_hosted = "tab:black"
+    
+    trans = transforms.blended_transform_factory(ax.transData, ax.transAxes)
+
+
+    y = ax.get_ylim()[0]
+    for i, g in games_played.iterrows():
+         ax.plot(
+            g["date"],
+            0.06,
+            fillstyle="full",
+            color=color_played,
+            marker="v",
+            markeredgecolor="none",
+            transform=trans,
+            markersize=5,
+         )
+            
+    for i, g in games_hosted.iterrows():
+         ax.plot(
+            g["date"],
+            0.06,
+            fillstyle="full",
+            color=color_hosted,
+            marker="v",
+            markeredgecolor="none",
+            markersize=5,
+            transform=trans,
+         )     
+
+    for i, g in games_both.iterrows():
+         ax.plot(
+            g["date"],
+            0.06,
+            fillstyle="right",
+            color=color_played,
+            markerfacecoloralt=color_hosted,
+            markeredgecolor="none",
+            marker="v",
+            markersize=5,
+            transform=trans,
+         )    
+            
+    if date_format:
+        format_date_axis(ax)
+        
     return ax

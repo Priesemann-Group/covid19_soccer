@@ -324,6 +324,9 @@ def single_extended(
             ha="right",
         )
 
+    # Align y axis
+    fig.align_ylabels(axes_ts)
+        
     return fig
 
 
@@ -345,60 +348,69 @@ def single_extended_v2(
     Adjust colors with rcParams
     """
 
-    fig = plt.figure(figsize=(7, 1.35 * 4))
+    fig = plt.figure(figsize=(7, 1.35 * 5 + 0.1),constrained_layout=True)
+    subfigs = fig.subfigures(1, 2, wspace=0.0, width_ratios=[1, 0.5])
     axes_ts = []
 
-    grid = fig.add_gridspec(5, 3, wspace=0.2, hspace=0.4, width_ratios=[1, 0.25, 0.25])
-
+    grid = subfigs[0].add_gridspec(6, 1, hspace=0.0,height_ratios=[1,1,0.5,1,1,1])
     """ timeseries plots
     """
     # Cases
-    ax = fig.add_subplot(grid[0, 0])
+    ax = subfigs[0].add_subplot(grid[0])
     incidence(ax, trace, model, dl, data_forecast=True, ylim=ylim_incidence)
     axes_ts.append(ax)
 
     # Gender imbalance
-    ax = fig.add_subplot(grid[1, 0])
+    ax = subfigs[0].add_subplot(grid[1])
     fraction_male_female(ax, trace, model, dl, ylim=ylim_imbalance, data_forecast=True)
     axes_ts.append(ax)
 
+    # Stringency
+    ax = subfigs[0].add_subplot(grid[2])
+    stringency(ax, trace, model, dl)
+    axes_ts.append(ax)
+    
     # R_base
-    ax = fig.add_subplot(grid[2, 0])
+    ax = subfigs[0].add_subplot(grid[3])
     R_base(ax, trace, model, dl)
     if ylim_rbase is not None:
         ax.set_ylim(ylim_rbase)
     axes_ts.append(ax)
 
     # R_soccer
-    ax = fig.add_subplot(grid[3, 0])
+    ax = subfigs[0].add_subplot(grid[4])
     R_soccer(ax, trace, model, dl, add_noise=False)
+    ax.set_ylim(ax.get_ylim()[0]-(ax.get_ylim()[1]-ax.get_ylim()[0])/6,ax.get_ylim()[1])
+    mark_days(ax, trace, model, dl)
     axes_ts.append(ax)
 
-    # R_soccer
-    ax = fig.add_subplot(grid[4, 0])
+    # R_noise
+    ax = subfigs[0].add_subplot(grid[5])
     R_noise(ax, trace, model, dl)
     axes_ts.append(ax)
 
     # R_noise
-    # ax = fig.add_subplot(grid[4, 0])
+    # ax = subfigs[0].add_subplot(grid[4, 0])
     # R_noise(ax, trace, model, dl)
     # axes_ts.append(ax)
 
     """ distributions
     """
     axes_dist = []
-
+    grid = subfigs[1].add_gridspec(6, 2, height_ratios=[1,1,1,1,1,1])
     # delay
-    ax = fig.add_subplot(grid[0, 1])
+    ax = subfigs[1].add_subplot(grid[0, 0])
     if dl.countries[0] == "Germany":
         ax.set_xlim(4.1, 8)
     else:
         ax.set_xlim(3.1, 7)
+    ax.set_xlim(1,10)
     distribution(
         model, trace, "delay", nSamples_prior=5000, title="", dist_math="D", ax=ax,
     )
+    ax.set_ylabel("Density")
     axes_dist.append(ax)
-    ax = fig.add_subplot(grid[0, 2])
+    ax = subfigs[1].add_subplot(grid[0, 1])
     distribution(
         model,
         trace,
@@ -411,8 +423,8 @@ def single_extended_v2(
     axes_dist.append(ax)
 
     # gender interaction factors
-    ax = fig.add_subplot(grid[1, 1])
-    ax.set_xlim(0.01, 0.5)
+    ax = subfigs[1].add_subplot(grid[1, 0])
+    ax.set_xlim(0, 1)
     distribution(
         model,
         trace,
@@ -423,7 +435,8 @@ def single_extended_v2(
         ax=ax,
     )
     axes_dist.append(ax)
-    ax = fig.add_subplot(grid[1, 2])
+    ax = subfigs[1].add_subplot(grid[1, 1])
+    ax.set_xlim(0, 1)
     distribution(
         model,
         trace,
@@ -436,44 +449,22 @@ def single_extended_v2(
     axes_dist.append(ax)
 
     # likelihood and week modulation
-    ax = fig.add_subplot(grid[2, 1])
+    ax = subfigs[1].add_subplot(grid[2, 0])
     posterior = get_from_trace("fraction_delayed_by_weekday", trace)
     prior = pm.sample_prior_predictive(
         samples=5000, model=model, var_names=["fraction_delayed_by_weekday"]
     )["fraction_delayed_by_weekday"]
     ax.set_xlim(0, 1)
     _distribution(
-        array_posterior=sigmoid(posterior[:, 5]),
-        array_prior=sigmoid(prior[:, 5]),
-        dist_name="",
-        dist_math="r_{\mathrm{Sat}}",
-        ax=ax,
-    )
-    axes_dist.append(ax)
-
-    ax = fig.add_subplot(grid[2, 2])
-    ax.set_xlim(0, 1)
-    _distribution(
-        array_posterior=sigmoid(posterior[:, 6]),
-        array_prior=sigmoid(prior[:, 1]),
-        dist_name="",
-        dist_math="r_{\mathrm{Sun}}",
-        ax=ax,
-    )
-    axes_dist.append(ax)
-
-    ax = fig.add_subplot(grid[3, 1])
-    ax.set_xlim(0, 1)
-    _distribution(
         array_posterior=sigmoid(posterior[:, 0]),
-        array_prior=sigmoid(prior[:, 1]),
+        array_prior=sigmoid(prior[:, 0]),
         dist_name="",
         dist_math="r_{\mathrm{Mon}}",
         ax=ax,
     )
     axes_dist.append(ax)
 
-    ax = fig.add_subplot(grid[3, 2])
+    ax = subfigs[1].add_subplot(grid[2, 1])
     ax.set_xlim(0, 1)
     _distribution(
         array_posterior=sigmoid(posterior[:, 1]),
@@ -484,9 +475,54 @@ def single_extended_v2(
     )
     axes_dist.append(ax)
 
+    ax = subfigs[1].add_subplot(grid[3, 0])
+    ax.set_xlim(0, 1)
+    _distribution(
+        array_posterior=sigmoid(posterior[:, 2]),
+        array_prior=sigmoid(prior[:, 2]),
+        dist_name="",
+        dist_math="r_{\mathrm{Wed}}",
+        ax=ax,
+    )
+    axes_dist.append(ax)
+
+    ax = subfigs[1].add_subplot(grid[3, 1])
+    ax.set_xlim(0, 1)
+    _distribution(
+        array_posterior=sigmoid(posterior[:, 3]),
+        array_prior=sigmoid(prior[:, 3]),
+        dist_name="",
+        dist_math="r_{\mathrm{Thu}}",
+        ax=ax,
+    )
+    axes_dist.append(ax)
+    
+    
+    ax = subfigs[1].add_subplot(grid[4, 0])
+    ax.set_xlim(0, 1)
+    _distribution(
+        array_posterior=sigmoid(posterior[:, 4]),
+        array_prior=sigmoid(prior[:, 4]),
+        dist_name="",
+        dist_math="r_{\mathrm{Fr}}",
+        ax=ax,
+    )
+    axes_dist.append(ax)
+
+    ax = subfigs[1].add_subplot(grid[4, 1])
+    ax.set_xlim(0, 1)
+    _distribution(
+        array_posterior=sigmoid(posterior[:, 5]),
+        array_prior=sigmoid(prior[:, 5]),
+        dist_name="",
+        dist_math="r_{\mathrm{Sat}}",
+        ax=ax,
+    )
+    axes_dist.append(ax)
+    
     # Check if weekedn_factor is in trace
     if "weekend_factor" in trace.posterior:
-        ax = fig.add_subplot(grid[4, 1])
+        ax = subfigs[1].add_subplot(grid[5, 0])
         distribution(
             model,
             trace,
@@ -498,20 +534,20 @@ def single_extended_v2(
         )
         axes_dist.append(ax)
     else:
-        ax = fig.add_subplot(grid[4, 1])
+        ax = subfigs[1].add_subplot(grid[5, 0])
         ax.set_xlim(0, 1)
         _distribution(
-            array_posterior=sigmoid(posterior[:, 4]),
-            array_prior=sigmoid(prior[:, 4]),
+            array_posterior=sigmoid(posterior[:, 6]),
+            array_prior=sigmoid(prior[:, 6]),
             dist_name="",
-            dist_math="r_{\mathrm{Fr}}",
+            dist_math="r_{\mathrm{Sun}}",
             ax=ax,
         )
         axes_dist.append(ax)
 
     """ Legend
     """
-    ax = fig.add_subplot(grid[4, 2])
+    ax = subfigs[1].add_subplot(grid[5, 1])
     legend(ax, sex=False, championship_range=True)
 
     # Adjust xlim for timeseries plots
@@ -529,16 +565,29 @@ def single_extended_v2(
     alphabet_string = list(string.ascii_uppercase)
     for i, ax in enumerate(axes_ts):
         letter = alphabet_string[i]
-        ax.text(
-            -0.05,
-            1.1,
-            letter,
-            transform=ax.transAxes,
-            fontsize=8,
-            fontweight="bold",
-            va="top",
-            ha="right",
-        )
+        if i == 2:
+            ax.text(
+                -0.05,
+                1.35,
+                letter,
+                transform=ax.transAxes,
+                fontsize=8,
+                fontweight="bold",
+                va="top",
+                ha="right",
+            )
+
+        else:
+            ax.text(
+                -0.05,
+                1.15,
+                letter,
+                transform=ax.transAxes,
+                fontsize=8,
+                fontweight="bold",
+                va="top",
+                ha="right",
+            )
 
     for i, ax in enumerate(axes_dist):
         letter = alphabet_string[i + len(axes_ts)]
@@ -552,7 +601,9 @@ def single_extended_v2(
             va="top",
             ha="right",
         )
-
+    # Align y axis
+    subfigs[0].align_ylabels(axes_ts)
+    
     return fig
 
 

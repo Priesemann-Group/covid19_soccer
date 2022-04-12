@@ -906,7 +906,7 @@ def legend(
     # Data
     if data:
         lines.append(
-            Line2D([0], [0], marker="d", color=rcParams.color_data, markersize=4, lw=0,)
+            Line2D([0], [0], marker="d", color=rcParams.color_data, markersize=3, lw=0,)
         )
         labels.append("Data")
 
@@ -942,12 +942,12 @@ def legend(
                 width=1,
                 height=2.2,
                 lw=1,
-                edgecolor=rcParams.color_championship_range,
-                hatch="////",
-                facecolor="none",
+                facecolor=rcParams.color_championship_range,
+                edgecolor="none",
+                alpha=0.2
             )
         )
-        labels.append("Time window of\nthe championship")
+        labels.append("Time window of\nthe Euro 2020")
 
     if disable_axis:
         ax.axis("off")

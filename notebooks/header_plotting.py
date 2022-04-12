@@ -16,7 +16,7 @@ mpl.rcParams["ytick.labelsize"] = 8
 mpl.rcParams["axes.labelsize"] = 8
 mpl.rcParams["axes.titlesize"] = 8
 mpl.rcParams["legend.fontsize"] = 6
-mpl.rcParams["figure.dpi"] = 200  # this primarily affects the size on screen
+mpl.rcParams["figure.dpi"] = 300  # this primarily affects the size on screen
 
 # Save figure as pdf and png
 save_kwargs = {"transparent": True, "dpi": 300, "bbox_inches": "tight"}

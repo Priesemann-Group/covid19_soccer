@@ -447,6 +447,7 @@ def soccer_related_cases_overview(
     plot_flags=False,
     offset=0,
     ypos_flags=-10,
+    flags_zoom=0.019,
     plot_betas=False,
     country_order=None,
     remove_outliers=False,
@@ -677,7 +678,7 @@ def soccer_related_cases_overview(
         if not overall_effect_trace is None:
             dls_orderd = np.array(dls)[country_order[1:]]
             img = plt.imread(get_flag("football"))
-            im = OffsetImage(img, zoom=0.019)
+            im = OffsetImage(img, zoom=flags_zoom)
             iso2.append("Avg.")
 
             if vertical:
@@ -704,7 +705,7 @@ def soccer_related_cases_overview(
         for i, dl in enumerate(dls_orderd):
             iso2.append(dl.countries_iso2[0].replace("GB-", ""))
             img = plt.imread(get_flag(dl.countries_iso2[0].lower()))
-            im = OffsetImage(img, zoom=0.019)
+            im = OffsetImage(img, zoom=flags_zoom)
             im.image.axes = ax
 
             if vertical:

@@ -435,6 +435,14 @@ def get_beta_infections(trace, model, dl):
     return infections_base, infections_beta
 
 
+def _soccer_related_cases_overview():
+    """
+    Same as below but takes a dataframe instead of model
+    trace, dl.
+    """
+    return
+
+
 def soccer_related_cases_overview(
     ax,
     traces,
@@ -561,6 +569,8 @@ def soccer_related_cases_overview(
         means.append(999)
         countries.append("overall")
         countries_raw.append("overall")
+        if country_order is not None:
+            country_order= np.insert(country_order,0,len(country_order))
 
         # Plot vertical line
         # ax.axvline(len(countries)-1.5,ls="-",color="tab:gray",zorder=-100,lw=0.5)

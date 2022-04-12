@@ -46,23 +46,20 @@ def computeTraces(country, save_fpath="primary_vs_secondary.pkl"):
 
     # Load trace
     model = None
-    fstr = lambda tune, draws, max_treedepth: (
-        f"/data.nst/smohr/covid19_soccer_publication_traces/"
-        + f"-beta=False"
-        + f"-country={country}"
-        + f"-offset_data=0"
-        + f"-prior_delay=-1"
-        + f"-width_delay_prior=0.1"
-        + f"-sigma_incubation=-1.0"
-        + f"-median_width_delay=1.0"
-        + f"-interval_cps=10.0"
-        + f"-f_fem=0.2"
-        + f"-uc=True"
-        + f"-len=normal"
-        + f"-t={tune}"
-        + f"-d={draws}"
-        + f"-max_treedepth={max_treedepth}.pkl"
-    )
+    fstr=lambda tune, draws, max_treedepth: (
+        f"/data.nst/smohr/covid19_soccer_data/main_traces/run"+
+        f"-beta=False"+
+        f"-country={country}"+
+        f"-offset_data=0"+
+        f"-prior_delay=-1"+
+        f"-median_width_delay=1.0"+
+        f"-interval_cps=10.0"+
+        f"-f_fem=0.33"+
+        f"-len=normal"+
+        f"-abs_sine=False"+
+        f"-t={tune}"+
+        f"-d={draws}"+
+        f"-max_treedepth={max_treedepth}.pkl")
     if os.path.exists(fstr(4000, 8000, 12)):
         try:
             model, initial_trace = load(fstr(4000, 8000, 12))
@@ -93,7 +90,6 @@ def computeTraces(country, save_fpath="primary_vs_secondary.pkl"):
     )
 
     dl = covid19_soccer.dataloader.Dataloader_gender(countries=[country])
-    dl = covid19_soccer.dataloader.Dataloader_gender(countries=[country])
     print(f"{country} loaded")
     noSoccer = getNoSoccer(initial_trace, model)
     primary = getPrimary(initial_trace, noSoccer, model, dl)
@@ -106,7 +102,7 @@ if __name__ == "__main__":
 
     processes = []
     for country in countries:
-        save_fstr = f"/data.nst/smohr/covid19_soccer_publication_traces/primary_vs_secondary/{country}.pkl"
+        save_fstr = f"/data.nst/smohr/covid19_soccer_data/primary_and_subsequent/{country}.pkl"
         t = Process(target=computeTraces, args=(country, save_fstr))
         processes.append(t)
 

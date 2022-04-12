@@ -104,8 +104,9 @@ class Dataloader:
                 "deaths"
             ]
 
-        # Load stringency data (not necessary)
-        # self._load_OxCGRT()
+        # Load stringency data
+        self._load_PHSM()
+        self._load_OxCGRT()
 
         # Load wheather data
         self._load_wheather()
@@ -129,8 +130,23 @@ class Dataloader:
                 )
             self._wheather[c] = df
 
+            
+    def _load_PHSM(self):
+        self._stringencyPHSM = []
+        temp = pd.read_csv(os.path.join(self.data_folder, "Severity index - 2022-03-31.csv"))
+        temp["Date"] = pd.to_datetime(temp["Date"],format="%d-%b-%y")
+        temp = temp.set_index(["Country","Date"])
+        for c in self.countries:
+            if c in ["England","Scotland"]:
+                c = "United Kingdom"
+            if c == "Czechia":
+                c = "Czech Republic"
+            self._stringencyPHSM.append(temp.loc[c,:]["PHSM SI"].resample('D').fillna(0))
+                
+            
+            
     def _load_OxCGRT(self):
-        self._stringency = []
+        self._stringencyOxCGRT = []
         ox = cov19_data.OxCGRT(True)
         for c in self.countries:
             if c == "England":
@@ -153,7 +169,7 @@ class Dataloader:
                 elif c == "Slovakia":
                     c = "Slovak Republic"
                 temp_data = ox.data[ox.data["country"] == c]["StringencyIndex"]
-            self._stringency.append(temp_data)
+            self._stringencyOxCGRT.append(temp_data)
 
     @property
     def countries(self):
@@ -468,21 +484,38 @@ class Dataloader:
         return temp_c.T
 
     @property
-    def stringency(self):
+    def stringencyPHSM(self):
         """
         Returns the stringency index for each country
         """
         ret = []
-        for stringency in self._stringency:
+        for stringency in self._stringencyPHSM:
             ret.append(
                 stringency.loc[
                     self.data_begin
                     + self.offset_data : self.data_end
                     + self.offset_data
-                ].to_numpy()
+                ]
             )
 
-        return np.array(ret).T
+        return ret
+    
+    @property
+    def stringencyOxCGRT(self):
+        """
+        Returns the stringency index for each country
+        """
+        ret = []
+        for stringency in self._stringencyOxCGRT:
+            ret.append(
+                stringency.loc[
+                    self.data_begin
+                    + self.offset_data : self.data_end
+                    + self.offset_data
+                ]
+            )
+
+        return ret
 
     @property
     def nRegions(self):
@@ -595,7 +628,10 @@ class Dataloader_gender(Dataloader):
         # Load wheather data TODO:fix SCT
         # self._load_wheather()
 
-        # self._load_OxCGRT() # not necessary
+        # Load stringency data
+        self._load_PHSM()
+        self._load_OxCGRT()
+
 
     def __load_cases(self):
 

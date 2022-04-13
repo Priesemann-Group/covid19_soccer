@@ -338,6 +338,7 @@ def single_extended_v2(
     ylim_imbalance=None,
     ylim_rbase=None,
     ylim_incidence=None,
+    ylim_rnoise=None,
 ):
     """
     Create an extended overview plot for a single model run.
@@ -387,6 +388,8 @@ def single_extended_v2(
     # R_noise
     ax = subfigs[0].add_subplot(grid[5])
     R_noise(ax, trace, model, dl)
+    if ylim_rnoise is not None:
+        ax.set_ylim(ylim_rnoise)
     axes_ts.append(ax)
 
     # R_noise
@@ -567,7 +570,7 @@ def single_extended_v2(
         letter = alphabet_string[i]
         if i == 2:
             ax.text(
-                -0.05,
+                0,
                 1.35,
                 letter,
                 transform=ax.transAxes,
@@ -579,8 +582,8 @@ def single_extended_v2(
 
         else:
             ax.text(
-                -0.05,
-                1.15,
+                0,
+                1.2,
                 letter,
                 transform=ax.transAxes,
                 fontsize=8,
@@ -592,7 +595,7 @@ def single_extended_v2(
     for i, ax in enumerate(axes_dist):
         letter = alphabet_string[i + len(axes_ts)]
         ax.text(
-            -0.05,
+            0,
             1.2,
             letter,
             transform=ax.transAxes,

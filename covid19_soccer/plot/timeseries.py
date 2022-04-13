@@ -27,7 +27,7 @@ def _uefa_range(ax):
         edgecolor=rcParams.color_championship_range,
         facecolor=rcParams.color_championship_range,
         zorder=-5,
-        alpha=0.2,
+        alpha=0.4,
     )
     ax.set_ylim(ylim)
 

@@ -955,7 +955,7 @@ def legend(
                 lw=1,
                 facecolor=rcParams.color_championship_range,
                 edgecolor="none",
-                alpha=0.2
+                alpha=0.4
             )
         )
         labels.append("Time window of\nthe Euro 2020")

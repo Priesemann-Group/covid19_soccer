@@ -15,6 +15,7 @@ mpl.rcParams["xtick.labelsize"] = 8
 mpl.rcParams["ytick.labelsize"] = 8
 mpl.rcParams["axes.labelsize"] = 8
 mpl.rcParams["axes.titlesize"] = 8
+mpl.rcParams["figure.titlesize"] = 10
 mpl.rcParams["legend.fontsize"] = 6
 mpl.rcParams["figure.dpi"] = 300  # this primarily affects the size on screen
 

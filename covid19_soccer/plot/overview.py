@@ -286,11 +286,15 @@ def single_extended(
     legend(ax, sex=False, championship_range=True)
 
     # Adjust xlim for timeseries plots
-    for ax in axes_ts:
+    for i, ax in enumerate(axes_ts):
         if xlim is None:
             ax.set_xlim(model.data_begin, model.sim_end)
         else:
             ax.set_xlim(xlim)
+            
+        # Disable all xticklabels but last
+        if i != len(axes_ts)-1:
+            ax.set_xticklabels([])
 
         # Hack: Disable every second ticklabel
         # for label in ax.xaxis.get_ticklabels()[::2]:
@@ -326,6 +330,8 @@ def single_extended(
 
     # Align y axis
     fig.align_ylabels(axes_ts)
+    
+    
         
     return fig
 
@@ -349,8 +355,9 @@ def single_extended_v2(
     Adjust colors with rcParams
     """
 
-    fig = plt.figure(figsize=(7, 1.35 * 5 + 0.1),constrained_layout=True)
-    subfigs = fig.subfigures(1, 2, wspace=0.0, width_ratios=[1, 0.5])
+    fig = plt.figure(figsize=(7, 1.32 * 5),constrained_layout=True)
+    subfigs = fig.subfigures(1, 2, wspace=0.0,hspace=0, width_ratios=[1, 0.5])
+    
     axes_ts = []
 
     grid = subfigs[0].add_gridspec(6, 1, hspace=0.0,height_ratios=[1,1,0.5,1,1,1])
@@ -434,7 +441,7 @@ def single_extended_v2(
         "factor_female",
         nSamples_prior=5000,
         title="",
-        dist_math="\omega_{fem}",
+        dist_math="\omega_\mathrm{gen.}",
         ax=ax,
     )
     axes_dist.append(ax)
@@ -554,11 +561,15 @@ def single_extended_v2(
     legend(ax, sex=False, championship_range=True)
 
     # Adjust xlim for timeseries plots
-    for ax in axes_ts:
+    for i, ax in enumerate(axes_ts):
         if xlim is None:
             ax.set_xlim(model.data_begin, model.sim_end)
         else:
             ax.set_xlim(xlim)
+            
+        # Disable all xticklabels but last
+        if i != len(axes_ts)-1:
+            ax.set_xticklabels([])
 
         # Hack: Disable every second ticklabel
         # for label in ax.xaxis.get_ticklabels()[::2]:
@@ -604,6 +615,8 @@ def single_extended_v2(
             va="top",
             ha="right",
         )
+        
+        ax.tick_params(left=False)
     # Align y axis
     subfigs[0].align_ylabels(axes_ts)
     

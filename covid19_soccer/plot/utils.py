@@ -19,7 +19,9 @@ def get_from_trace(var, trace):
     else:
         var = np.array(trace.posterior[var])
         var = var.reshape((var.shape[0] * var.shape[1],) + var.shape[2:])
-
+        
+    # Remove nans (normally there are 0 nans but can happen if you use where operations)
+    var = var[~np.isnan(var).any(tuple(range(1,var.ndim))),...]
     return var
 
 

@@ -105,8 +105,8 @@ class Dataloader:
             ]
 
         # Load stringency data
-        self._load_PHSM()
-        self._load_OxCGRT()
+        self._stringencyPHSM = None
+        self._stringencyOxCGRT = None
 
         # Load wheather data
         self._load_wheather()
@@ -488,6 +488,8 @@ class Dataloader:
         """
         Returns the stringency index for each country
         """
+        if self._stringencyPHSM is None:
+            self._load_PHSM()
         ret = []
         for stringency in self._stringencyPHSM:
             ret.append(
@@ -505,6 +507,9 @@ class Dataloader:
         """
         Returns the stringency index for each country
         """
+        if self._stringencyOxCGRT is None:
+            self._load_OxCGRT()
+        
         ret = []
         for stringency in self._stringencyOxCGRT:
             ret.append(
@@ -629,8 +634,8 @@ class Dataloader_gender(Dataloader):
         # self._load_wheather()
 
         # Load stringency data
-        self._load_PHSM()
-        self._load_OxCGRT()
+        self._stringencyPHSM = None
+        self._stringencyOxCGRT = None
 
 
     def __load_cases(self):

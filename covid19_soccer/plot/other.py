@@ -101,15 +101,6 @@ def game_effects(
             pc.set_facecolor(lighten_color(color, 0.8))
             pc.set_edgecolor(lighten_color(color, 0.8))
 
-            if (dl.countries[0] == "Scotland") and (i in [3, 4]):
-                pc.set_facecolor(lighten_color("#696969", 0.8))
-                pc.set_edgecolor("#696969")
-
-        if dl.countries[0] == "Scotland":
-            color = [color] * len(medians)
-            color[-1] = "#696969"
-            color[-2] = "#696969"
-
         ax.scatter(
             mpl.dates.date2num(dates),
             medians,
@@ -145,17 +136,10 @@ def game_effects(
             box.set_facecolor(lighten_color(color, 0.2))
             box.set_edgecolor(color)
 
-            if (dl.countries[0] == "Scotland") and (i in [3, 4]):
-                box.set_facecolor(lighten_color("#696969", 0.2))
-                box.set_edgecolor("#696969")
-
         for parts in ["medians", "whiskers", "caps"]:
             for i, bp in enumerate(box_parts[parts]):
                 bp.set_color(color)
 
-                if (dl.countries[0] == "Scotland") and (i in [3, 4]):
-                    box.set_facecolor(lighten_color("#696969", 0.2))
-                    box.set_edgecolor("#696969")
 
     else:
         log.error("Type not possible!")

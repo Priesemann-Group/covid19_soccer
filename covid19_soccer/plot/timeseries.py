@@ -15,10 +15,14 @@ from .rcParams import *
 log = logging.getLogger(__name__)
 
 
-def _uefa_range(ax):
+def _uefa_range(ax,dl=None):
     # Show time of uefa championship
-    begin = datetime.datetime(2021, 6, 11)
-    end = datetime.datetime(2021, 7, 11)
+    if dl:
+        begin = datetime.datetime(2021, 6, 11) + datetime.timedelta(dl.offset_games)
+        end = datetime.datetime(2021, 7, 11) + datetime.timedelta(dl.offset_games)
+    else:
+        begin = datetime.datetime(2021, 6, 11)
+        end = datetime.datetime(2021, 7, 11)
     ylim = ax.get_ylim()
     ax.fill_betweenx(
         (-1000000, 1000000),
@@ -30,6 +34,9 @@ def _uefa_range(ax):
         alpha=0.4,
     )
     ax.set_ylim(ylim)
+    
+
+        
 
 
 def incidence(
@@ -203,6 +210,8 @@ def fraction_male_female(
 
 def stringency(ax,trace,model,dl,ylim=None, color=None,legend=True,**kwargs):
     # Plot data
+    if dl._stringencyOxCGRT is None:
+        dl._load_OxCGRT()
     _timeseries(
         x=dl._stringencyOxCGRT[0][model.sim_begin:model.sim_end].index,
         y=dl._stringencyOxCGRT[0][model.sim_begin:model.sim_end],
@@ -211,7 +220,9 @@ def stringency(ax,trace,model,dl,ylim=None, color=None,legend=True,**kwargs):
         color="black" if color is None else color,
         label="OxCGRT",
         **kwargs
-    )       
+    )
+    if dl._stringencyPHSM is None:
+        dl._load_PHSM()
     _timeseries(
         x=dl._stringencyPHSM[0][model.sim_begin:model.sim_end].index,
         y=dl._stringencyPHSM[0][model.sim_begin:model.sim_end],
@@ -429,7 +440,7 @@ def mark_days(ax, traces, model, dl, date_format=True, hosted=False, **kwargs):
     
     # Plot only played
     color_played = "tab:gray"
-    color_hosted = "tab:black"
+    color_hosted = "tab:red"
     
     trans = transforms.blended_transform_factory(ax.transData, ax.transAxes)
 

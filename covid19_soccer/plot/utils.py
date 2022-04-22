@@ -7,17 +7,19 @@ from .rcParams import *
 from ..effect_gender import _delta
 
 
-def get_from_trace(var, trace):
+def get_from_trace(var, trace, from_type="posterior"):
     """Reshapes and returns an numpy array from an arviz trace"""
     key = var
 
-    if key in ["alpha", "beta"] and key not in trace.posterior:
+    if key in ["alpha", "beta"] and key not in getattr(trace,from_type):
         mean = get_from_trace(f"{key}_mean", trace)
         sparse = get_from_trace(f"Delta_{key}_g_sparse", trace)
         sigma = get_from_trace(f"sigma_{key}_g", trace)
         var = mean[:, None] + np.einsum("dg,d->dg", sparse, sigma)
     else:
-        var = np.array(trace.posterior[var])
+        var = np.array(getattr(trace,from_type)[var])
+        if from_type == "predictions":
+             var = var.reshape((var.shape[0] * var.shape[1],)+var.shape[2:])
         var = var.reshape((var.shape[0] * var.shape[1],) + var.shape[2:])
         
     # Remove nans (normally there are 0 nans but can happen if you use where operations)

@@ -486,6 +486,7 @@ def soccer_related_cases_overview(
         else:
             infections_base, infections_alpha = get_alpha_infections(trace, model, dl)
 
+            
         i_begin = (begin - model.sim_begin).days
         i_end = (end - model.sim_begin).days + 1  # inclusiv last day
 
@@ -500,8 +501,12 @@ def soccer_related_cases_overview(
 
         # Remove outliers from bad sampling
         if remove_outliers:
-            ratio_soccer = ratio_soccer[(ratio_soccer < 0.4).all(axis=1), :]
-            ratio_soccer = ratio_soccer[(ratio_soccer > -0.4).all(axis=1), :]
+            l,u = np.percentile(ratio_soccer,q=(0.1,99.9),axis=0)
+            ratio_soccer_male = ratio_soccer[:,0][u[0] > ratio_soccer[:,0]]
+            ratio_soccer_male = ratio_soccer_male[ratio_soccer_male > l[0]]
+            ratio_soccer_female = ratio_soccer[:,1][u[1] > ratio_soccer[:,1]]
+            ratio_soccer_female = ratio_soccer_female[ratio_soccer_female > l[1]]
+            ratio_soccer = np.stack([ratio_soccer_male,ratio_soccer_female],axis=-1)
 
         male = np.stack(
             (ratio_soccer[:, 0], np.zeros(ratio_soccer[:, 0].shape)), axis=1
@@ -525,6 +530,9 @@ def soccer_related_cases_overview(
 
         percentage = pd.concat([percentage, temp])
     percentage["percentage_soccer"] = percentage["percentage_soccer"] * 100
+    
+    # |percentage|countries|gender|
+
     # Colors
     color_male = rcParams.color_male if colors is None else colors[0]
     color_female = rcParams.color_female if colors is None else colors[1]

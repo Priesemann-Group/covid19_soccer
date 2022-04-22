@@ -345,6 +345,7 @@ def single_extended_v2(
     ylim_rbase=None,
     ylim_incidence=None,
     ylim_rnoise=None,
+    show_hosted=False,
 ):
     """
     Create an extended overview plot for a single model run.
@@ -389,7 +390,7 @@ def single_extended_v2(
     ax = subfigs[0].add_subplot(grid[4])
     R_soccer(ax, trace, model, dl, add_noise=False)
     ax.set_ylim(ax.get_ylim()[0]-(ax.get_ylim()[1]-ax.get_ylim()[0])/6,ax.get_ylim()[1])
-    mark_days(ax, trace, model, dl)
+    mark_days(ax, trace, model, dl, hosted=show_hosted)
     axes_ts.append(ax)
 
     # R_noise
@@ -708,11 +709,11 @@ def multi_v2(
     if fig is None:
         fig = plt.figure(figsize=(3.5 * nColumns, 2.5 * (nRows + 1)))
 
-    outer_outer_grid = fig.add_gridspec(2, 1, hspace=0.15, height_ratios=(nRows, 1.2))
+    outer_outer_grid = fig.add_gridspec(2, 1, hspace=0.2, height_ratios=(nRows, 0.8))
     """ Create single overview plots for all selected countries
     """
     outer_grid = outer_outer_grid[0].subgridspec(
-        nRows, nColumns, wspace=0.3, hspace=0.3,
+        nRows, nColumns, wspace=0.3, hspace=0.4,
     )
     axes = []
     sel_traces = [traces[i] for i in selected_index]

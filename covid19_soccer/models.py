@@ -36,6 +36,7 @@ def create_model_gender(
     interval_cps=10,
     f_female="0.33",
     use_abs_sine_weekly_modulation=False,
+    force_alpha_prior=None
 ):
     """
     High level function to create an abstract pymc3 model using different defined
@@ -97,9 +98,11 @@ def create_model_gender(
         allow_uefa_cps=True,
         **cps_dict,
     )
-
-    alpha_prior = dl.alpha_prior[0, :]  # only select first country
-
+    if force_alpha_prior is None:
+        alpha_prior = dl.alpha_prior[0, :]  # only select first country
+    else:
+        alpha_prior = force_alpha_prior
+        
     if beta:
         beta_prior = dl.beta_prior[0, :]
         beta_weight = 1

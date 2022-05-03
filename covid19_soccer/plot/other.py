@@ -501,7 +501,7 @@ def soccer_related_cases_overview(
 
         # Remove outliers from bad sampling
         if remove_outliers:
-            l,u = np.percentile(ratio_soccer,q=(0.1,99.9),axis=0)
+            l,u = np.percentile(ratio_soccer,q=(0.5,99.5),axis=0)
             ratio_soccer_male = ratio_soccer[:,0][u[0] > ratio_soccer[:,0]]
             ratio_soccer_male = ratio_soccer_male[ratio_soccer_male > l[0]]
             ratio_soccer_female = ratio_soccer[:,1][u[1] > ratio_soccer[:,1]]
@@ -612,7 +612,7 @@ def soccer_related_cases_overview(
     """ Draw error whiskers
     """
     if draw_inner_errors:
-        print(f"Country\t2.5\t50.0\t97.5\t>0")
+        print(f"Country\t50.0\t2.5\t97.5\t16\t84\t>0")
         for i, country in enumerate(np.array(countries)[country_order]):
 
             if country == "overall":
@@ -629,9 +629,9 @@ def soccer_related_cases_overview(
                 .reshape((2, -1))
                 .mean(axis=0)
             )
-
-            l, mean, u = np.percentile(temp, q=(2.5, 50, 97.5))
-            print(country, l, mean, u, (temp > 0).sum() / temp.shape[0], sep="\t")
+ 
+            mean, l_95, u_95, l_68, u_68 = np.percentile(temp, q=(50, 2.5, 97.5, 16, 84))
+            print(country, mean, l_95, u_95, l_68 ,u_68, (temp > 0).sum() / temp.shape[0], sep="\t")
 
             if vertical:
                 ax.scatter(
@@ -644,9 +644,23 @@ def soccer_related_cases_overview(
                     edgecolor="#060434",
                 )
                 lines = ax.hlines(
-                    y=i, xmin=l, xmax=u, lw=1.5, zorder=9, color="#060434",
+                    y=i,
+                    xmin=l_95,
+                    xmax=u_95,
+                    lw=1.5,
+                    zorder=9,
+                    color="#060434",
+                    capstyle='round'
                 )
-                lines.set_capstyle("round")
+                lines = ax.hlines(
+                    y=i,
+                    xmin=l_68,
+                    xmax=u_68,
+                    lw=2.5,
+                    zorder=9,
+                    color="#060434",
+                    capstyle='round'
+                )
             else:
                 ax.scatter(
                     x=i,
@@ -658,9 +672,11 @@ def soccer_related_cases_overview(
                     edgecolor="#060434",
                 )
                 lines = ax.vlines(
-                    x=i, ymin=l, ymax=u, lw=1.5, zorder=9, color="#060434",
+                    x=i, ymin=l_95, ymax=u_95, lw=1.5, zorder=9, color="#060434",capstyle='round'
                 )
-                lines.set_capstyle("round")
+                lines = ax.vlines(
+                    x=i, ymin=l_68, ymax=u_68, lw=2.5, zorder=9, color="#060434",capstyle='round'
+                )
 
     """ Markup
     """
@@ -963,7 +979,6 @@ def legend(
             MulticolorPatch: MulticolorPatchHandler(),
             Rectangle: HandlerRect(),
         },
-        fontsize=6,
     )
 
     return ax

@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.dates as mdates
 from cairosvg import svg2png
 import urllib
+import os
 
 from .rcParams import *
 from ..effect_gender import _delta
@@ -74,15 +75,19 @@ def _apply_delta(eff, model, dl):
         return np.dot(d, eff)
 
 
-def get_flag(iso2, path="./figures/"):
+def get_flag(iso2, path="./figures/iso2/"):
     if iso2 == "DE2":
         iso2 = "DE"
+    if iso2.lower() in ["eng","sct"]:
+        iso2 = f"gb-{iso2}"
     try:
-        png = svg2png(
-            url=f"https://hatscripts.github.io/circle-flags/flags/{iso2}.svg",
-        )
-        with open(f"{path}{iso2}.png", "wb") as bin_file:
-            bin_file.write(png)
+        # Check if png exists:
+        if not os.path.exists(f"{path}{iso2}.png"):
+            png = svg2png(
+                url=f"https://hatscripts.github.io/circle-flags/flags/{iso2}.svg",
+            )
+            with open(f"{path}{iso2}.png", "wb") as bin_file:
+                bin_file.write(png)
         return f"{path}{iso2}.png"
     except urllib.error.HTTPError:
         return f"{path}football.png"

@@ -611,7 +611,6 @@ def soccer_related_cases_overview(
         ratio_soccer = num_infections_alpha / (
             num_infections_base + num_infections_alpha
         )
-        print(np.percentile(ratio_soccer,q=(50,2.5,97.5)))
         
         
         # Save 99% array for violin plots

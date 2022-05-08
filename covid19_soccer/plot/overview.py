@@ -23,6 +23,7 @@ def single(
     verbose=False,
     type_game_effects="violin",
     type_soccer_related_cases="violin",
+    shift_data=0,
 ):
     """
     Create a single simple overview plot for one model run / country.
@@ -61,12 +62,12 @@ def single(
     """
     # Cases
     ax = fig.add_subplot(grid[0, 0])
-    incidence(ax, trace, model, dl)
+    incidence(ax, trace, model, dl,shift_data=shift_data)
     axes_ts.append(ax)
 
     # Gender imbalance
     ax = fig.add_subplot(grid[1, 0])
-    fraction_male_female(ax, trace, model, dl)
+    fraction_male_female(ax, trace, model, dl,shift_data=shift_data)
     axes_ts.append(ax)
 
     # Single game effects
@@ -702,6 +703,7 @@ def multi_v2(
     ypos_flags=-20,
     country_order=None,
     overall_effect_trace=None,
+    shift_data=0,
 ):
     """Create outer layout"""
     nRows = ceil(len(selected_index) / nColumns)
@@ -733,15 +735,20 @@ def multi_v2(
             verbose=verbose,
             plot_delay=plot_delay,
             plot_beta=plot_beta,
-            type_game_effects=type_game_effects,
+            type_game_effects="bars",
             type_soccer_related_cases=type_soccer_related_cases,
+            shift_data=shift_data
         )
         if x > 0:
             for ax in axes_t:
                 ax.set_ylabel("")
-        axes_t[0].set_title(dl.countries[0])
+        if dl.countries[0] == "Czechia":
+            axes_t[0].set_title("Czech Republic")
+        else:
+            axes_t[0].set_title(dl.countries[0])
         axes.append(axes_t)
 
+    return axes, outer_outer_grid
     """ Last row: overview plot of all countries:
     """
     inner_grid = outer_outer_grid[-1].subgridspec(1, 2, width_ratios=(12.0, 0.5))

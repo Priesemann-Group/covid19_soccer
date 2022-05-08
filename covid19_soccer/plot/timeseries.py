@@ -49,6 +49,7 @@ def incidence(
     color_data=None,
     data_forecast=False,
     lw=2,
+    shift_data=0
 ):
     """
     Plots incidence: modelfit and data
@@ -73,7 +74,7 @@ def incidence(
         * 1e6
     )
     _timeseries(
-        x=pd.date_range(dl.data_begin, dl.data_end),
+        x=pd.date_range(dl.data_begin+datetime.timedelta(days=shift_data), dl.data_end+datetime.timedelta(days=shift_data)),
         y=data_points,
         what="data",
         ax=ax,
@@ -123,7 +124,7 @@ def incidence(
 
 
 def fraction_male_female(
-    ax, trace, model, dl, ylim=None, color=None, color_data=None, data_forecast=True
+    ax, trace, model, dl, ylim=None, color=None, color_data=None, data_forecast=True,shift_data=0
 ):
     """
     Plot fraction between male and female cases normalized by population size
@@ -151,7 +152,7 @@ def fraction_male_female(
 
     # Plot data
     _timeseries(
-        x=pd.date_range(dl.data_begin, dl.data_end),
+        x=pd.date_range(dl.data_begin+datetime.timedelta(days=shift_data), dl.data_end+datetime.timedelta(days=shift_data)),
         y=(
             dl.new_cases_obs[:, 0, 0] / dl.population[0, 0]
             - dl.new_cases_obs[:, 1, 0] / dl.population[1, 0]

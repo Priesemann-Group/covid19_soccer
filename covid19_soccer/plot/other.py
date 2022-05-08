@@ -465,13 +465,75 @@ def vviolins(ax,x,y, **kwargs):
     return g
     
         
-
-def violins(ax):
+def hviolins(ax,x,y, **kwargs):
     """
-    Vertical violin plot
+    Horizontal violin plots cuts at samples at 99% credible interval
     
+    Parameters
+    ----------
+    ax : mpl.axes
+        MAtplotlib axes
+    x: list of arrays 3dim [y_cat,  gender, samples]
+        List of samples for each y dim
+    y: list or array
+        List of y categories or positions
     """
-    return
+    
+    # Compute 99% ci
+    x_99ci = [] 
+    for i,yi in enumerate(y):
+        ci = np.percentile(x[i][:,:],q = (0.5,99.5),axis=1)
+    
+        data = []
+        for g in [0,1]:
+            l,u = ci[:,g]
+            mask = np.all([x[i][g,:]>l,x[i][g,:]<u],axis=0)
+            data.append(x[i][g,mask])
+        x_99ci.append(np.array(data))
+
+    df = pd.DataFrame(columns=["country","gender","values"])
+    for i, xi in enumerate(x_99ci):
+        for g,gender in enumerate(["male","female"]):
+            temp_df = pd.DataFrame()
+            temp_df["values"] = xi[g,:]
+            temp_df["gender"] = gender
+            temp_df["country"] = i
+            df = pd.concat([df, temp_df])
+            
+            
+    # Violin plot
+    g = sns.violinplot(
+        data=df,
+        y="values",
+        x="country",
+        hue="gender",
+        scale="count",
+        inner=None,
+        ax=ax,
+        split=True,
+        # palette={"male": color_male, "female": color_female},
+        linewidth=1,
+        orient="v",
+        saturation=1,
+        width=0.75,
+        **kwargs,
+    )
+
+    color_male = rcParams.color_male
+    color_female = rcParams.color_female
+    c = 0
+    for i, col in enumerate(ax.collections):
+        # Update colors if they are set to force overwriting
+        if i % 2 == 0:
+            ax.collections[i].set_facecolor(color_male)
+            ax.collections[i].set_edgecolor(color_male)  # Set outline colors
+        else:
+            ax.collections[i].set_facecolor(color_female)
+            ax.collections[i].set_edgecolor(color_female)  # Set outline colors
+
+    return g
+    
+        
 
 
 def get_alpha_infections(trace, model, dl):

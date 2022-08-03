@@ -1,12 +1,11 @@
 import logging
 
-import pymc3 as pm
-import theano.tensor as tt
+import pymc as pm
+import aesara.tensor as at
 import datetime
-import pandas as pd
 import numpy as np
 
-from .dataloader import Dataloader_gender, Dataloader
+from .dataloader import Dataloader_gender
 from . import effect_gender
 from . import effect
 from . import delay_by_weekday
@@ -20,9 +19,6 @@ from covid19_inference.model import (
     student_t_likelihood,
     delay_cases,
     Cov19Model,
-    uncorrelated_prior_I,
-    kernelized_spread,
-    SIR,
 )
 
 log = logging.getLogger(__name__)
@@ -36,7 +32,7 @@ def create_model_gender(
     interval_cps=10,
     f_female="0.33",
     use_abs_sine_weekly_modulation=False,
-    force_alpha_prior=None
+    force_alpha_prior=None,
 ):
     """
     High level function to create an abstract pymc3 model using different defined
@@ -102,7 +98,7 @@ def create_model_gender(
         alpha_prior = dl.alpha_prior[0, :]  # only select first country
     else:
         alpha_prior = force_alpha_prior
-        
+
     if beta:
         beta_prior = dl.beta_prior[0, :]
         beta_weight = 1
@@ -133,7 +129,9 @@ def create_model_gender(
         # the specific values are controlled by the priors and are around one.
         # https://science.sciencemag.org/content/369/6500/eabb9789.full
         sigma_lambda_cp = pm.HalfCauchy(
-            name="sigma_lambda_cp", beta=0.5, transform=pm.transforms.log_exp_m1,
+            name="sigma_lambda_cp",
+            beta=0.5,
+            transform=pm.distributions.transforms.log_exp_m1,
         )
         sigma_lambda_week_cp = None
         R_t_base_log = lambda_t_with_sigmoids(
@@ -146,7 +144,7 @@ def create_model_gender(
         )
         # Let's also add that to the trace since we may want to plot this variable
 
-        R_t_base = pm.Deterministic("R_t_base", tt.exp(R_t_base_log[..., 0]))
+        R_t_base = pm.Deterministic("R_t_base", at.exp(R_t_base_log[..., 0]))
 
         # We model the effect of the soccer games with a per game
         # delta peak. The priors for each game are defined beforehand
@@ -159,7 +157,9 @@ def create_model_gender(
         pm.Deterministic("R_t_soccer", R_t_add)
 
         sigma_lambda_cp_noise = pm.HalfCauchy(
-            name="sigma_lambda_cp_noise", beta=0.2, transform=pm.transforms.log_exp_m1,
+            name="sigma_lambda_cp_noise",
+            beta=0.2,
+            transform=pm.distributions.transforms.log_exp_m1,
         )
         R_t_add_noise = lambda_t_with_sigmoids(
             change_points_list=change_points,
@@ -176,9 +176,9 @@ def create_model_gender(
 
         # Default gender interconnection matrix
         c_off = pm.Beta("c_off", alpha=8, beta=8)
-        C_0 = tt.stack([1.0 - c_off, c_off])
-        C_1 = tt.stack([c_off, 1.0 - c_off])
-        C_base = tt.stack([C_0, C_1])
+        C_0 = at.stack([1.0 - c_off, c_off])
+        C_1 = at.stack([c_off, 1.0 - c_off])
+        C_base = at.stack([C_0, C_1])
         pm.Deterministic("C_base", C_base)
 
         # Soccer gender interconnection matrix (i.e. for soccer matches)
@@ -196,18 +196,18 @@ def create_model_gender(
         f_female = f_female * 0.999 + 0.0005
 
         # Define interaction matrix between genders
-        C_0 = tt.stack([(1.0 - f_female) ** 2, f_female * (1.0 - f_female)])
-        C_1 = tt.stack([f_female * (1.0 - f_female), f_female * f_female])
-        C_soccer = tt.stack([C_0, C_1])
+        C_0 = at.stack([(1.0 - f_female) ** 2, f_female * (1.0 - f_female)])
+        C_1 = at.stack([f_female * (1.0 - f_female), f_female * f_female])
+        C_soccer = at.stack([C_0, C_1])
         # Normalize such that balanced, [0.5,0.5], case numbers will lead to an unitary
         # increase of total case numbers.
-        C_soccer = C_soccer / tt.sqrt(
-            tt.sum((tt.dot(C_soccer, np.array([0.5, 0.5]) ** 2)))
+        C_soccer = C_soccer / at.sqrt(
+            at.sum((at.dot(C_soccer, np.array([0.5, 0.5]) ** 2)))
         )
 
-        C_0_g = tt.stack([1, 0])
-        C_1_g = tt.stack([0, -1])
-        C_gender_noise = tt.stack([C_0_g, C_1_g])
+        C_0_g = at.stack([1, 0])
+        C_1_g = at.stack([0, -1])
+        C_gender_noise = at.stack([C_0_g, C_1_g])
 
         # Let's also add that to the trace since we may want to plot this variable
         pm.Deterministic("C_soccer", C_soccer)

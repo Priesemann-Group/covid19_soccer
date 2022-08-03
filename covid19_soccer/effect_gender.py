@@ -1,8 +1,7 @@
 import logging
-import pymc3 as pm
+import pymc as pm
 import numpy as np
-import theano
-import theano.tensor as tt
+import aesara.tensor as at
 
 from covid19_inference.model.model import modelcontext
 
@@ -15,7 +14,7 @@ def R_t_soccer(alpha_prior, date_of_games, beta_prior=None, S=None, model=None):
 
     Parameters
     ----------
-    alpha_priors : :class:`~theano.tensor.TensorVariable`
+    alpha_priors : :class:`~aesara.tensor.TensorVariable`
         Priors expectation for the effect of each uefa game. Since the effect onto the base
         reproduction number is additive a prior values of zero corresponds to
         no effect.
@@ -38,7 +37,7 @@ def R_t_soccer(alpha_prior, date_of_games, beta_prior=None, S=None, model=None):
 
     Returns
     -------
-    R_t_soccer : :class:`~theano.tensor.TensorVariable`
+    R_t_soccer : :class:`~aesara.tensor.TensorVariable`
         Soccer specific reproduction number
         shape: (time)
     """
@@ -61,9 +60,9 @@ def R_t_soccer(alpha_prior, date_of_games, beta_prior=None, S=None, model=None):
     d = _delta(np.subtract.outer(t, t_g))
 
     # Sum over all games
-    R_soccer = tt.dot(d, eff)
+    R_soccer = at.dot(d, eff)
 
-    R_soccer = tt.clip(R_soccer, -50, 50)  # to avoid nans
+    R_soccer = at.clip(R_soccer, -50, 50)  # to avoid nans
 
     return R_soccer
 
@@ -92,7 +91,7 @@ def alpha(alpha_prior):
     effect alpha
         shape: (game)
     """
-    Δα_g = tt.as_tensor_variable(alpha_prior)
+    Δα_g = at.as_tensor_variable(alpha_prior)
 
     # Same across all games
     α_mean = pm.Normal(name="alpha_mean", mu=0, sigma=5)
@@ -105,7 +104,7 @@ def alpha(alpha_prior):
     σ_g = pm.HalfNormal(name="sigma_alpha_g", sigma=5)
 
     # Set the entries for the played games
-    Δα_g = tt.set_subtensor(Δα_g[alpha_prior > 0], Δα_g_sparse)
+    Δα_g = at.set_subtensor(Δα_g[alpha_prior > 0], Δα_g_sparse)
     Δα_g = Δα_g * σ_g
 
     return alpha_prior * (α_mean + Δα_g)
@@ -137,7 +136,7 @@ def beta(beta_prior, S):
     effect beta
         Shape (game)
     """
-    Δβ_g = tt.as_tensor_variable(beta_prior)
+    Δβ_g = at.as_tensor_variable(beta_prior)
 
     # Same across all games
     β_mean = pm.Normal(name="beta_mean", mu=0, sigma=5)
@@ -150,7 +149,7 @@ def beta(beta_prior, S):
     σ_g = pm.HalfNormal(name="sigma_beta_g", sigma=5)
 
     # Set the entries for the played games
-    Δβ_g = tt.set_subtensor(Δβ_g[beta_prior > 0], Δβ_g_sparse)
+    Δβ_g = at.set_subtensor(Δβ_g[beta_prior > 0], Δβ_g_sparse)
     Δβ_g = Δβ_g * σ_g
 
     return beta_prior * S * (β_mean + Δβ_g)
@@ -171,7 +170,7 @@ def _delta(x, a=1, normalized=True):
     a : number
         Shape parameter of the delta peak function.
     """
-    a = tt.exp(-((x / a) ** 2))
+    a = at.exp(-((x / a) ** 2))
     if normalized:
-        a = a / tt.sum(a, axis=0)
+        a = a / at.sum(a, axis=0)
     return a

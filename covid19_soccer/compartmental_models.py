@@ -1,9 +1,9 @@
 import logging
 
-import theano
-import theano.tensor as tt
+import aesara
+import aesara.tensor as at
 import numpy as np
-import pymc3 as pm
+import pymc as pm
 
 from covid19_inference.model.model import modelcontext
 from covid19_inference.model import utility as ut
@@ -38,32 +38,32 @@ def kernelized_spread_soccer(
 
     Parameters
     ----------
-    R_t_base : :class:`~theano.tensor.TensorVariable`
+    R_t_base : :class:`~aesara.tensor.TensorVariable`
         Base reproduction number
         shape: (time)
 
-    R_t_soccer : :class:`~theano.tensor.TensorVariable`
-        Soccer reproduction number is applied additively 
+    R_t_soccer : :class:`~aesara.tensor.TensorVariable`
+        Soccer reproduction number is applied additively
         shape: (time)
 
-    R_t_noise : :class:`~theano.tensor.TensorVariable`
+    R_t_noise : :class:`~aesara.tensor.TensorVariable`
         Gender noise reproduction number is applied additively
         shape: (time)
 
-    C_base : :class:`~theano.tensor.TensorVariable`
+    C_base : :class:`~aesara.tensor.TensorVariable`
         Base gender interaction matrix i.e. while no soccer games are in progress.
         shape: (gender, gender)
 
-    C_soccer : :class:`~theano.tensor.TensorVariable`
+    C_soccer : :class:`~aesara.tensor.TensorVariable`
         Gender interaction for soccer games.
         shape: (gender, gender)
 
-    C_noise : :class:`~theano.tensor.TensorVariable`
+    C_noise : :class:`~aesara.tensor.TensorVariable`
         Interaction for gender noise
         shape: (gender, gender)
 
-    pr_new_E_begin : :class:`~theano.tensor.TensorVariable`, float or array_like, optional
-        If a float is given defaults to prior beta of the :class:`~pymc3.distributions.continuous.HalfCauchy`
+    pr_new_E_begin : :class:`~aesara.tensor.TensorVariable`, float or array_like, optional
+        If a float is given defaults to prior beta of the :class:`~pymc.distributions.continuous.HalfCauchy`
         distribution of :math:`E(0)`.
 
     model : :class:`Cov19Model`
@@ -75,14 +75,14 @@ def kernelized_spread_soccer(
 
     Returns
     -------
-    name_new_I_t : :class:`~theano.tensor.TensorVariable`
+    name_new_I_t : :class:`~aesara.tensor.TensorVariable`
         time series of the number daily newly infected persons.
 
-    name_new_E_t : :class:`~theano.tensor.TensorVariable`
+    name_new_E_t : :class:`~aesara.tensor.TensorVariable`
         time series of the number daily newly exposed persons. (if return_all set to
         True)
 
-    name_S_t : :class:`~theano.tensor.TensorVariable`
+    name_S_t : :class:`~aesara.tensor.TensorVariable`
         time series of the susceptible (if return_all set to True)
 
     """
@@ -94,7 +94,7 @@ def kernelized_spread_soccer(
 
     # Prior distributions of starting populations (exposed, infectious, susceptibles)
     # We choose to consider the transitions of newly exposed people of the last 10 days.
-    if isinstance(pr_new_E_begin, tt.Variable):
+    if isinstance(pr_new_E_begin, at.Variable):
         new_E_begin = pr_new_E_begin
     else:
         new_E_begin = pm.HalfCauchy(
@@ -119,7 +119,7 @@ def kernelized_spread_soccer(
     if use_gamma:
         beta = ut.tt_gamma(x, median_incubation, np.exp(sigma_incubation))
     else:
-        beta = ut.tt_lognormal(x, tt.log(median_incubation), sigma_incubation)
+        beta = ut.tt_lognormal(x, at.log(median_incubation), sigma_incubation)
 
     # Define kernelized spread model:
     def next_day(
@@ -180,29 +180,29 @@ def kernelized_spread_soccer(
             + beta[9] * nE10_f
         )
 
-        new_I_t = tt.stack([new_I_t_m, new_I_t_f])
+        new_I_t = at.stack([new_I_t_m, new_I_t_f])
         # shape gender
         new_E_t = (
             S_t
             / N
-            * tt.tensordot(
+            * at.tensordot(
                 R_base * C_base + R_soccer * C_soccer + R_noise * C_noise,
                 new_I_t,
                 axes=1,
             )
         )
 
-        new_E_t = tt.clip(new_E_t, 0, N)
+        new_E_t = at.clip(new_E_t, 0, N)
 
         # Update susceptible compartment
         S_t = S_t - new_E_t
-        S_t = tt.clip(S_t, -1, N)
+        S_t = at.clip(S_t, -1, N)
         return S_t, new_E_t[0], new_E_t[1], new_I_t
 
-    # theano scan returns two tuples, first one containing a time series of
+    # aesara scan returns two tuples, first one containing a time series of
     # what we give in outputs_info : S, E's, new_I
-    new_I_0 = tt.zeros(N.shape[0])
-    outputs, _ = theano.scan(
+    new_I_0 = at.zeros(N.shape[0])
+    outputs, _ = aesara.scan(
         fn=next_day,
         sequences=[R_t_base, R_t_soccer, R_t_noise],
         outputs_info=[
@@ -223,7 +223,7 @@ def kernelized_spread_soccer(
     S_t, new_E_t_m, new_E_t_f, new_I_t = outputs
     pm.Deterministic(name_new_I_t, new_I_t)
 
-    new_E_t = tt.stack((new_E_t_m, new_E_t_f), axis=-1)
+    new_E_t = at.stack((new_E_t_m, new_E_t_f), axis=-1)
 
     if name_S_t is not None:
         pm.Deterministic(name_S_t, S_t)

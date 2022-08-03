@@ -7,7 +7,7 @@ import numpy as np
 import os
 import matplotlib.transforms as transforms
 
-from covid19_inference.plot import _timeseries, _format_date_xticks
+from covid19_inference.plot import _timeseries, format_date_xticks
 from .utils import get_from_trace, format_date_axis, lighten_color
 
 from .rcParams import *

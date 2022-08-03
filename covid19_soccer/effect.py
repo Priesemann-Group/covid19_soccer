@@ -1,18 +1,10 @@
-from pymc3 import Normal, Deterministic, HalfNormal, Gamma
+from pymc import Normal, Deterministic, HalfNormal, Gamma
 import numpy as np
-import theano.tensor as tt
+import aesara.tensor as at
 
-try:
-    from covid19_inference.model.model import modelcontext
-    from covid19_inference.model import utility as ut
+from covid19_inference.model.model import modelcontext
+from covid19_inference.model import utility as ut
 
-except:
-    import sys
-
-    sys.path.append("../covid19_inference_repo/")
-    import covid19_inference
-    from covid19_inference.model.model import modelcontext
-    from covid19_inference.model import utility as ut
 
 
 def alpha(nRegions, nPhases, alpha_prior, game2phase, name="alpha", factor_female=None):
@@ -44,7 +36,7 @@ def alpha(nRegions, nPhases, alpha_prior, game2phase, name="alpha", factor_femal
     game2phase : int array-like
         Mapping for each game to the corresponding phase.
         shape: game
-    factor_female : pymc3 variable, optional
+    factor_female : pymc variable, optional
         Increase dimensions of output to account for different genders
 
     Returns
@@ -72,16 +64,16 @@ def alpha(nRegions, nPhases, alpha_prior, game2phase, name="alpha", factor_femal
     Δα_p = Δα_p * σ_p
 
     # Stack Δα_p to match up with the game by the game2phase mapping
-    Δα_g = tt.dot(game2phase, Δα_p)  # Δα_p(g) in manuscript
+    Δα_g = at.dot(game2phase, Δα_p)  # Δα_p(g) in manuscript
 
     # Reshape Δα_c to allow for easier addition
-    Δα_c = tt.stack([Δα_c] * α_prior_c_g.shape[1], axis=1)
+    Δα_c = at.stack([Δα_c] * α_prior_c_g.shape[1], axis=1)
 
     # Calculate effect with previous defined priors
     alpha = α_prior_c_g * (α_mean + Δα_c + Δα_g)
 
     if factor_female is not None:
-        alpha = tt.stack([alpha, alpha * factor_female])
+        alpha = at.stack([alpha, alpha * factor_female])
 
     # Add to trace
     Deterministic(name, alpha)
@@ -149,16 +141,16 @@ def beta(
     Δβ_p = Δβ_p * σ_p
 
     # Stack Δα_p to match up with the game by the game2phase mapping
-    Δβ_g = tt.dot(game2phase, Δβ_p)  # Δα_p(g) in manuscript
+    Δβ_g = at.dot(game2phase, Δβ_p)  # Δα_p(g) in manuscript
 
     # Reshape Δβ_c to allow for easier addition
-    Δβ_c = tt.stack([Δβ_c] * len(game2phase), axis=1)
+    Δβ_c = at.stack([Δβ_c] * len(game2phase), axis=1)
 
     # Calculate effect with previous defined priors
     beta = S_c.dot(β_prior_c_g) * (β_mean + Δβ_c + Δβ_g)
 
     if factor_female is not None:
-        beta = tt.stack([beta, beta * factor_female], axis=0)
+        beta = at.stack([beta, beta * factor_female], axis=0)
 
     # Add to trace
     Deterministic(name, beta)
@@ -217,7 +209,7 @@ def gamma(T_c, model=None):
     )
 
     # Calculate
-    gamma_c = 𝜂 * 𝜖 * tt.log(tt.exp(1 / 𝜖 * (T_c - T_crit)) + 1.0)
+    gamma_c = 𝜂 * 𝜖 * at.log(at.exp(1 / 𝜖 * (T_c - T_crit)) + 1.0)
 
     # Mapping to full model timescale with matrix
     transfer = np.zeros((model.sim_len, model.data_len + model.diff_data_sim))
@@ -225,11 +217,11 @@ def gamma(T_c, model=None):
         transfer[i, i] = 1
 
     # Convert to theano
-    transfer = tt.as_tensor_variable(transfer)
+    transfer = at.as_tensor_variable(transfer)
     # Apply
     gamma_c = transfer.dot(gamma_c)
 
-    gamma_c = tt.clip(gamma_c, -0.5, 0.5)
+    gamma_c = at.clip(gamma_c, -0.5, 0.5)
 
     # Add to trace
     Deterministic("gamma_c", gamma_c)
@@ -252,7 +244,7 @@ def _delta(x, a=1, normalized=True):
     a : number
         Shape parameter of the delta peak function.
     """
-    a = tt.exp(-((x / a) ** 2))
+    a = at.exp(-((x / a) ** 2))
     if normalized:
-        a = a / tt.sum(a, axis=0)
+        a = a / at.sum(a, axis=0)
     return a

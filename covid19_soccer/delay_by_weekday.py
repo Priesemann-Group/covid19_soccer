@@ -1,15 +1,16 @@
 import logging
-import theano
-import theano.tensor as tt
+import aesara
+import aesara.tensor as at
 import numpy as np
-import pymc3 as pm
+import pymc as pm
 from covid19_inference.model.model import modelcontext
 
 log = logging.getLogger(__name__)
 
 
 def delay_cases_weekday(
-    cases, model=None,
+    cases,
+    model=None,
 ):
     log.info("Delaying cases by weekday")
     model = modelcontext(model)
@@ -21,7 +22,7 @@ def delay_cases_weekday(
     delta_r = (pm.Normal("delta_fraction_delayed", mu=0, sigma=1, shape=7)) * sigma_r
     e = pm.HalfCauchy("error_fraction", beta=0.2)
 
-    r_base = tt.stack(
+    r_base = at.stack(
         [
             r_base_high,
             r_base_low,
@@ -34,7 +35,7 @@ def delay_cases_weekday(
     )
     r_week = r_base + delta_r
 
-    r_transformed_week = tt.nnet.sigmoid(r_week)
+    r_transformed_week = at.nnet.basic.sigmoid(r_week)
     pm.Deterministic("fraction_delayed_by_weekday", r_week)
 
     t = np.arange(model.sim_shape[0]) + model.sim_begin.weekday()  # Monday @ zero
@@ -42,7 +43,7 @@ def delay_cases_weekday(
     week_matrix = np.zeros((model.sim_shape[0], 7), dtype="float")
     week_matrix[np.stack([t] * 7, axis=1) % 7 == np.arange(7)] = 1.0
 
-    r_t = tt.dot(week_matrix, r_transformed_week)[:, None]
+    r_t = at.dot(week_matrix, r_transformed_week)[:, None]
 
     fraction = pm.Beta(
         "fraction_delayed", alpha=r_t / e, beta=(1 - r_t) / e, shape=model.sim_shape
@@ -52,7 +53,7 @@ def delay_cases_weekday(
         new_cases = (1 - fraction_t) * (cases_t + fraction_before * cases_before)
         return new_cases, fraction_t
 
-    (cases_delayed, _), _ = theano.scan(
+    (cases_delayed, _), _ = aesara.scan(
         fn=loop_delay_by_weekday,
         sequences=[cases, fraction],
         outputs_info=[cases[0], fraction[0]],  # shape gender, countries

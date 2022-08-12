@@ -23,6 +23,7 @@ def single(
     verbose=False,
     type_game_effects="violin",
     type_soccer_related_cases="violin",
+    shift_model=0,
     shift_data=0,
 ):
     """
@@ -62,12 +63,12 @@ def single(
     """
     # Cases
     ax = fig.add_subplot(grid[0, 0])
-    incidence(ax, trace, model, dl,shift_data=shift_data)
+    incidence(ax, trace, model, dl,shift_model=shift_model,shift_data=shift_data)
     axes_ts.append(ax)
 
     # Gender imbalance
     ax = fig.add_subplot(grid[1, 0])
-    fraction_male_female(ax, trace, model, dl,shift_data=shift_data)
+    fraction_male_female(ax, trace, model, dl,shift_model=shift_model,shift_data=shift_data)
     axes_ts.append(ax)
 
     # Single game effects
@@ -703,6 +704,7 @@ def multi_v2(
     ypos_flags=-20,
     country_order=None,
     overall_effect_trace=None,
+    shift_model=0,
     shift_data=0,
 ):
     """Create outer layout"""
@@ -737,6 +739,7 @@ def multi_v2(
             plot_beta=plot_beta,
             type_game_effects="bars",
             type_soccer_related_cases=type_soccer_related_cases,
+            shift_model=shift_model,
             shift_data=shift_data
         )
         if x > 0:

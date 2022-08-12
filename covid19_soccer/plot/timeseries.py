@@ -49,7 +49,8 @@ def incidence(
     color_data=None,
     data_forecast=False,
     lw=2,
-    shift_data=0
+    shift_model=0,
+    shift_data=0,
 ):
     """
     Plots incidence: modelfit and data
@@ -57,7 +58,7 @@ def incidence(
     new_cases = get_from_trace("new_cases", trace)
     # Plot model fit
     _timeseries(
-        x=pd.date_range(model.sim_begin, model.sim_end),
+        x=pd.date_range(model.sim_begin+datetime.timedelta(days=shift_model), model.sim_end+datetime.timedelta(days=shift_model)),
         y=(new_cases[:, :, 0] + new_cases[:, :, 1])
         / (dl.population[0, 0] + dl.population[1, 0])
         * 1e6,  # incidence
@@ -124,7 +125,7 @@ def incidence(
 
 
 def fraction_male_female(
-    ax, trace, model, dl, ylim=None, color=None, color_data=None, data_forecast=True,shift_data=0
+    ax, trace, model, dl, ylim=None, color=None, color_data=None, data_forecast=True,shift_model=0,shift_data=0
 ):
     """
     Plot fraction between male and female cases normalized by population size
@@ -143,7 +144,7 @@ def fraction_male_female(
 
     # Plot model fit
     _timeseries(
-        x=pd.date_range(model.sim_begin, model.sim_end),
+        x=pd.date_range(model.sim_begin+datetime.timedelta(days=shift_model), model.sim_end+datetime.timedelta(days=shift_model)),
         y=model_points,  # male/female
         what="model",
         ax=ax,
@@ -276,7 +277,7 @@ def R_soccer(ax, trace, model, dl, ylim=None, color=None, add_noise=False, **kwa
         ax.set_ylim(ylim)
 
     # Markup
-    ylabel = r"$\Delta R_{\mathrm{soccer}}"
+    ylabel = r"$\Delta R_{\mathrm{football}}"
     if add_noise:
         ylabel += "+R_{noise}"
     ylabel += r"$"

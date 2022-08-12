@@ -294,10 +294,12 @@ def _plot_posterior(x, bins=50, ax=None, **kwargs):
     if ax is None:
         fig, ax = plt.subplots()
 
+    if "color" not in kwargs:
+        kwargs["color"] = rcParams.color_posterior
+        
     ax.hist(
         x,
         bins=bins,
-        color=rcParams.color_posterior,
         label="Posterior",
         alpha=0.7,
         zorder=-5,

@@ -59,6 +59,22 @@ id, date, phase, team1, team2, goals1, goals2, location
 047a, 2021-07-03, VF, XX, DE2, 0, 4, XXXX
 049a, 2021-07-07, HF, DE2, XX, 2, 1, XXXX
 052a, 2021-07-11, FI, XX, DE2, 4, 3, XXXX
+004b, 2021-06-13, GS, GB, XX, 1, 0, XXXX
+007b, 2021-06-14, GS, GB,XX, 0, 2, XXXX
+020b, 2021-06-18, GS, GB, GB-SCT, 0, 0, XXXX
+030b, 2021-06-22, GS, XX, GB, 0, 1, XXXX
+031b, 2021-06-22, GS, XX, GB, 3, 1, XXXX
+042b, 2021-06-29, AF, GB, XX, 2, 0, XXXX
+047b, 2021-07-03, VF, XX, GB, 0, 4, XXXX
+049b, 2021-07-07, HF, GB, XX, 2, 1, XXXX
+050b, 2021-07-11, FI, XX, GB, 4, 3, XXXX
+
+
+
+
+
+
+
 
 
 

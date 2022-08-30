@@ -151,7 +151,7 @@ def create_model_delay_only(
         # Modulate the inferred cases by a abs(sin(x)) function, to account for weekend effects
         # Also adds the "new_cases" variable to the trace that has all model features.
         pm.Deterministic("new_cases", new_cases)
-        
+
         # Define the likelihood, uses the new_cases_obs set as model parameter
         student_t_likelihood(cases=new_cases, sigma_shape=1)
     return this_model

@@ -111,12 +111,7 @@ def game_effects(
             lw=1,
         )
         ax.vlines(
-            mpl.dates.date2num(dates),
-            l_95,
-            u_95,
-            color=color,
-            linestyle="-",
-            lw=1,
+            mpl.dates.date2num(dates), l_95, u_95, color=color, linestyle="-", lw=1,
         )
         # ax.scatter(dates, quartile1, color=color, marker="_", s=20, zorder=3, lw=1.5)
         # ax.scatter(dates, quartile3, color=color, marker="_", s=20, zorder=3, lw=1.5)
@@ -147,7 +142,7 @@ def game_effects(
             lw=1.5,
             zorder=9,
             color=color,
-            capstyle='round'
+            capstyle="round",
         )
         lines = ax.vlines(
             x=mpl.dates.date2num(dates),
@@ -156,7 +151,7 @@ def game_effects(
             lw=2.5,
             zorder=9,
             color=color,
-            capstyle='round'
+            capstyle="round",
         )
         lines.set_capstyle("round")
         ax.scatter(
@@ -194,6 +189,74 @@ def game_effects(
         # FuncFormatter can be used as a decorator
         ax.xaxis.set_major_formatter(lambda x, pos: f"{int(x-nums[0])}")
     return ax
+
+
+def calc_fraction_primary(
+    trace,
+    model,
+    dl,
+    begin=None,
+    end=None,
+):
+    """
+    Plots the soccer related casenumbers by male and female.
+
+    Parameters
+    ----------
+    type : str
+            Can be "violin" or "scatter"
+    begin : datetime
+        Begin date for relative cases calculation
+    end : datetime
+        End date for relative cases calculation
+    colors : list, len = 2
+        Colors of male and female
+    key : str
+        Which key to use, possible is "alpha", "beta" and None.
+
+    """
+    if begin is None:
+        begin = datetime.datetime(2021, 6, 11)
+    if end is None:
+        end = datetime.datetime(2021, 7, 11)
+
+
+    # Get params from trace and dataloader
+    new_E_t = get_from_trace("new_E_t", trace)
+    S_t = get_from_trace("S_t", trace)
+    new_I_t = get_from_trace("new_I_t", trace)
+    R_t_base = get_from_trace("R_t_base", trace)
+    R_t_noise = get_from_trace("R_t_add_noise_fact", trace)[..., 0]
+    C_base = get_from_trace("C_base", trace)
+    C_soccer = get_from_trace("C_soccer", trace)
+
+    R_t_alpha = get_from_trace(f"alpha_R", trace)
+    R_t_alpha = _apply_delta(R_t_alpha.T, model, dl).T
+
+    pop = model.N_population
+    i_begin = (begin - model.sim_begin).days
+    i_end = (end - model.sim_begin).days + 1  # inclusiv last day
+
+    """ Calculate base effect without soccer
+    """
+    R_t_ij_base = np.einsum("dt,dij->dtij", R_t_base, C_base)
+    infections_base = S_t / pop * np.einsum("dti,dtij->dti", new_I_t, R_t_ij_base)
+    R_t_ij_noise = np.einsum("dt,dij->dtij", R_t_noise, C_soccer)
+    infections_base += S_t / pop * np.einsum("dti,dtij->dti", new_I_t, R_t_ij_noise)
+
+    """ Calculate soccer effect
+    """
+    R_t_ij_alpha = np.einsum("dt,dij->dtij", R_t_alpha, C_soccer)
+    infections_alpha = S_t / pop * np.einsum("dti,dtij->dtj", new_I_t, R_t_ij_alpha)
+
+    # Sum over the choosen range (i.e. month of uefa championship)
+    num_infections_base = np.sum(infections_base[..., i_begin:i_end, :], axis=-2)
+    num_infections_alpha = np.sum(infections_alpha[..., i_begin:i_end, :], axis=-2)
+
+    # Create pandas dataframe for easy violin plot
+    ratio_soccer = num_infections_alpha / (num_infections_base + num_infections_alpha)
+
+    return ratio_soccer
 
 
 def soccer_related_cases(
@@ -395,8 +458,7 @@ def soccer_related_cases(
     return ax
 
 
-
-def vviolins(ax,x,y, **kwargs):
+def vviolins(ax, x, y, **kwargs):
     """
     Horizontal violin plots cuts at samples at 99% credible interval
     
@@ -409,29 +471,28 @@ def vviolins(ax,x,y, **kwargs):
     y: list or array
         List of y categories or positions
     """
-    
+
     # Compute 99% ci
-    y_99ci = [] 
-    for i,xi in enumerate(x):
-        ci = np.percentile(y[i][:,:],q = (0.5,99.5),axis=1)
-    
+    y_99ci = []
+    for i, xi in enumerate(x):
+        ci = np.percentile(y[i][:, :], q=(0.5, 99.5), axis=1)
+
         data = []
-        for g in [0,1]:
-            l,u = ci[:,g]
-            mask = np.all([y[i][g,:]>l,y[i][g,:]<u],axis=0)
-            data.append(y[i][g,mask])
+        for g in [0, 1]:
+            l, u = ci[:, g]
+            mask = np.all([y[i][g, :] > l, y[i][g, :] < u], axis=0)
+            data.append(y[i][g, mask])
         y_99ci.append(np.array(data))
 
-    df = pd.DataFrame(columns=["country","gender","values"])
+    df = pd.DataFrame(columns=["country", "gender", "values"])
     for i, yi in enumerate(y_99ci):
-        for g,gender in enumerate(["male","female"]):
+        for g, gender in enumerate(["male", "female"]):
             temp_df = pd.DataFrame()
-            temp_df["values"] = yi[g,:]
+            temp_df["values"] = yi[g, :]
             temp_df["gender"] = gender
             temp_df["country"] = i
             df = pd.concat([df, temp_df])
-            
-            
+
     # Violin plot
     g = sns.violinplot(
         data=df,
@@ -463,9 +524,9 @@ def vviolins(ax,x,y, **kwargs):
             ax.collections[i].set_edgecolor(color_female)  # Set outline colors
 
     return g
-    
-        
-def hviolins(ax,x,y, **kwargs):
+
+
+def hviolins(ax, x, y, **kwargs):
     """
     Horizontal violin plots cuts at samples at 99% credible interval
     
@@ -478,29 +539,28 @@ def hviolins(ax,x,y, **kwargs):
     y: list or array
         List of y categories or positions
     """
-    
+
     # Compute 99% ci
-    x_99ci = [] 
-    for i,yi in enumerate(y):
-        ci = np.percentile(x[i][:,:],q = (0.5,99.5),axis=1)
-    
+    x_99ci = []
+    for i, yi in enumerate(y):
+        ci = np.percentile(x[i][:, :], q=(0.5, 99.5), axis=1)
+
         data = []
-        for g in [0,1]:
-            l,u = ci[:,g]
-            mask = np.all([x[i][g,:]>l,x[i][g,:]<u],axis=0)
-            data.append(x[i][g,mask])
+        for g in [0, 1]:
+            l, u = ci[:, g]
+            mask = np.all([x[i][g, :] > l, x[i][g, :] < u], axis=0)
+            data.append(x[i][g, mask])
         x_99ci.append(np.array(data))
 
-    df = pd.DataFrame(columns=["country","gender","values"])
+    df = pd.DataFrame(columns=["country", "gender", "values"])
     for i, xi in enumerate(x_99ci):
-        for g,gender in enumerate(["male","female"]):
+        for g, gender in enumerate(["male", "female"]):
             temp_df = pd.DataFrame()
-            temp_df["values"] = xi[g,:]
+            temp_df["values"] = xi[g, :]
             temp_df["gender"] = gender
             temp_df["country"] = i
             df = pd.concat([df, temp_df])
-            
-            
+
     # Violin plot
     g = sns.violinplot(
         data=df,
@@ -532,8 +592,6 @@ def hviolins(ax,x,y, **kwargs):
             ax.collections[i].set_edgecolor(color_female)  # Set outline colors
 
     return g
-    
-        
 
 
 def get_alpha_infections(trace, model, dl):
@@ -551,13 +609,11 @@ def get_alpha_infections(trace, model, dl):
     """
     R_t_ij_base = np.einsum("dt,dij->dtij", R_t_base, C_base)
     infections_base = S_t / pop * np.einsum("dti,dtij->dtj", new_I_t, R_t_ij_base)
-    
-    
-    C_noise = np.array([[1,0],[0,-1]])
+
+    C_noise = np.array([[1, 0], [0, -1]])
     R_t_ij_noise = np.einsum("dt,ij->dtij", R_t_noise, C_noise)
     infections_base += S_t / pop * np.einsum("dti,dtij->dtj", new_I_t, R_t_ij_noise)
-    
-    
+
     """ Calculate soccer effect
     """
     R_t_ij_alpha = np.einsum("dt,dij->dtij", R_t_alpha, C_soccer)
@@ -581,8 +637,8 @@ def get_beta_infections(trace, model, dl):
     """
     R_t_ij_base = np.einsum("dt,dij->dtij", R_t_base, C_base)
     infections_base = S_t / pop * np.einsum("dti,dtij->dtj", new_I_t, R_t_ij_base)
-    
-    C_noise = np.array([[1,0],[0,-1]])
+
+    C_noise = np.array([[1, 0], [0, -1]])
     R_t_ij_noise = np.einsum("dt,ij->dtij", R_t_noise, C_noise)
     infections_base += S_t / pop * np.einsum("dti,dtij->dtj", new_I_t, R_t_ij_noise)
 
@@ -590,7 +646,7 @@ def get_beta_infections(trace, model, dl):
     """
     R_t_ij_beta = np.einsum("dt,dij->dtij", R_t_beta, C_soccer)
     infections_beta = S_t / pop * np.einsum("dti,dtij->dtj", new_I_t, R_t_ij_beta)
-    
+
     return infections_base, infections_beta
 
 
@@ -632,7 +688,7 @@ def soccer_related_cases_overview(
         end = datetime.datetime(2021, 7, 31)
 
     percentage = pd.DataFrame()
-    percentage_99ci= pd.DataFrame() # Extra dataframe for 99% credible interval
+    percentage_99ci = pd.DataFrame()  # Extra dataframe for 99% credible interval
     medians, countries, countries_raw = [], [], []
     for i, (trace, model, dl) in enumerate(zip(traces, models, dls)):
         # Get params from trace and dataloader
@@ -661,32 +717,36 @@ def soccer_related_cases_overview(
         else:
             infections_base, infections_alpha = get_alpha_infections(trace, model, dl)
 
-            
         i_begin = (begin - model.sim_begin).days
         i_end = (end - model.sim_begin).days + 1  # inclusiv last day
 
         # Sum over the choosen range (i.e. month of uefa championship)
         num_infections_base = np.sum(infections_base[..., i_begin:i_end, :], axis=-2)
         num_infections_alpha = np.sum(infections_alpha[..., i_begin:i_end, :], axis=-2)
-        
+
         # Create pandas dataframe for easy violin plot
         ratio_soccer = num_infections_alpha / (
             num_infections_base + num_infections_alpha
         )
-        
-        
+
         # Save 99% array for violin plots
-        l,u = np.percentile(ratio_soccer,q=(0.5,99.5),axis=0)
-        ratio_soccer_male = ratio_soccer[:,0][u[0] > ratio_soccer[:,0]]
+        l, u = np.percentile(ratio_soccer, q=(0.5, 99.5), axis=0)
+        ratio_soccer_male = ratio_soccer[:, 0][u[0] > ratio_soccer[:, 0]]
         ratio_soccer_male = ratio_soccer_male[ratio_soccer_male > l[0]]
-        ratio_soccer_female = ratio_soccer[:,1][u[1] > ratio_soccer[:,1]]
+        ratio_soccer_female = ratio_soccer[:, 1][u[1] > ratio_soccer[:, 1]]
         ratio_soccer_female = ratio_soccer_female[ratio_soccer_female > l[1]]
-        ratio_soccer_violin = np.stack([ratio_soccer_male,ratio_soccer_female],axis=-1)
+        ratio_soccer_female = ratio_soccer_female[:len(ratio_soccer_male)]
+        ratio_soccer_male = ratio_soccer_male[:len(ratio_soccer_female)]
+        ratio_soccer_violin = np.stack(
+            [ratio_soccer_male, ratio_soccer_female], axis=-1
+        )
         male = np.stack(
-            (ratio_soccer_violin[:, 0], np.zeros(ratio_soccer_violin[:, 0].shape)), axis=1
+            (ratio_soccer_violin[:, 0], np.zeros(ratio_soccer_violin[:, 0].shape)),
+            axis=1,
         )
         female = np.stack(
-            (ratio_soccer_violin[:, 1], np.ones(ratio_soccer_violin[:, 1].shape)), axis=1
+            (ratio_soccer_violin[:, 1], np.ones(ratio_soccer_violin[:, 1].shape)),
+            axis=1,
         )
         temp = pd.DataFrame(
             np.concatenate((male, female)), columns=["percentage_soccer", "gender"]
@@ -696,7 +756,7 @@ def soccer_related_cases_overview(
             temp["gender"], bins=[-1, 0.5, 1], labels=["male", "female"]
         )
         percentage_99ci = pd.concat([percentage_99ci, temp])
-        #----------------------------------
+        # ----------------------------------
 
         # Append i in case of same countries
         temp["country"] = dl.countries[0] + str(i)
@@ -724,7 +784,7 @@ def soccer_related_cases_overview(
 
     percentage_99ci["percentage_soccer"] = percentage_99ci["percentage_soccer"] * 100
     percentage["percentage_soccer"] = percentage["percentage_soccer"] * 100
-    
+
     # |percentage|countries|gender|
 
     # Colors
@@ -751,19 +811,23 @@ def soccer_related_cases_overview(
         )
         temp["country"] = "overall"
         percentage = pd.concat([percentage, temp])
-        
+
         # Save 99% array for violin plots
-        l,u = np.percentile(overall_effect,q=(0.5,99.5),axis=0)
-        overall_effect_male = overall_effect[:,0][u[0] > overall_effect[:,0]]
+        l, u = np.percentile(overall_effect, q=(0.5, 99.5), axis=0)
+        overall_effect_male = overall_effect[:, 0][u[0] > overall_effect[:, 0]]
         overall_effect_male = overall_effect_male[overall_effect_male > l[0]]
-        overall_effect_female = overall_effect[:,1][u[1] > overall_effect[:,1]]
+        overall_effect_female = overall_effect[:, 1][u[1] > overall_effect[:, 1]]
         overall_effect_female = overall_effect_female[overall_effect_female > l[1]]
-        overall_effect_violin = np.stack([overall_effect_male,overall_effect_female],axis=-1)
+        overall_effect_violin = np.stack(
+            [overall_effect_male, overall_effect_female], axis=-1
+        )
         male = np.stack(
-            (overall_effect_violin[:, 0], np.zeros(overall_effect_violin[:, 0].shape)), axis=1
+            (overall_effect_violin[:, 0], np.zeros(overall_effect_violin[:, 0].shape)),
+            axis=1,
         )
         female = np.stack(
-            (overall_effect_violin[:, 1], np.ones(overall_effect_violin[:, 1].shape)), axis=1
+            (overall_effect_violin[:, 1], np.ones(overall_effect_violin[:, 1].shape)),
+            axis=1,
         )
         temp = pd.DataFrame(
             np.concatenate((male, female)), columns=["percentage_soccer", "gender"]
@@ -779,7 +843,7 @@ def soccer_related_cases_overview(
         countries.append("overall")
         countries_raw.append("overall")
         if country_order is not None:
-            country_order= np.insert(country_order,0,len(country_order))
+            country_order = np.insert(country_order, 0, len(country_order))
 
         # Plot vertical line
         # ax.axvline(len(countries)-1.5,ls="-",color="tab:gray",zorder=-100,lw=0.5)
@@ -839,16 +903,23 @@ def soccer_related_cases_overview(
                 print((t[0, :] > 0).sum() / t[0, :].shape[0])
                 print((t[1, :] > 0).sum() / t[1, :].shape[0])
 
-            temp = (
-                np.array(
-                    percentage[percentage["country"] == country]["percentage_soccer"]
-                )
-                .reshape((2, -1))
+            temp = np.array(
+                percentage[percentage["country"] == country]["percentage_soccer"]
+            ).reshape((2, -1))
+
+            median, l_95, u_95, l_68, u_68 = np.percentile(
+                temp, q=(50, 2.5, 97.5, 16, 84)
             )
-            
- 
-            median, l_95, u_95, l_68, u_68 = np.percentile(temp, q=(50, 2.5, 97.5, 16, 84))
-            print(country, median, l_95, u_95, l_68 ,u_68, (np.median(temp,axis=0) > 0).sum() / temp.shape[1], sep="\t")
+            print(
+                country,
+                median,
+                l_95,
+                u_95,
+                l_68,
+                u_68,
+                (np.median(temp, axis=0) > 0).sum() / temp.shape[1],
+                sep="\t",
+            )
 
             if vertical:
                 ax.scatter(
@@ -867,7 +938,7 @@ def soccer_related_cases_overview(
                     lw=1.5,
                     zorder=9,
                     color="#060434",
-                    capstyle='round'
+                    capstyle="round",
                 )
                 lines = ax.hlines(
                     y=i,
@@ -876,7 +947,7 @@ def soccer_related_cases_overview(
                     lw=2.5,
                     zorder=9,
                     color="#060434",
-                    capstyle='round'
+                    capstyle="round",
                 )
             else:
                 ax.scatter(
@@ -889,10 +960,22 @@ def soccer_related_cases_overview(
                     edgecolor="#060434",
                 )
                 lines = ax.vlines(
-                    x=i, ymin=l_95, ymax=u_95, lw=1.5, zorder=9, color="#060434",capstyle='round'
+                    x=i,
+                    ymin=l_95,
+                    ymax=u_95,
+                    lw=1.5,
+                    zorder=9,
+                    color="#060434",
+                    capstyle="round",
                 )
                 lines = ax.vlines(
-                    x=i, ymin=l_68, ymax=u_68, lw=2.5, zorder=9, color="#060434",capstyle='round'
+                    x=i,
+                    ymin=l_68,
+                    ymax=u_68,
+                    lw=2.5,
+                    zorder=9,
+                    color="#060434",
+                    capstyle="round",
                 )
 
     """ Markup
@@ -995,7 +1078,9 @@ def soccer_related_cases_overview(
     return ax
 
 
-def plot_flags(ax, countries_iso2, ypos_flags=-10, zoom=0.03, vertical=False, adjust_align=-10):
+def plot_flags(
+    ax, countries_iso2, ypos_flags=-10, zoom=0.03, vertical=False, adjust_align=-10
+):
     """
     Parameters
     ----------
@@ -1003,13 +1088,13 @@ def plot_flags(ax, countries_iso2, ypos_flags=-10, zoom=0.03, vertical=False, ad
     countries_iso2: array
         List of country iso2 codes
     """
-    
+
     offset = 0
     for i, country in enumerate(countries_iso2):
         img = plt.imread(get_flag(country.lower()))
         im = OffsetImage(img, zoom=zoom)
         im.image.axes = ax
-        
+
         if vertical:
             pos = (ypos_flags, i + offset)
             xybox = (adjust_align, 0)
@@ -1027,6 +1112,7 @@ def plot_flags(ax, countries_iso2, ypos_flags=-10, zoom=0.03, vertical=False, ad
             pad=0,
         )
         ax.add_artist(ab)
+
 
 def soccer_related_cases_ax(
     ax, traces, models, dls, ticks, begin=None, end=None, colors=None,
@@ -1185,7 +1271,7 @@ def legend(
                 lw=1,
                 facecolor=rcParams.color_championship_range,
                 edgecolor="none",
-                alpha=0.4
+                alpha=0.4,
             )
         )
         labels.append("Time window of\nthe Euro 2020")

@@ -97,6 +97,13 @@ parser.add_argument(
     default=False,
 )
 
+parser.add_argument(
+    "--f_robust",
+    type=float,
+    help="A parameter to explore the robustness of the model",
+    default=1.0,
+)
+
 
 parser.add_argument(
     "--t", type=int, help="How many tuning steps?", default=1000,
@@ -195,6 +202,10 @@ if __name__ == "__main__":
         data_begin = datetime.datetime(2021, 6, 4)
         data_end = datetime.datetime(2021, 7, 18)
         sim_begin = data_begin - datetime.timedelta(days=16)
+    elif args.len == "long":
+        data_begin = datetime.datetime(2021, 5, 1)
+        data_end = datetime.datetime(2021, 8, 15)
+        sim_begin = data_begin - datetime.timedelta(days=16)
     else:
         raise RuntimeError("argument value not known")
 
@@ -220,6 +231,7 @@ if __name__ == "__main__":
                 interval_cps=args.interval_cps,
                 f_female=args.f_fem,
                 use_abs_sine_weekly_modulation=args.abs_sine,
+                f_robust=args.f_robust,
             )
         except AssertionError as error:
             if i < 10:

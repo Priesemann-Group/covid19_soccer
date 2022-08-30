@@ -7,24 +7,24 @@ import os
 from .rcParams import *
 from ..effect_gender import _delta
 
-
+ 
 def get_from_trace(var, trace, from_type="posterior"):
     """Reshapes and returns an numpy array from an arviz trace"""
     key = var
 
-    if key in ["alpha", "beta"] and key not in getattr(trace,from_type):
+    if key in ["alpha", "beta"] and key not in getattr(trace, from_type):
         mean = get_from_trace(f"{key}_mean", trace)
         sparse = get_from_trace(f"Delta_{key}_g_sparse", trace)
         sigma = get_from_trace(f"sigma_{key}_g", trace)
         var = mean[:, None] + np.einsum("dg,d->dg", sparse, sigma)
     else:
-        var = np.array(getattr(trace,from_type)[var])
+        var = np.array(getattr(trace, from_type)[var])
         if from_type == "predictions":
-             var = var.reshape((var.shape[0] * var.shape[1],)+var.shape[2:])
+            var = var.reshape((var.shape[0] * var.shape[1],) + var.shape[2:])
         var = var.reshape((var.shape[0] * var.shape[1],) + var.shape[2:])
-        
+
     # Remove nans (normally there are 0 nans but can happen if you use where operations)
-    var = var[~np.isnan(var).any(tuple(range(1,var.ndim))),...]
+    var = var[~np.isnan(var).any(tuple(range(1, var.ndim))), ...]
     return var
 
 
@@ -66,23 +66,34 @@ def _apply_delta(eff, model, dl):
 
         return np.dot(d, eff)
     except:
-        t_g = [
-            (game - model.sim_begin).days
-            for game in dl.timetable[~dl.timetable["id"].str.contains("a")]["date"]
-        ]
-        d = _delta(np.subtract.outer(t, t_g)).eval()
+        try:
+            t_g = [
+                (game - model.sim_begin).days
+                for game in dl.timetable[~dl.timetable["id"].str.contains("b")]["date"]
+            ]
+            d = _delta(np.subtract.outer(t, t_g)).eval()
 
-        return np.dot(d, eff)
+            return np.dot(d, eff)
+        except:
+            t_g = [
+                (game - model.sim_begin).days
+                for game in dl.timetable[~dl.timetable["id"].str.contains("a|b",
+                                                                          regex=True)]["date"]
+            ]
+            d = _delta(np.subtract.outer(t, t_g)).eval()
+
+            return np.dot(d, eff)
 
 
 def get_flag(iso2, path="./figures/iso2/"):
     if iso2 == "DE2":
         iso2 = "DE"
-    if iso2.lower() in ["eng","sct"]:
+    if iso2.lower() in ["eng", "sct"]:
         iso2 = f"gb-{iso2}"
     try:
         # Check if png exists:
         if not os.path.exists(f"{path}{iso2}.png"):
+            os.makedirs(path, exist_ok=True)
             png = svg2png(
                 url=f"https://hatscripts.github.io/circle-flags/flags/{iso2}.svg",
             )

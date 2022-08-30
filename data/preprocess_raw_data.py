@@ -220,6 +220,106 @@ def Scotland():
     sct = sct[(sct.date >= data_begin) & (sct.date < data_end)]
     sct.to_csv(path_or_buf=processed_data_path + "GB-SCT.csv", index=None)
 
+def GB():
+    gb_json = json.load(open(raw_data_path + "GB-ENG.json"))
+    gb = pd.DataFrame(columns=["date", "gender", "age_group", "cases"])
+    for data in gb_json["data"]:
+        date = datetime.strptime(data["date"], "%Y-%m-%d")
+        if date >= data_begin and date < data_end:
+            for line in data["femaleCases"]:
+                gb.loc[len(gb.index)] = [date, "female", line["age"], line["value"]]
+            for line in data["maleCases"]:
+                gb.loc[len(gb.index)] = [date, "male", line["age"], line["value"]]
+
+    gb.replace(
+        to_replace={
+            "0_to_4": "00-04",
+            "5_to_9": "05-09",
+            "10_to_14": "10-14",
+            "15_to_19": "15-19",
+            "20_to_24": "20-24",
+            "25_to_29": "25-29",
+            "30_to_34": "30-34",
+            "35_to_39": "35-39",
+            "40_to_44": "40-44",
+            "45_to_49": "45-49",
+            "50_to_54": "50-54",
+            "55_to_59": "55-59",
+            "60_to_64": "60-64",
+            "65_to_69": "65-69",
+            "70_to_74": "70-74",
+            "75_to_79": "75-79",
+            "80_to_84": "80-84",
+            "85_to_89": "85-89",
+            "90+": "90+",
+        },
+        inplace=True,
+    )
+    # calculate the missing totals
+    tmp = gb.groupby(by=["date", "gender"]).sum().reset_index()
+    tmp.insert(2, "age_group", "total")
+    gb = gb.append(tmp)
+    tmp = gb.groupby(by=["date", "age_group"]).sum().reset_index()
+    tmp.insert(1, "gender", "total")
+    gb = gb.append(tmp)
+
+    # Calculate daily change in the infections
+    gb = gb.set_index(["date", "gender", "age_group"])
+    gb = gb.sort_index()  # is important otherwise the diff does not work
+    gb = gb.groupby(level=[1, 2]).diff(1)
+    gb.insert(len(gb.columns), "deaths", [np.nan] * len(gb.index))
+
+    sct = pd.read_csv(raw_data_path + "GB-SCT.csv", parse_dates=["Date"])
+    sct.drop(
+        columns=[
+            "Country",
+            "SexQF",
+            "AgeGroupQF",
+            "CumulativePositive",
+            "CrudeRatePositive",
+            "CumulativeDeaths",
+            "CrudeRateDeaths",
+            "CumulativeNegative",
+            "CrudeRateNegative",
+        ],
+        inplace=True,
+    )
+    sct.rename(
+        columns={
+            "Date": "date",
+            "Sex": "gender",
+            "AgeGroup": "age_group",
+            "DailyPositive": "cases",
+            "DailyDeaths": "deaths",
+        },
+        inplace=True,
+    )
+    # drop the additional age groups 0-59 and 60+
+    sct = sct[sct.age_group.isin(["0 to 59", "60+"]) == False]
+    sct.replace(
+        to_replace={
+            "Female": "female",
+            "Male": "male",
+            "Total": "total",
+            "0 to 14": "00-14",
+            "15 to 19": "15-19",
+            "20 to 24": "20-24",
+            "25 to 44": "25-44",
+            "45 to 64": "45-64",
+            "65 to 74": "65-74",
+            "75 to 84": "75-84",
+            "85plus": "85+",
+        },
+        inplace=True,
+    )
+    sct = sct[(sct.date >= data_begin) & (sct.date < data_end)]
+
+    gb_reset = gb.reset_index(level=[0, 1, 2])
+    gb_all = gb_reset[gb_reset["age_group"] == "total"].copy()
+    gb_all.loc[:, "cases"] += np.array(sct[sct["age_group"] == "total"]["cases"])
+
+    gb_all.to_csv(path_or_buf=processed_data_path + "GB.csv",)
+
 
 def Portugal():
     pt = pd.read_csv(raw_data_path + "PT.csv")
@@ -375,6 +475,9 @@ def Netherlands():
     df.to_csv(path_or_buf=processed_data_path + "NL.csv", index=False)
 
 
+GB()
+
+"""
 if __name__ == "__main__":
     pbar = tqdm(desc="[Preprocess data]", total=9)
 
@@ -393,6 +496,10 @@ if __name__ == "__main__":
     pbar.update(1)
     pbar.set_description("[Preprocess data] SCT")
     Scotland()
+    
+    pbar.update(1)
+    pbar.set_description("[Preprocess data] GB")
+    GB()
 
     pbar.update(1)
     pbar.set_description("[Preprocess data] PO")
@@ -413,3 +520,4 @@ if __name__ == "__main__":
     pbar.update(1)
     pbar.set_description("[Preprocess data] NL")
     Netherlands()
+"""

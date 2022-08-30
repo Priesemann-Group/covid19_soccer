@@ -130,21 +130,22 @@ class Dataloader:
                 )
             self._wheather[c] = df
 
-            
     def _load_PHSM(self):
         self._stringencyPHSM = []
-        temp = pd.read_csv(os.path.join(self.data_folder, "Severity index - 2022-03-31.csv"))
-        temp["Date"] = pd.to_datetime(temp["Date"],format="%d-%b-%y")
-        temp = temp.set_index(["Country","Date"])
+        temp = pd.read_csv(
+            os.path.join(self.data_folder, "Severity index - 2022-03-31.csv")
+        )
+        temp["Date"] = pd.to_datetime(temp["Date"], format="%d-%b-%y")
+        temp = temp.set_index(["Country", "Date"])
         for c in self.countries:
-            if c in ["England","Scotland"]:
+            if c in ["England", "Scotland"]:
                 c = "United Kingdom"
             if c == "Czechia":
                 c = "Czech Republic"
-            self._stringencyPHSM.append(temp.loc[c,:]["PHSM SI"].resample('D').fillna(0))
-                
-            
-            
+            self._stringencyPHSM.append(
+                temp.loc[c, :]["PHSM SI"].resample("D").fillna(0)
+            )
+
     def _load_OxCGRT(self):
         self._stringencyOxCGRT = []
         ox = cov19_data.OxCGRT(True)
@@ -501,7 +502,7 @@ class Dataloader:
             )
 
         return ret
-    
+
     @property
     def stringencyOxCGRT(self):
         """
@@ -509,7 +510,7 @@ class Dataloader:
         """
         if self._stringencyOxCGRT is None:
             self._load_OxCGRT()
-        
+
         ret = []
         for stringency in self._stringencyOxCGRT:
             ret.append(
@@ -636,7 +637,6 @@ class Dataloader_gender(Dataloader):
         # Load stringency data
         self._stringencyPHSM = None
         self._stringencyOxCGRT = None
-
 
     def __load_cases(self):
 

@@ -36,7 +36,8 @@ def create_model_gender(
     interval_cps=10,
     f_female="0.33",
     use_abs_sine_weekly_modulation=False,
-    force_alpha_prior=None
+    force_alpha_prior=None,
+    f_robust=1,
 ):
     """
     High level function to create an abstract pymc3 model using different defined
@@ -68,7 +69,7 @@ def create_model_gender(
         dl = dataloader
 
     if prior_delay == -1:
-        if dl.countries[0] in ["Germany", "Germany_alt"]:
+        if dl.countries[0] in ["Germany", "Germany_alt", "Spain"]:
             prior_delay = 7
             width_delay_prior = 0.1
         elif dl.countries[0] in ["Scotland", "France", "England", "Netherlands"]:
@@ -78,6 +79,7 @@ def create_model_gender(
             prior_delay = 5
             width_delay_prior = 0.15
 
+    log.info(f"Country: {dl.countries[0]}, prior_delay = {prior_delay}")
     # Median of the prior for the delay in case reporting, we assume 10 days
     default_interval = 10
     ratio_interval = interval_cps / default_interval
@@ -102,7 +104,7 @@ def create_model_gender(
         alpha_prior = dl.alpha_prior[0, :]  # only select first country
     else:
         alpha_prior = force_alpha_prior
-        
+
     if beta:
         beta_prior = dl.beta_prior[0, :]
         beta_weight = 1
@@ -133,7 +135,7 @@ def create_model_gender(
         # the specific values are controlled by the priors and are around one.
         # https://science.sciencemag.org/content/369/6500/eabb9789.full
         sigma_lambda_cp = pm.HalfCauchy(
-            name="sigma_lambda_cp", beta=0.5, transform=pm.transforms.log_exp_m1,
+            name="sigma_lambda_cp", beta=0.5*f_robust, transform=pm.transforms.log_exp_m1,
         )
         sigma_lambda_week_cp = None
         R_t_base_log = lambda_t_with_sigmoids(
@@ -155,11 +157,12 @@ def create_model_gender(
             date_of_games=dl.date_of_games,
             beta_prior=beta_prior,
             S=beta_weight,
+            f_robust=f_robust
         )
         pm.Deterministic("R_t_soccer", R_t_add)
 
         sigma_lambda_cp_noise = pm.HalfCauchy(
-            name="sigma_lambda_cp_noise", beta=0.2, transform=pm.transforms.log_exp_m1,
+            name="sigma_lambda_cp_noise", beta=0.2*f_robust, transform=pm.transforms.log_exp_m1,
         )
         R_t_add_noise = lambda_t_with_sigmoids(
             change_points_list=change_points,
@@ -175,7 +178,7 @@ def create_model_gender(
         pm.Deterministic("R_t_noise", R_t_add_noise)
 
         # Default gender interconnection matrix
-        c_off = pm.Beta("c_off", alpha=8, beta=8)
+        c_off = pm.Beta("c_off", alpha=8*f_robust, beta=8*f_robust)
         C_0 = tt.stack([1.0 - c_off, c_off])
         C_1 = tt.stack([c_off, 1.0 - c_off])
         C_base = tt.stack([C_0, C_1])
@@ -245,7 +248,7 @@ def create_model_gender(
             diff_input_output=0,
         )
 
-        new_cases = delay_by_weekday.delay_cases_weekday(new_cases)
+        new_cases = delay_by_weekday.delay_cases_weekday(new_cases, f_robust=f_robust)
 
         if use_abs_sine_weekly_modulation:
             # Modulate the inferred cases by a abs(sin(x)) function, to account for weekend effects

@@ -9,17 +9,17 @@ log = logging.getLogger(__name__)
 
 
 def delay_cases_weekday(
-    cases, model=None,
+    cases, model=None, f_robust=1,
 ):
     log.info("Delaying cases by weekday")
     model = modelcontext(model)
 
-    r_base_high = pm.Normal("fraction_delayed_weekend_raw", mu=-3, sigma=2)
-    r_base_low = pm.Normal("fraction_delayed_week_raw", mu=-5, sigma=1)
-    sigma_r = pm.HalfNormal("sigma_r", sigma=1)
+    r_base_high = pm.Normal("fraction_delayed_weekend_raw", mu=-3, sigma=2*f_robust)
+    r_base_low = pm.Normal("fraction_delayed_week_raw", mu=-5, sigma=1*f_robust)
+    sigma_r = pm.HalfNormal("sigma_r", sigma=1*f_robust)
 
     delta_r = (pm.Normal("delta_fraction_delayed", mu=0, sigma=1, shape=7)) * sigma_r
-    e = pm.HalfCauchy("error_fraction", beta=0.2)
+    e = pm.HalfCauchy("error_fraction", beta=0.2*f_robust)
 
     r_base = tt.stack(
         [

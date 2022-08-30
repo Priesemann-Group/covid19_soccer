@@ -9,7 +9,7 @@ from covid19_inference.model.model import modelcontext
 log = logging.getLogger(__name__)
 
 
-def R_t_soccer(alpha_prior, date_of_games, beta_prior=None, S=None, model=None):
+def R_t_soccer(alpha_prior, date_of_games, beta_prior=None, S=None, model=None, f_robust=1):
     """
     Constructs impact of soccer uefa games to the reproduction number.
 
@@ -46,7 +46,7 @@ def R_t_soccer(alpha_prior, date_of_games, beta_prior=None, S=None, model=None):
     model = modelcontext(model)
 
     # Effect for each game
-    alpha_raw = alpha(alpha_prior)
+    alpha_raw = alpha(alpha_prior, f_robust=f_robust)
     alpha_raw = pm.Deterministic("alpha_R", alpha_raw)
     eff = alpha_raw
 
@@ -68,7 +68,7 @@ def R_t_soccer(alpha_prior, date_of_games, beta_prior=None, S=None, model=None):
     return R_soccer
 
 
-def alpha(alpha_prior):
+def alpha(alpha_prior, f_robust):
     r"""
     Model of the effectiveness parameter alpha. The subscript :math:`g`
     is the is the game.
@@ -95,14 +95,14 @@ def alpha(alpha_prior):
     Δα_g = tt.as_tensor_variable(alpha_prior)
 
     # Same across all games
-    α_mean = pm.Normal(name="alpha_mean", mu=0, sigma=5)
+    α_mean = pm.Normal(name="alpha_mean", mu=0, sigma=5*f_robust)
 
     # Per game priors
     # - generated depending on a alpha_prior
     Δα_g_sparse = pm.Normal(
         "Delta_alpha_g_sparse", mu=0, sigma=1, shape=len(alpha_prior[alpha_prior > 0])
     )
-    σ_g = pm.HalfNormal(name="sigma_alpha_g", sigma=5)
+    σ_g = pm.HalfNormal(name="sigma_alpha_g", sigma=5*f_robust)
 
     # Set the entries for the played games
     Δα_g = tt.set_subtensor(Δα_g[alpha_prior > 0], Δα_g_sparse)

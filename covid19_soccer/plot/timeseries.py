@@ -411,7 +411,7 @@ def stacked_bars(x, y, ax=None, colors=None, date_format=True, **kwargs):
     return ax
 
 
-def mark_days(ax, traces, model, dl, date_format=True, hosted=False, **kwargs):
+def mark_days(ax, dl, date_format=True, hosted=False, **kwargs):
     if ax is None:
         figure, ax = plt.subplots(figsize=(6, 3))
     

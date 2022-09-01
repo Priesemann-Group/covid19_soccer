@@ -392,7 +392,7 @@ def single_extended_v2(
     ax = subfigs[0].add_subplot(grid[4])
     R_soccer(ax, trace, model, dl, add_noise=False)
     ax.set_ylim(ax.get_ylim()[0]-(ax.get_ylim()[1]-ax.get_ylim()[0])/6,ax.get_ylim()[1])
-    mark_days(ax, trace, model, dl, hosted=show_hosted)
+    mark_days(ax, dl, hosted=show_hosted)
     axes_ts.append(ax)
 
     # R_noise

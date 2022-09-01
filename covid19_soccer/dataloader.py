@@ -698,7 +698,7 @@ class Dataloader_gender(Dataloader):
             "total",
         ]
 
-        # Reshape to date, gender and male at the front
+        # Reshape to (date, gender) and male at the front
         return np.stack((temp_m.to_numpy(), temp_f.to_numpy()), axis=1)
 
     @property

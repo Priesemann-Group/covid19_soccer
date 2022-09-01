@@ -7,7 +7,7 @@ import os
 from .rcParams import *
 from ..effect_gender import _delta
 
- 
+
 def get_from_trace(var, trace, from_type="posterior"):
     """Reshapes and returns an numpy array from an arviz trace"""
     key = var

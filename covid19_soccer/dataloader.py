@@ -148,9 +148,15 @@ class Dataloader:
 
     def _load_OxCGRT(self):
         self._stringencyOxCGRT = []
-        ox = cov19_data.OxCGRT(True)
+        ox = cov19_data.OxCGRT()
+        ox.url_csv = 'https://raw.githubusercontent.com/OxCGRT/covid-policy-tracker-legacy/main/legacy_data_202207/OxCGRT_latest.csv'
+        ox.download_all_available_data()
+
         for c in self.countries:
-            if c == "England":
+            if c == "United Kingdom":
+                mask = np.all((ox.data["country"]=="United Kingdom",ox.data["Jurisdiction"]=="NAT_TOTAL"),axis=0)
+                temp_data = ox.data[mask]["StringencyIndex"]
+            elif c == "England":
                 c = "United Kingdom"
                 region = "England"
                 temp_data = ox.data[ox.data["country"] == c]

@@ -619,6 +619,8 @@ def get_alpha_infections(trace, model, dl):
     R_t_ij_alpha = np.einsum("dt,dij->dtij", R_t_alpha, C_soccer)
     infections_alpha = S_t / pop * np.einsum("dti,dtij->dtj", new_I_t, R_t_ij_alpha)
 
+    mask = (infections_base + infections_alpha) <0
+    infections_alpha[mask] -= (infections_base + infections_alpha)[mask]
     return infections_base, infections_alpha
 
 

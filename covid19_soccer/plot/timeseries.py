@@ -244,7 +244,7 @@ def stringency(ax,trace,model,dl,ylim=None, color=None,legend=True,**kwargs):
     ylabel = "Stringency\nindex"
     ax.set_ylabel(ylabel)
     format_date_axis(ax)
-    ax.legend()
+    ax.legend(loc=1)
     return ax
     
 def R_soccer(ax, trace, model, dl, ylim=None, color=None, add_noise=False, **kwargs):

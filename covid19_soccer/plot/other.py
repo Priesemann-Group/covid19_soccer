@@ -1220,7 +1220,7 @@ def legend(
     sex=True,
     disable_axis=True,
     championship_range=False,
-    loc="center",
+    loc=0,
 ):
     """
     Plots a legend

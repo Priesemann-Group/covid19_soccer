@@ -26,6 +26,7 @@ countries = [
     "Czechia",
     "Belgium",
     "Austria",
+    "GB"
 ]
 
 
@@ -45,43 +46,39 @@ def computeTraces(country, save_fpath="primary_vs_secondary.pkl"):
     """
 
     # Load trace
+    folder="/data.nst/smohr/covid19_soccer_data/main_traces"
+    fstr=lambda tune, draws, max_treedepth, folder: (f"{folder}/run"+
+        f"-beta=False"+
+        f"-country={country}"+
+        f"-offset_data=0"+
+        f"-prior_delay=-1"+
+        f"-median_width_delay=1.0"+
+        f"-interval_cps=10.0"+
+        f"-f_fem=0.33"+
+        f"-len=normal"+
+        f"-abs_sine=False"+
+        f"-t={tune}"+
+        f"-d={draws}"+
+        f"-max_treedepth={max_treedepth}.pkl")
     model = None
-    fstr = lambda tune, draws, max_treedepth: (
-        f"/data.nst/smohr/covid19_soccer_data/main_traces/run"
-        + f"-beta=False"
-        + f"-country={country}"
-        + f"-offset_data=0"
-        + f"-prior_delay=-1"
-        + f"-median_width_delay=1.0"
-        + f"-interval_cps=10.0"
-        + f"-f_fem=0.33"
-        + f"-len=normal"
-        + f"-abs_sine=False"
-        + f"-t={tune}"
-        + f"-d={draws}"
-        + f"-max_treedepth={max_treedepth}.pkl"
-    )
-    if os.path.exists(fstr(4000, 8000, 12)):
-        try:
-            model, initial_trace = load(fstr(4000, 8000, 12))
-            print(f"Use 8000 sample runs for {country}")
-        except:
-            pass
-    if model is None and os.path.exists(fstr(2000, 4000, 12)):
-        try:
-            model, initial_trace = load(fstr(2000, 4000, 12))
-            print(f"Use 4000 sample runs for {country}")
-        except:
-            pass
-    if model is None and os.path.exists(fstr(1000, 1500, 12)):
-        try:
-            model, initial_trace = load(fstr(1000, 1500, 12))
-            print(f"Use 1500 sample runs for {country}")
-        except:
-            pass
+    tune, draws, max_treedepth = (2000, 4000, 12)
+    if os.path.exists(fstr(tune, draws, max_treedepth, folder)):
+        model, initial_trace = load(fstr(tune, draws, max_treedepth, folder))
+        print(f"Use {draws} sample runs for {country}")
+
+    tune, draws, max_treedepth = (1000, 2000, 12)
+    folder="/data.nst/share/soccer_project/covid_uefa_traces15"
+    if os.path.exists(fstr(tune, draws, max_treedepth, folder)) and model is None:
+        model, initial_trace = load(fstr(tune, draws, max_treedepth, folder))
+        print(f"Use {draws} sample runs for {country}")
+    tune, draws, max_treedepth = (500, 1000, 12)
+    if os.path.exists(fstr(tune, draws, max_treedepth, folder)) and model is None:
+        model, initial_trace = load(fstr(tune, draws, max_treedepth, folder))
+        print(f"Use {draws} sample runs for {country}")
+
     if model is None:
-        print(fstr(tune, draws, max_treedepth), " not found")
-        return
+        print(fstr(tune, draws, max_treedepth, folder), " not found")
+
     # Remove chains with likelihood larger than -200, should only be the case for 2 chains in France
     mask = np.mean(initial_trace.sample_stats.lp, axis=1) > -200
     initial_trace.posterior = initial_trace.posterior.sel(chain=~mask.to_numpy())

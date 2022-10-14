@@ -104,6 +104,12 @@ parser.add_argument(
     default=1.0,
 )
 
+parser.add_argument(
+    "--gen_interv",
+    type=float,
+    help="Determines the generation interval (in days)",
+    default=4.0,
+)
 
 parser.add_argument(
     "--t", type=int, help="How many tuning steps?", default=1000,
@@ -232,6 +238,7 @@ if __name__ == "__main__":
                 f_female=args.f_fem,
                 use_abs_sine_weekly_modulation=args.abs_sine,
                 f_robust=args.f_robust,
+                generation_interval=args.gen_interv,
             )
         except AssertionError as error:
             if i < 10:

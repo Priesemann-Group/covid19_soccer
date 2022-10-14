@@ -27,7 +27,6 @@ from covid19_inference.model import (
 
 log = logging.getLogger(__name__)
 
-
 def create_model_gender(
     dataloader=None,
     beta=True,
@@ -38,6 +37,7 @@ def create_model_gender(
     use_abs_sine_weekly_modulation=False,
     force_alpha_prior=None,
     f_robust=1,
+    generation_interval=4,
 ):
     """
     High level function to create an abstract pymc3 model using different defined
@@ -231,6 +231,7 @@ def create_model_gender(
             pr_new_E_begin=new_E_begin,
             use_gamma=True,
             pr_sigma_median_incubation=None,
+            pr_mean_median_incubation=generation_interval,
         )
 
         # Delay the cases by a log-normal reporting delay and add them as a trace variable

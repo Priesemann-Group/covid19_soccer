@@ -60,7 +60,7 @@ def game_effects(
     try:
         dates = pd.to_datetime(dl.date_of_games[selector].values)
     except:
-        dates = pd.to_datetime(dl.date_of_games[:53][selector].values)
+        dates = pd.to_datetime(dl.date_of_games[:len(selector)][selector].values)
     df = pd.DataFrame(data=eff.T, index=dates)
 
     # Positions for violin plots
@@ -218,7 +218,7 @@ def calc_fraction_primary(
     if begin is None:
         begin = datetime.datetime(2021, 6, 11)
     if end is None:
-        end = datetime.datetime(2021, 7, 11)
+        end = datetime.datetime(2021, 7, 31)
 
 
     # Get params from trace and dataloader
@@ -528,7 +528,7 @@ def vviolins(ax, x, y, **kwargs):
 
 def hviolins(ax, x, y, **kwargs):
     """
-    Horizontal violin plots cuts at samples at 99% credible interval
+    Horizontal violin plots cuts at samples at 95% credible interval
     
     Parameters
     ----------

@@ -579,7 +579,7 @@ def single_extended_v2(
         #    label.set_visible(False)
 
     # Add axes annotations
-    alphabet_string = list(string.ascii_uppercase)
+    alphabet_string = list(string.ascii_lowercase)
     for i, ax in enumerate(axes_ts):
         letter = alphabet_string[i]
         if i == 2:

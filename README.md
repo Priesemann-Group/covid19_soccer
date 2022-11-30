@@ -1,9 +1,9 @@
-# Using gender disparities to identify EURO2020 contributions to the COVID-19 spread
+# The impact of large-scale sports events on COVID-19 spread
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-Supplementary code for our **Using gender disparities to identify EURO2020 contributions to the COVID-19 spread** publication. **This is an ongoing project!** Read the latest draft of the publication [here](./Draft_covid19_soccer_211014.pdf) (updated on 14th October 2021).
+Supplementary code for our **The impact of large-scale sports events on COVID-19 spread** publication.
 
 ## Usage
 

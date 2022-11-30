@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 authors:
-  - family-names: "Dehing"
+  - family-names: "Dehning"
     given-names: "Jonas"
     orcid: "https://orcid.org/0000-0002-1728-2505"
   - family-names: "Mohr"

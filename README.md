@@ -1,9 +1,9 @@
-# The impact of large-scale sports events on COVID-19 spread
+# Impact of the Euro 2020 championship on the spread of COVID-19
 [![DOI](https://zenodo.org/badge/413108779.svg)](https://zenodo.org/badge/latestdoi/413108779)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-Supplementary code for our **The impact of large-scale sports events on COVID-19 spread** publication.
+Supplementary code for our [**Impact of the Euro 2020 championship on the spread of COVID-19**](https://www.nature.com/articles/s41467-022-35512-x) publication.
 
 ## Usage
 
